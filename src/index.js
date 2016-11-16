@@ -1,13 +1,28 @@
-// import ReactDOM from 'react-dom';
-import React, {Component} from 'react';
+import { AppContainer } from 'react-hot-loader';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
 
 // http://stackoverflow.com/a/34015469/988941
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-import hotRenderer from './hotrenderer';
+const rootEl = document.getElementById('app');
+ReactDOM.render(
+	<AppContainer>
+		<App />
+	</AppContainer>,
+	rootEl
+);
 
-const appPath = './components/App';
-const appElm = document.getElementById('app');
-import App from './components/App';
-hotRenderer(appPath, appElm, App);
+if (module.hot) {
+	module.hot.accept('./App', () => {
+		const NextApp = require('./App').default;
+		ReactDOM.render(
+			<AppContainer>
+				<NextApp />
+			</AppContainer>,
+			rootEl
+		);
+	});
+}

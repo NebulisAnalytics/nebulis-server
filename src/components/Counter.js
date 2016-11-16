@@ -20,10 +20,10 @@ export default class Counter extends Component {
 		},1000);
 	}
 	componentWillUnmount() {
+		clearInterval(this.interval);
 		this.setState({
 			mounted : false
 		});
-		clearInterval(this.interval);
 	}
 	render() {
 		return (<div>Counter: { this.state.value }</div>);

@@ -1,16 +1,13 @@
 import React, {Component} from 'react';
 import {Router, Route, browserHistory, IndexRoute} from 'react-router';
 
-import Layout from './Layout';
-import Home from './Home';
-import Page1 from './Page1';
-import Page2 from './Page2';
-import NotFound from './NotFound';
-
-alert('hi')
+import Layout from './components/Layout';
+import Home from './components/Home';
+import Page1 from './components/Page1';
+import Page2 from './components/Page2';
+import NotFound from './components/NotFound';
 
 export default class App extends Component {
-
 	constructor(props) {
 		super(props);
 	}

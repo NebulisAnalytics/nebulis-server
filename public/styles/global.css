@@ -1,4 +1,6 @@
 HTML, BODY {
-  font-family: Roboto;
-  background:lightgrey;
+	font-family: Roboto;
+	background: lightgrey;
+	margin: 0;
+	padding: 0;
 }
