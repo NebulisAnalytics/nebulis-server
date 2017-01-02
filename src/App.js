@@ -13,7 +13,7 @@ export default class App extends Component {
 	}
 	render() {
 		return (<Router history={browserHistory}>
-			<Route path="/" component={Layout}>
+			<Route path="/">
 				<IndexRoute component={Home}/>
 				<Route path="/page1" component={Page1}/>
 				<Route path="/page2" component={Page2}/>

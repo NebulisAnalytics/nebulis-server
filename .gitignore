@@ -116,4 +116,4 @@ npm-debug.log
 nbproject
 .idea
 .node_history
-
+test/client/__snapshots__

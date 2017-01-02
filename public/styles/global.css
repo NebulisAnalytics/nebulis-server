@@ -4,3 +4,7 @@ HTML, BODY {
 	margin: 0;
 	padding: 0;
 }
+
+.appbar H1 {
+	display: inline;
+}

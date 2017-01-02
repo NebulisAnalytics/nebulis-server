@@ -34,7 +34,7 @@ var routes = {
   // the default sails homepage when creating a new app
   '/sailshomepage': {
     view: 'sailshomepage'
-  }
+  },
 
   /***************************************************************************
    *                                                                          *
@@ -45,6 +45,10 @@ var routes = {
    * for configuration options and examples.                                  *
    *                                                                          *
    ***************************************************************************/
+
+  'get /api/todos': 'TodosController.getTodos',
+  'get /api/todos/create': 'TodosController.createTodo',
+  'get /api/todos/deleteall': 'TodosController.deleteAll'
 
 };
 
