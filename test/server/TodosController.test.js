@@ -1,3 +1,4 @@
+var debug = require('../../api/utils/debug');
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var should = chai.should();
@@ -6,7 +7,7 @@ var expect = chai.expect;
 
 var server = 'http://localhost:1337';
 
-describe('/api/todos', function() {
+describe('GET /api/todos', function() {
 	it('should return array of todos', function(done) {
 		chai.request(server)
 			.get('/api/todos')
@@ -20,10 +21,13 @@ describe('/api/todos', function() {
 	});
 });
 
-describe('/api/todos/create', function() {
+describe('POST /api/todos', function() {
 	it('creates a todo', function(done) {
 		chai.request(server)
-			.get('/api/todos/create?name=test')
+			.post('/api/todos')
+			.send({
+				name: 'test'
+			})
 			.end(function(err, res){
 				expect(res.body.name).to.be.equal('test');
 				expect(res.body.completed).to.be.equal(false);
@@ -32,10 +36,41 @@ describe('/api/todos/create', function() {
 	});
 });
 
-describe('/api/todos/deleteall', function() {
+describe('PUT /api/todos/:id', function() {
+	it('updates a todo', function(done) {
+		
+		chai.request(server)
+		.post('/api/todos')
+		.send({
+			name: 'test',
+			completed: false
+		})
+		.end(function(err, res){
+			
+			var todo = res.body;
+			var id = todo.id;
+			expect(todo.completed).to.be.equal(false);
+			
+			chai.request(server)
+			.put('/api/todos/'+id).send({
+				completed: true
+			})
+			.end(function(err, res){
+				chai.request(server)
+				.get('/api/todos/'+id)
+				.end(function(err, res){
+					expect(res.body.completed).to.be.equal(true);
+					done();
+				});
+			});
+		});
+	});
+});
+
+describe('DELETE /api/todos', function() {
 	it('deletes all todos', function(done) {
 		chai.request(server)
-			.get('/api/todos/deleteall')
+			.del('/api/todos')
 			.end(function(err, res){
 				chai.request(server)
 					.get('/api/todos')

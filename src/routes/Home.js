@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
-import Counter from './Counter';
+import Counter from '../components/Counter';
 import Layout from './Layout';
 
 export default class IndexPage extends Component {
@@ -13,11 +13,15 @@ export default class IndexPage extends Component {
 			<Layout title="Home">
 				<div id="page-index" className="page">
 					<Counter/>
+
 					<div>
-						<Link to="page1">Page 1</Link>
+						<Link to="/todos">Todos</Link>
 					</div>
 					<div>
-						<Link to="page2">Page 2</Link>
+						<Link to="/page1">Page 1</Link>
+					</div>
+					<div>
+						<Link to="/page2">Page 2</Link>
 					</div>
 					<div>
 						<a href="sailshomepage">Sails default page</a>
