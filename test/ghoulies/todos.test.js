@@ -32,7 +32,7 @@ function startClient(done) {
 	 
 	 var window, ghoulie;
 	 ghoulies.client({
-	 	url: "http://localhost:1337/todos",
+	 	url: url,
 	 	globals: false,
 	 	jquery: true
 	 }, function(w, g) {
