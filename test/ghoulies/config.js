@@ -1,9 +1,14 @@
-var sails = require('sails');
+// require the app
+require('../../app.js');
 
-before(function (done) {
+var ghoulies = require('ghoulies');
+
+before(function(done) {
 	
-	// run SailsJS server
-	sails.lift(function () {
+	// listen to server event defined in /config/http.js
+	
+	ghoulies.on('SERVER_LOADED', function(app) {
+		ghoulies.app = app;
 		done();
 	});
 	

@@ -28,6 +28,16 @@ module.exports.http = {
 	  
 	  // use layout.ejs
 	  app.use(expressLayouts);
+	  
+	  
+	  // emit a 'SERVER_LOADED' event to ghoulies in order to bootstrap the ghoulie tests
+	  
+	  var ghoulies = require('ghoulies');
+	  
+	  sails.on('lifted', function() {
+		  ghoulies.emit('SERVER_LOADED', sails);
+	  });
+	
 	
     // https://github.com/gaearon/react-hot-boilerplate/blob/next/server.js
     // https://github.com/balderdashy/sails/issues/814
