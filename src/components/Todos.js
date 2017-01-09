@@ -30,7 +30,7 @@ class Todo extends Component {
 		const todo = this.props.todo;
 		const decoration = todo.completed ? 'line-through' : 'none';
 		return (
-			<li>
+			<li className="todo">
 				<span style={ {textDecoration: decoration} }>
 					{ todo.name }
 				</span>

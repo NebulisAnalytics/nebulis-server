@@ -8,12 +8,22 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 const rootEl = document.getElementById('app');
-ReactDOM.render(
-	<AppContainer>
-		<App />
-	</AppContainer>,
-	rootEl
-);
+
+function render() {
+	ReactDOM.render(
+		<AppContainer>
+			<App />
+		</AppContainer>,
+		rootEl
+	);
+}
+
+if (rootEl) {
+	render();
+}
+else {
+	console.log('no rootEl');
+}
 
 if (module.hot) {
 	module.hot.accept('./App', () => {

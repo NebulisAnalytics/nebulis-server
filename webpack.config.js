@@ -1,11 +1,18 @@
 const path = require('path');
 const webpack = require('webpack');
 
+var devtool;
+if (process.env.NODE_ENV==='test') {
+	devtool = 'eval';
+}
+else if (process.env.NODE_ENV==='dev') {
+	devtool = 'source-map';
+}
 
 const config = {
-	devtool: 'eval',
+	devtool: devtool,
 	entry: [
-		'./src/index'
+		'./src' ///index'
 	],
 	output: {
 		path: path.resolve(__dirname, './public/build'),
@@ -13,6 +20,14 @@ const config = {
 		publicPath: '/build/',
 		sourceMapFilename: 'bundle.js.map',
 	},
+	/*
+	 output: {
+	 path: './out/',
+	 filename: 'main.js',
+	 chunkFilename: '[name]-[chunkhash].js',
+	 publicPath: 'http://127.0.0.1:2992/out/'
+	 },
+	 */
 	plugins: [],
 	module: {
 		loaders: [{
@@ -24,6 +39,9 @@ const config = {
 			test: /\.css$/,
 			loader: 'style-loader!css-loader'
 		}]
+	},
+	performance: {
+		hints: false
 	}
 };
 

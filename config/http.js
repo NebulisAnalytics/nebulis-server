@@ -10,6 +10,7 @@
  */
 
 var express = require('express'); // if you have npm version > 2
+var expressLayouts = require('express-ejs-layouts');
 
 module.exports.http = {
 
@@ -24,6 +25,10 @@ module.exports.http = {
   ****************************************************************************/
 
   customMiddleware: function (app) {
+	  
+	  // use layout.ejs
+	  app.use(expressLayouts);
+	
     // https://github.com/gaearon/react-hot-boilerplate/blob/next/server.js
     // https://github.com/balderdashy/sails/issues/814
 

@@ -2,15 +2,23 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Layout from './Layout';
 import Todos from '../components/Todos';
-
 import {getTodos, createTodo, deleteTodo, toggleCompleted} from '../api/todos';
 
-export default class IndexPage extends Component {
+import ghoulie from 'ghoulie';
+
+export default class TodosPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			todos: []
 		};
+		
+		ghoulie.emit('TODOS_PAGE_LOADED');
+		
+		ghoulie.on('RELOAD_TODOS', () => {
+			ghoulie.log('RELOADING TODOS !!!!');
+			this.getTodos();
+		})
 	}
 	
 	componentWillMount() {
@@ -22,7 +30,11 @@ export default class IndexPage extends Component {
 			this.setState({
 				todos
 			}, () => {
-				
+				// use ghoulie to emit an event that can be listened to in test
+				ghoulie.on('TODOS_LOADED', function(todos) {
+					ghoulie.log('on TODOS_LOADED', todos);
+				});
+				ghoulie.emit('TODOS_LOADED', todos);
 			});
 		});
 	}

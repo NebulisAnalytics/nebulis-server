@@ -7,8 +7,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import AppBar from 'material-ui/AppBar';
 
-import {browserHistory} from 'react-router';
-
 export default class Layout extends Component {
 	constructor(props) {
 		super(props);
@@ -20,10 +18,6 @@ export default class Layout extends Component {
 	};
 
 	render() {
-		let p = this.props;
-		let c = this.props.children;
-		console.log('children', this.props.children);
-
 		return (
 			<MuiThemeProvider muiTheme={themes['darkBaseTheme']}>
 				<div id="layout">
