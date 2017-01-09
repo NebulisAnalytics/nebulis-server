@@ -1,23 +1,20 @@
 ### sails-react-redux-boilerplate
 
-A [Sails](http://sailsjs.org) application demonstrating a 3-page boilerplate app
-the integration of the latest versions of:
+A [SailsJS](http://sailsjs.org) boilerplate application that demonstrates a single page "Todos" app using the following libraries:
 
 * NodeJS
-* React
+* SailsJS
+* ReactJS
 * React Hot Loader
 * React-Router
-* Redux (todo)
+* Redux *
 * Material UI
-* Sails
 * Webpack
 * Mocha
 * Ghoulies
 
-This boilerplate app also includes:
+This boilerplate app also includes unit tests:
 
-* example SailsJS Controller
-* example Sails Model
 * example Client Side React Tests
 * example Server-Side Model Tests
 * example Server-Side Controller Tests
