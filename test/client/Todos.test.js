@@ -12,15 +12,16 @@ const todos = [{
 	completed: false
 }];
 
-let testNode;
+let testComponent;
 
 before(function(done) {
 	const onDelete = function() {};
 	const onComplete = function() {};
-	const testComponent = TestUtils.renderIntoDocument(
+	
+	testComponent = TestUtils.renderIntoDocument(
 		<Todos todos={todos} onDelete={onDelete} onComplete={onComplete}/>
 	);
-	testNode = ReactDOM.findDOMNode(testComponent);
+	
 	done();
 });
 
@@ -34,7 +35,11 @@ describe('JSDom', () => {
 
 describe('Todos component', () => {
 	it('renders correctly', () => {
-		expect(testNode.nodeName).to.be.equal('UL');
+		
+		let testNode = ReactDOM.findDOMNode(testComponent);
+		
+		expect(testNode.nodeName).to.be.equal('DIV');
+		expect(testNode.className).to.be.equal('todos');
 		expect(testNode.getElementsByTagName('LI').length).to.be.equal(1);
 		expect(testNode.getElementsByTagName('LI')[0]).to.be.an('object');
 		expect(testNode.getElementsByTagName('SPAN')[0].textContent).to.be.equal(todos[0].name);
