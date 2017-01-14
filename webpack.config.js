@@ -8,6 +8,9 @@ if (process.env.NODE_ENV==='test') {
 else if (process.env.NODE_ENV==='dev') {
 	devtool = 'source-map';
 }
+else { // prod
+	devtool = 'eval';
+}
 
 const config = {
 	devtool: devtool,

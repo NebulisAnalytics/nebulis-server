@@ -2,23 +2,38 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Layout from './Layout';
 import Todos from '../components/Todos';
-import {getTodos, createTodo, deleteTodo, toggleCompleted} from '../api/todos';
+
+import { getStore, todosActions } from '../redux/index';
 
 import ghoulie from 'ghoulie';
 
 export default class TodosPage extends Component {
 	constructor(props) {
 		super(props);
+		
 		this.state = {
-			todos: []
+			
+			// map the model to state
+			todosModel: getStore().getState().todosModel
 		};
 		
+		// when the store changes re-map the model to state
+		getStore().subscribe(() => {
+			this.setState({
+				todosModel: getStore().getState().todosModel
+			}, () => {
+				
+			});
+		});
+		
+		// notify ghoulie when this component is instantiated
 		ghoulie.emit('TODOS_PAGE_LOADED');
 		
+		// when ghoulie receives a RELOAD_TODOS event (from within a unit test) log the event and call getTodos()
 		ghoulie.on('RELOAD_TODOS', () => {
 			ghoulie.log('RELOADING TODOS !!!!');
 			this.getTodos();
-		})
+		});
 	}
 	
 	componentWillMount() {
@@ -26,16 +41,25 @@ export default class TodosPage extends Component {
 	}
 	
 	getTodos() {
-		getTodos((err, todos) => {
+		ghoulie.log('getting todos...');
+		todosActions.getTodos().then(store => {
+			
+			ghoulie.log('got todos', store);
+			
+			// store returned is same as getStore().getState()
+			console.log('store', store);
+			
+			// map the model to state
 			this.setState({
-				todos
+				todosModel: store.todosModel
 			}, () => {
-				// use ghoulie to emit an event that can be listened to in test
-				ghoulie.on('TODOS_LOADED', function(todos) {
-					ghoulie.log('on TODOS_LOADED', todos);
-				});
+				const todos = getStore().getState().todosModel;
 				ghoulie.emit('TODOS_LOADED', todos);
 			});
+			
+		}).catch(function(e, store) {
+			console.log('CAUGHT ERROR', e);
+			debugger;
 		});
 	}
 	
@@ -44,7 +68,9 @@ export default class TodosPage extends Component {
 			<Layout title="Todos">
 				<div id="page-todos" className="page">
 					
-					<Todos todos={this.state.todos} onDelete={::this.onDelete} onComplete={::this.onComplete}/>
+					{ this.renderLoading() }
+					
+					<Todos todos={this.state.todosModel.todos} onDelete={::this.onDelete} onToggleCompleted={::this.onToggleCompleted}/>
 					
 					<div>
 						Create a to-do:<br/>
@@ -55,22 +81,33 @@ export default class TodosPage extends Component {
 			</Layout>);
 	}
 	
+	renderLoading() {
+		if (this.state.todosModel.loading) {
+			return (<div>Loading...</div>);
+		}
+	}
+	
 	onAdd() {
 		const name = ReactDOM.findDOMNode(this.refs.todo).value;
-		createTodo(name, (err, results) => {
+		todosActions.createTodo({
+			name
+		}).then(store => {
+			ReactDOM.findDOMNode(this.refs.todo).value = '';
 			this.getTodos();
 		});
 	}
 	
 	onDelete(id) {
-		deleteTodo(id, (err, results) => {
-			this.getTodos();
-		});
+		todosActions.deleteTodo(null, {
+			id
+		}).then(::this.getTodos);
 	}
 	
-	onComplete(id, completed) {
-		toggleCompleted(id, completed, (err, results) => {
-			this.getTodos();
-		});
+	onToggleCompleted(id, completed) {
+		todosActions.updateTodo({
+			completed
+		}, {
+			id,
+		}).then(::this.getTodos);
 	}
 }

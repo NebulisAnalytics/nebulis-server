@@ -77,12 +77,6 @@
 		"ghoulies:watch": "npm run ghoulies:build; NODE_ENV=test nodemon -w ./test/ghoulies -e js -x npm run ghoulies:test",
 		"ghoulies:build": "NODE_ENV=test node node_modules/webpack/bin/webpack.js -p --progress"
 	},
-	"ghoulies": {
-		"run": "npm run ghoulies:build; npm run ghoulies:test",
-		"watch": "npm run ghoulies:build; NODE_ENV=test nodemon -w ./test/ghoulies -e js -x npm run ghoulies:test",
-		"build": "NODE_ENV=test node node_modules/webpack/bin/webpack.js -p --progress",
-		"test": "NODE_ENV=test mocha --timeout 60000 --recursive ./test/ghoulies/config.js ./test/ghoulies"
-	},
 	"main": "app.js",
 	"repository": {
 		"type": "git",

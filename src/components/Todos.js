@@ -13,7 +13,7 @@ export default class Todos extends Component {
 			return (<ul>
 				{ this.props.todos.map((todo, index) => {
 					let completeHandler = () => {
-						this.props.onComplete(todo.id, todo.completed);
+						this.props.onToggleCompleted(todo.id, !todo.completed);
 					};
 					let deleteHandler = () => {
 						this.props.onDelete(todo.id);
@@ -35,7 +35,7 @@ class Todo extends Component {
 					{ todo.name }
 				</span>
 				&nbsp;
-				<a href="javascript://" onClick={this.props.onComplete}>
+				<a href="javascript://" onClick={::this.props.onComplete}>
 					✓
 				</a>
 				&nbsp;

@@ -19,7 +19,7 @@ This boilerplate app also includes unit tests:
 * example Server-Side Model Tests
 * example Server-Side Controller Tests
 * example Ghoulies Integration Test
- 
+
 
 # Installation
 ---
@@ -29,6 +29,13 @@ Install <a href="https://github.com/ryuone/nenv">nenv</a> and build `nodejs`:
 ```
 nenv install 6.9.1
 nenv local v6.9.1
+```
+
+Clone boilerplate:
+
+```
+git clone https://github.com/jaxcore/sails-react-redux-boilerplate.git
+cd sails-react-redux-boilerplate
 ```
 
 Install prerequisites:
@@ -90,4 +97,4 @@ Run integration test continuously:
 ```
 npm run ghoulies:watch
 ```
-	
+

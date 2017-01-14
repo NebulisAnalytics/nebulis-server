@@ -11,6 +11,9 @@
 
 var express = require('express'); // if you have npm version > 2
 var expressLayouts = require('express-ejs-layouts');
+var bodyParser = require('body-parser');
+var jsonParser = bodyParser.json();
+
 
 module.exports.http = {
 
@@ -25,13 +28,11 @@ module.exports.http = {
   ****************************************************************************/
 
   customMiddleware: function (app) {
-	  
+	
 	  // use layout.ejs
 	  app.use(expressLayouts);
 	  
-	  
 	  // emit a 'SERVER_LOADED' event to ghoulies in order to bootstrap the ghoulie tests
-	  
 	  var ghoulies = require('ghoulies');
 	  
 	  sails.on('lifted', function() {
@@ -87,11 +88,12 @@ module.exports.http = {
       'startRequestTimer',
       'cookieParser',
       'session',
-      //'myRequestLogger',
+      'myRequestLogger',
       'bodyParser',
-      'handleBodyParserError',
-      'compress',
-      'methodOverride',
+      //'jsonParser',
+      //'handleBodyParserError',
+      //'compress',
+      //'methodOverride',
       //'poweredBy',
       '$custom',
       'router',
@@ -100,6 +102,8 @@ module.exports.http = {
       '404',
       '500'
     ],
+	  
+	  
 
   /****************************************************************************
   *                                                                           *
@@ -107,10 +111,11 @@ module.exports.http = {
   *                                                                           *
   ****************************************************************************/
 
-    // myRequestLogger: function (req, res, next) {
-    //     console.log("Requested :: ", req.method, req.url);
-    //     return next();
-    // }
+    myRequestLogger: function (req, res, next) {
+        console.log(req.method, req.url);
+        //console.log("Requested start ", new Date().getTime());
+        return next();
+    },
 
 
   /***************************************************************************
@@ -128,8 +133,30 @@ module.exports.http = {
   *                                                                          *
   ***************************************************************************/
 
-    bodyParser: require('skipper')({strict: true})
+  // bodyParser:  function (req, res, next) {
+	//   jsonParser(req, res, next);
+	//
+	//   // console.log('hi', typeof req, typeof res);
+	//   // process.exit();
+	//   //
+	//   // return jsonParser; //require('body-parser')({ limit: 8248242 });
+  // }
+	  
+    //bodyParser: require('skipper')({strict: true})
 
+ 	// bodyParser: bodyParser.urlencoded({
+	 //  extended: true
+  	// }), //require('express').bodyParser()
+ 	// jsonParser: bodyParser.json(), //require('express').bodyParser()
+	 //
+	// bodyParser:  function () {
+	//   return function (req, res, next) {
+	// 	  console.log('body parser active');
+	// 	  process.exit();
+	// 	  next();
+	//   }
+	// },
+	  
   },
 
   /***************************************************************************
