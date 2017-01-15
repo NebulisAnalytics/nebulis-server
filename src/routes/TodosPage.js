@@ -44,17 +44,18 @@ export default class TodosPage extends Component {
 		ghoulie.log('getting todos...');
 		todosActions.getTodos().then(store => {
 			
-			ghoulie.log('got todos', store);
-			
 			// store returned is same as getStore().getState()
-			console.log('store', store);
+			ghoulie.log('got todos', store);
 			
 			// map the model to state
 			this.setState({
 				todosModel: store.todosModel
 			}, () => {
-				const todos = getStore().getState().todosModel;
+				
+				// emit TODOS_LOADED event for ghoulie test to use
+				const todos = store.todosModel.todos;
 				ghoulie.emit('TODOS_LOADED', todos);
+				
 			});
 			
 		}).catch(function(e, store) {
