@@ -1,4 +1,4 @@
-### sails-react-redux-boilerplate
+# sails-react-redux-boilerplate
 
 A [SailsJS](http://sailsjs.org) boilerplate application that demonstrates a single page "Todos" app using the following libraries:
 
@@ -21,7 +21,7 @@ This boilerplate app also includes unit tests:
 * example Ghoulies Integration Test
 
 
-# Installation
+## Installation
 ---
 
 Install <a href="https://github.com/ryuone/nenv">nenv</a> and build `nodejs`:
@@ -98,25 +98,34 @@ Run integration test continuously:
 npm run ghoulies:watch
 ```
 
-### Start Docker instance
+## Docker Container
+---
+
+Install docker and virtualbox (these commands are for MacOS):
 
 ```
-# Build the docker container and give it a certain name
-# docker build -t <container_name> .
-docker build -t me/sails-react-redux-boilerplate .
-
-# Look if the image is registered
-docker images
-
-# Run the docker file and bind a port on the host machine to a certain port in the docker container
-# docker run -p <port_on_host_machine>:1337 -d <container_name>
-docker run -p 49160:1337 -d me/sails-react-redux-boilerplate
-
-# Look if the docker container is running
-docker ps
-
-# Open browser on the host machine on the specified port
-open http://localhost:49160
-
+brew cask install virtualbox
+brew install docker
+curl -L https://github.com/docker/machine/releases/download/v0.9.0/docker-machine-`uname -s`-`uname -m` >/usr/local/bin/docker-machine && chmod +x /usr/local/bin/docker-machine
+curl -L "https://github.com/docker/compose/releases/download/1.10.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+docker-machine create --driver=virtualbox default
+eval $(docker-machine env default)
 ```
 
+Find the virtual machine ip address:
+
+```
+docker-machine ls
+```
+
+Run the docker container:
+
+```
+docker-compose up
+```
+
+Open browser to the virtual machine ip address:
+
+```
+http://192.168.99.100:1337
+```

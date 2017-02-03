@@ -1,0 +1,10 @@
+version: '2'
+services:
+  web:
+    build: .
+    ports:
+     - "1337:1337"
+    volumes:
+     - .:/usr/src/app
+  redis:
+    image: "node:boron"
