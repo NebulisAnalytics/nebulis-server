@@ -1,25 +1,6 @@
-# sails-react-redux-boilerplate
+# Nebulis Coding Analytics Platform
 
-A [SailsJS](http://sailsjs.org) boilerplate application that demonstrates a single page "Todos" app using the following libraries:
-
-* NodeJS
-* SailsJS
-* ReactJS
-* React Hot Loader
-* React-Router
-* Redux *
-* Material UI
-* Webpack
-* Mocha
-* Ghoulies
-
-This boilerplate app also includes unit tests:
-
-* example Client Side React Tests
-* example Server-Side Model Tests
-* example Server-Side Controller Tests
-* example Ghoulies Integration Test
-
+Nebulis provides realtime analytics and reporting for coding projects. With Nebulis you can embed an endpoint into your coding units so that you can gather code changes to a project fork. Nebulis is set up to be close to zero configuration, so as soon as the endpoint is launched on a fork, that user will be instantly registered into the system and attached to the associated project.
 
 ## Installation
 ---
