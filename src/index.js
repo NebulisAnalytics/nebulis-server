@@ -10,29 +10,29 @@ injectTapEventPlugin();
 const rootEl = document.getElementById('app');
 
 function render() {
-	ReactDOM.render(
-		<AppContainer>
-			<App />
-		</AppContainer>,
-		rootEl
-	);
+  ReactDOM.render(
+    <AppContainer>
+      <App />
+    </AppContainer>,
+    rootEl
+  );
 }
 
 if (rootEl) {
-	render();
+  render();
 }
 else {
-	console.log('no rootEl');
+  console.log('no rootEl');
 }
 
 if (module.hot) {
-	module.hot.accept('./App', () => {
-		const NextApp = require('./App').default;
-		ReactDOM.render(
-			<AppContainer>
-				<NextApp />
-			</AppContainer>,
-			rootEl
-		);
-	});
+  module.hot.accept('./App', () => {
+    const NextApp = require('./App').default;
+    ReactDOM.render(
+      <AppContainer>
+        <NextApp />
+      </AppContainer>,
+      rootEl
+    );
+  });
 }
