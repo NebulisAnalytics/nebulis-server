@@ -51,8 +51,9 @@ var routes = {
 	'get /api/todos': 'TodosController.getTodos',
 	'get /api/todos/:id': 'TodosController.getTodo',
 	'delete /api/todos/:id': 'TodosController.deleteTodo',
-	'delete /api/todos': 'TodosController.deleteAll'
+	'delete /api/todos': 'TodosController.deleteAll',
 	
+	'get /api/projects': 'ProjectController.getProjects'
 };
 
 // the same app will be rendered at all these routes
