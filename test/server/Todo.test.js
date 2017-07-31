@@ -4,7 +4,7 @@ var should = chai.should();
 chai.use(chaiHttp);
 var expect = chai.expect;
 
-xdescribe('.getAll()', function() {
+describe('.getAll()', function() {
   it('should return array of todos', function(done) {
     Todo.getAll(function(err, todos) {
       expect(todos).to.be.an('array');
@@ -13,7 +13,7 @@ xdescribe('.getAll()', function() {
   });
 });
 
-xdescribe('.createTodo()', function() {
+describe('.createTodo()', function() {
   it('creates a todo', function(done) {
     Todo.createTodo(null, function(err, todo) {
       expect(todo).to.be.an('object');
@@ -27,7 +27,7 @@ xdescribe('.createTodo()', function() {
   });
 });
 
-xdescribe('.deleteTodo()', function() {
+describe('.deleteTodo()', function() {
   it('deletes a todo', function(done) {
     Todo.createTodo('test', function(err, results) {
       var id = results.id;
@@ -42,7 +42,7 @@ xdescribe('.deleteTodo()', function() {
   });
 });
 
-xdescribe('.deleteAll()', function() {
+describe('.deleteAll()', function() {
   it('deletes all todos', function(done) {
     Todo.createTodo(null, function(err, todo) {
       Todo.deleteAll(function(err, results) {
