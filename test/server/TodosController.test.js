@@ -9,7 +9,7 @@ var server = 'http://localhost:1337';
 
 
 
-xdescribe('GET /api/todos', function() {
+describe('GET /api/todos', function() {
   it('should return array of todos', function(done) {
     chai.request(server)
       .get('/api/todos')
@@ -23,7 +23,7 @@ xdescribe('GET /api/todos', function() {
   });
 });
 
-xdescribe('POST /api/todos', function() {
+describe('POST /api/todos', function() {
   it('creates a todo', function(done) {
     chai.request(server)
       .post('/api/todos')
@@ -38,7 +38,7 @@ xdescribe('POST /api/todos', function() {
   });
 });
 
-xdescribe('PUT /api/todos/:id', function() {
+describe('PUT /api/todos/:id', function() {
   it('updates a todo', function(done) {
     chai.request(server)
       .post('/api/todos')
@@ -68,7 +68,7 @@ xdescribe('PUT /api/todos/:id', function() {
   });
 });
 
-xdescribe('DELETE /api/todos', function() {
+describe('DELETE /api/todos', function() {
   it('deletes all todos', function(done) {
     chai.request(server)
       .del('/api/todos')

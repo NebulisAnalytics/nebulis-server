@@ -43,22 +43,21 @@ describe('GET unit project members by project ID', () => {
           const id = project.id;
           expect(project.length).to.be.equal(1);
           expect(project.name).to.be.equal('Test Proj');
-          expect(project.teams.length).to.be.equal()
-          expect(project.teams.members.length).to.be.equal()
-        })
-    })
-      // .exec(err, (err, project) => {
-      //   const id = project.id;
-      //   expect(project).to.be.an('object');
-      //   expect(project.id).to.be.equal(id);
-      });
-
-    console.log('this is the id', project.id);
+          expect(project.teams.length).to.be.equal();
+          expect(project.teams.members.length).to.be.equal();
+        });
+    });
+    //  .exec(err, (err, project) => {
+    //   const id = project.id;
+    //   expect(project).to.be.an('object');
+    //   expect(project.id).to.be.equal(id);
   });
 
-
-  //  clean up the db (delete id and associated teams)
+  // console.log('this is the id', project.id);
 });
+
+
+//  clean up the db (delete id and associated teams)
 
 
 // /projects/new (post) (create a new unit page)
