@@ -15,6 +15,14 @@ module.exports = {
       type: 'boolean',
       required: true,
       defaultsTo: false
-    }
-  }
-};
+    },
+    endpoints: {
+      collection: 'endpoint',
+      via: 'member',
+    },
+    teams: {
+      collection: 'team',
+      via: 'member',
+    },
+  },
+};  d
