@@ -10,6 +10,11 @@ module.exports = {
   attributes: {
     gitAccess: {
       type: 'string'
+    },
+    admin: {
+      type: 'boolean',
+      required: true,
+      defaultsTo: false
     }
   }
 };
