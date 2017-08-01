@@ -11,8 +11,10 @@ module.exports = {
     project: {
       model: 'project',
     },
-    member: {
-      model: 'member',
+    members: {
+      collection: 'member',
+      via: 'members',
+      dominant: true,
     },
     endpoints: {
       collection: 'endpoint',
