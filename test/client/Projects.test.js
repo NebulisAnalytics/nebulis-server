@@ -8,20 +8,20 @@ import Projects from '../../src/components/Projects';
 
 const projects = [{
   id: 1,
-  name: "one",
+  name: 'one',
   updatedAt: 'Sept 2, 1990'
 }];
 
 let testComponent;
 
-before(function(done) {
-  const onDelete = function() {};
-  const onClick = function() {};
-  
+before((done) => {
+  const onDelete = function () {};
+  const onClick = function () {};
+
   testComponent = TestUtils.renderIntoDocument(
     <Projects projects={projects} onDelete={onDelete} onClick={onClick}/>
   );
-  
+
   done();
 });
 
@@ -35,9 +35,9 @@ describe('JSDom', () => {
 
 describe('Projects component', () => {
   it('renders correctly', () => {
-    
+
     let testNode = ReactDOM.findDOMNode(testComponent);
-    
+
     expect(testNode.nodeName).to.be.equal('DIV');
     expect(testNode.className).to.be.equal('projects');
     expect(testNode.getElementsByTagName('LI').length).to.be.equal(1);
