@@ -20,9 +20,9 @@ module.exports = {
       collection: 'endpoint',
       via: 'member',
     },
-    teams: {
-      collection: 'team',
-      via: 'member',
-    },
+    // teams: {
+    //   collection: 'team',
+    //   via: 'member',
+    // },
   },
-};  d
+};
