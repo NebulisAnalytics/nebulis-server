@@ -8,7 +8,16 @@
 module.exports = {
 
   attributes: {
-
-  }
+    project: {
+      model: 'project',
+    },
+    member: {
+      model: 'member',
+    },
+    endpoints: {
+      collection: 'endpoint',
+      via: 'member',
+    },
+  },
 };
 
