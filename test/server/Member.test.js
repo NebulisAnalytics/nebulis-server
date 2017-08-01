@@ -20,7 +20,7 @@ describe('Relationships', function() {
       .exec(function(err, members) {
         expect(members[0].endpoints.length).to.be.equal(1);
     });
-
+  });
   xit('should be able to list it\'s team memberships', function(done) {
     Todo.getAll(function(err, todos) {
       expect(todos).to.be.an('array');
