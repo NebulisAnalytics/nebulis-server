@@ -11,11 +11,11 @@ module.exports = {
     project: {
       model: 'project',
     },
-    members: {
-      collection: 'member',
-      via: 'members',
-      dominant: true,
-    },
+    // members: {
+    //   collection: 'member',
+    //   via: 'members',
+    //   dominant: true,
+    // },
     endpoints: {
       collection: 'endpoint',
       via: 'member',
