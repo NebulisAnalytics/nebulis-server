@@ -9,6 +9,7 @@ describe('Member Model Relationships', function() {
   let member;
   let endpoint;
   let team;
+
   before(async function() {
     member = await Member.create({username: 'trustyPartner'});
     endpoint = await Endpoint.create({member: member.id});
@@ -21,20 +22,12 @@ describe('Member Model Relationships', function() {
     Member.destroy(member.id);
     Team.destroy(team.id);
   });
-  it('should be able to get a list of it\'s endpoints', function(done) {
-    Member.find({username: 'trustyPartner'})
-      .populate('endpoints')
-      .exec(function(err, members) {
-        expect(members[0].endpoints.length).to.be.equal(1);
-        done();
-    });
+  it('should be able to get a list of it\'s endpoints', async function() {
+    const members = await Member.find(member.id).populate('endpoints');
+    expect(members[0].endpoints.length).to.be.equal(1);
   });
-  it('should be able to list it\'s team memberships', function(done) {
-    Member.find({username: 'trustyPartner'})
-      .populate('teams')
-      .exec(function(err, members) {
-        expect(members[0].teams.length).to.be.equal(1);
-        done();
-    });
+  it('should be able to list it\'s team memberships', async function() {
+    const members = await Member.find(member.id).populate('teams');
+    expect(members[0].teams.length).to.be.equal(1);
   });
 });
