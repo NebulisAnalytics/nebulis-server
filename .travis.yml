@@ -1,6 +1,8 @@
 language: node_js
 notifications:
   email: true
+  slack: codesmith-15:pJzGP558zsfbulY3uQSdl2n0
+    on_success: always
 node_js:
   - '8'
 script:
