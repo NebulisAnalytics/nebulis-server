@@ -6,22 +6,20 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 
 describe('Member Model Relationships', function() {
+  let member;
+  let endpoint;
+  let team;
   before(async function() {
-    const member = await Member.create({username: 'trustyPartner'});
-    const endpoint = await Endpoint.create({member: member.id});
-    const team = await Team.create({name: 'greatness'});
+    member = await Member.create({username: 'trustyPartner'});
+    endpoint = await Endpoint.create({member: member.id});
+    team = await Team.create({name: 'greatness'});
     member.teams.add(team.id);
     member.save(function(err) {});
   });
-  after(function(done) {
-    Member.find({username: 'trustyPartner'})
-      .populate('endpoints')
-      .exec(function(err, members) {
-        Endpoint.destroy({member: members[0].id}).exec(function(err, endpoint) {});
-        Member.destroy({username: 'trustyPartner'}).exec(function(err, member) {});
-        Team.destroy({name: 'greatness'}).exec(function(err, member) {});
-        done();
-      });
+  after(async function() {
+    Endpoint.destroy(endpoint.id);
+    Member.destroy(member.id);
+    Team.destroy(team.id);
   });
   it('should be able to get a list of it\'s endpoints', function(done) {
     Member.find({username: 'trustyPartner'})
