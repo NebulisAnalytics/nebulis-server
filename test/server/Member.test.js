@@ -15,12 +15,12 @@ describe('Member Model Relationships', function() {
     endpoint = await Endpoint.create({member: member.id});
     team = await Team.create({name: 'greatness'});
     member.teams.add(team.id);
-    member.save(function(err) {});
+    await member.save();
   });
   after(async function() {
-    Endpoint.destroy(endpoint.id);
-    Member.destroy(member.id);
-    Team.destroy(team.id);
+    await Endpoint.destroy(endpoint.id);
+    await Member.destroy(member.id);
+    await Team.destroy(team.id);
   });
   it('should be able to get a list of it\'s endpoints', async function() {
     const members = await Member.find(member.id).populate('endpoints');
