@@ -8,7 +8,9 @@ describe('Relationships', function() {
   before(async function() {
     const member = await Member.create({username: 'trustyPartner'});
     const endpoint = await Endpoint.create({member: member.id});
-    const team = Team.create({member: member.id});
+    const team = await Team.create({});
+    member.teams.add(team.id);
+    member.save(function(err) {});
   });
   after(function(done) {
     Member.find({username: 'trustyPartner'})
@@ -28,10 +30,12 @@ describe('Relationships', function() {
         done();
     });
   });
-  xit('should be able to list it\'s team memberships', function(done) {
-    Todo.getAll(function(err, todos) {
-      expect(todos).to.be.an('array');
-      done();
+  it('should be able to list it\'s team memberships', function(done) {
+    Member.find({username: 'trustyPartner'})
+      .populate('teams')
+      .exec(function(err, members) {
+        expect(members[0].teams.length).to.be.equal(1);
+        done();
     });
   });
 });

@@ -24,9 +24,9 @@ module.exports = {
       type: 'string',
       unique: true,
     },
-    // teams: {
-    //   collection: 'team',
-    //   via: 'member',
-    // },
+    teams: {
+      collection: 'team',
+      via: 'members',
+    },
   },
 };
