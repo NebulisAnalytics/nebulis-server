@@ -20,6 +20,9 @@ module.exports = {
       collection: 'endpoint',
       via: 'member',
     },
+    name: {
+      type: 'string',
+    },
   },
 };
 
