@@ -14,11 +14,11 @@ module.exports = {
     members: {
       collection: 'member',
       via: 'teams',
-      dominant: true,
+      dominant: true, 
     },
     endpoints: {
       collection: 'endpoint',
-      via: 'member',
+      via: 'team',
     },
     name: {
       type: 'string',
