@@ -5,6 +5,47 @@ const should = chai.should();
 chai.use(chaiHttp);
 const expect = chai.expect;
 
+describe('Project Model Relationships', function() {
+  let endpoint;
+  let team;
+  let project;
+
+  before(async function() {
+    //create
+    project = await Project.create({
+      name: 'cool project',
+      slug: 'cool-proj',
+      gitLink: 'github.com/something',
+    });
+    endpoint = await Endpoint.create();
+    team = await Team.create();
+    
+    //associate
+    await Project.update(project, {
+      team: team.id,
+      endpoint: endpoint.id,
+    });
+  });
+
+  after(async function() {
+    await Project.destroy(project.id);
+    await Endpoint.destroy(endpoint.id);
+    await Team.destroy(team.id);
+  });
+
+  xit('should be able to get a list of it\'s endpoints', async function() {
+    const projects = await Project.find(project.id).populate('endpoints');
+    sails.log(projects);
+    expect(projects[0].endpoints.length).to.be.equal(1);
+  });
+
+  xit('should be able to list it\'s teams', async function() {
+    const members = await Member.find({username: 'trustyPartner'}).populate('teams');
+    expect(members[0].teams.length).to.be.equal(1);
+  });
+});
+
+
 xdescribe('.getAll()', function() {
   it('should return array of projects', function(done) {
     Todo.getAll(function(err, projects) {
