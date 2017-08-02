@@ -20,9 +20,13 @@ module.exports = {
       collection: 'endpoint',
       via: 'member',
     },
-    // teams: {
-    //   collection: 'team',
-    //   via: 'member',
-    // },
+    username: {
+      type: 'string',
+      unique: true,
+    },
+    teams: {
+      collection: 'team',
+      via: 'members',
+    },
   },
 };
