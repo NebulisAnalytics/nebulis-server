@@ -21,10 +21,9 @@ describe('Project Model Relationships', function() {
     team = await Team.create();
     
     //associate
-    await Project.update(project, {
-      team: team.id,
-      endpoint: endpoint.id,
-    });
+    project.teams.add(team.id);
+    project.endpoints.add(endpoint.id);
+    await project.save();
   });
 
   after(async function() {
@@ -33,15 +32,14 @@ describe('Project Model Relationships', function() {
     await Team.destroy(team.id);
   });
 
-  xit('should be able to get a list of it\'s endpoints', async function() {
+  it('should be able to get a list of it\'s endpoints', async function() {
     const projects = await Project.find(project.id).populate('endpoints');
-    sails.log(projects);
     expect(projects[0].endpoints.length).to.be.equal(1);
   });
 
-  xit('should be able to list it\'s teams', async function() {
-    const members = await Member.find({username: 'trustyPartner'}).populate('teams');
-    expect(members[0].teams.length).to.be.equal(1);
+  it('should be able to list it\'s teams', async function() {
+    const projects = await Project.find(project.id).populate('teams');
+    expect(projects[0].teams.length).to.be.equal(1);
   });
 });
 
