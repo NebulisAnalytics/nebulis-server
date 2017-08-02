@@ -19,7 +19,15 @@ module.exports = {
     gitLink: {
       type: 'string',
       required: true
-    }
+    },
+    endpoints: {
+      collection: 'endpoint',
+      via: 'project',
+    },
+    teams: {
+      collection: 'team',
+      via: 'project',
+    },
   }
 };
 

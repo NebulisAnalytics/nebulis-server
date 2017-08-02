@@ -1,41 +1,33 @@
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var should = chai.should();
-chai.use(chaiHttp);
-var expect = chai.expect;
+const chai = require('chai');
+const chaiHttp = require('chai-http');
 
-describe('Relationships', function() {
+const should = chai.should();
+chai.use(chaiHttp);
+const expect = chai.expect;
+
+describe('Member Model Relationships', function() {
+  let member;
+  let endpoint;
+  let team;
+
   before(async function() {
-    const member = await Member.create({username: 'trustyPartner'});
-    const endpoint = await Endpoint.create({member: member.id});
-    const team = await Team.create({});
+    member = await Member.create({username: 'trustyPartner'});
+    endpoint = await Endpoint.create({member: member.id});
+    team = await Team.create({name: 'greatness'});
     member.teams.add(team.id);
-    member.save(function(err) {});
+    await member.save();
   });
-  after(function(done) {
-    Member.find({username: 'trustyPartner'})
-      .populate('endpoints')
-      .exec(function(err, members) {
-        Endpoint.destroy({member: members[0].id}).exec();
-        Member.destroy({id: members[0]}).exec(function(err, member) {});
-      });
-    Member.destroy({username: 'trustyPartner'}).exec(function(err, member) {});
-    done();
+  after(async function() {
+    await Endpoint.destroy(endpoint.id);
+    await Member.destroy(member.id);
+    await Team.destroy(team.id);
   });
-  it('should be able to get a list of it\'s endpoints', function(done) {
-    Member.find({username: 'trustyPartner'})
-      .populate('endpoints')
-      .exec(function(err, members) {
-        expect(members[0].endpoints.length).to.be.equal(1);
-        done();
-    });
+  it('should be able to get a list of it\'s endpoints', async function() {
+    const members = await Member.find(member.id).populate('endpoints');
+    expect(members[0].endpoints.length).to.be.equal(1);
   });
-  it('should be able to list it\'s team memberships', function(done) {
-    Member.find({username: 'trustyPartner'})
-      .populate('teams')
-      .exec(function(err, members) {
-        expect(members[0].teams.length).to.be.equal(1);
-        done();
-    });
+  it('should be able to list it\'s team memberships', async function() {
+    const members = await Member.find(member.id).populate('teams');
+    expect(members[0].teams.length).to.be.equal(1);
   });
 });
