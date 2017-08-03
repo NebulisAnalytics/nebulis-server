@@ -32,8 +32,7 @@ class Project extends Component {
 		return (
 			<li className="project">
 				<Link to="./../project:id"><span>
-					{ project.name }
-					{ project.updatedAt }
+					Title: { project.name } Updated At: { project.updatedAt }
 				</span></Link>
 				&nbsp;
 				<a href="javascript://" onClick={ ::this.props.onDownload }>

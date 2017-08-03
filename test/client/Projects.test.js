@@ -42,6 +42,6 @@ describe('Projects component', () => {
     expect(testNode.className).to.be.equal('projects');
     expect(testNode.getElementsByTagName('LI').length).to.be.equal(1);
     expect(testNode.getElementsByTagName('LI')[0]).to.be.an('object');
-    expect(testNode.getElementsByTagName('SPAN')[0].textContent).to.be.equal(projects[0].name);
+    expect(testNode.getElementsByTagName('SPAN')[0].textContent).to.be.equal(`Title: ${projects[0].name} Updated At: ${projects[0].updatedAt}`);
   });
 });
