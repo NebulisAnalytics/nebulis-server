@@ -21,48 +21,51 @@
  */
 
 var routes = {
-	/***************************************************************************
-	 *                                                                          *
-	 * Make the view located at `views/homepage.ejs` (or `views/homepage.jade`, *
-	 * etc. depending on your default view engine) your home page.              *
-	 *                                                                          *
-	 * (Alternatively, remove this and add an `index.html` file in your         *
-	 * `assets` directory)                                                      *
-	 *                                                                          *
-	 ***************************************************************************/
-	
-	// the default sails homepage when creating a new app
-	'/sailshomepage': {
-		view: 'sailshomepage'
-	},
-	
-	/***************************************************************************
-	 *                                                                          *
-	 * Custom routes here...                                                    *
-	 *                                                                          *
-	 * If a request to a URL doesn't match any of the custom routes above, it   *
-	 * is matched against Sails route blueprints. See `config/blueprints.js`    *
-	 * for configuration options and examples.                                  *
-	 *                                                                          *
-	 ***************************************************************************/
-	
-	'post /api/todos': 'TodosController.createTodo',
-	'put /api/todos/:id': 'TodosController.updateTodo',
-	'get /api/todos': 'TodosController.getTodos',
-	'get /api/todos/:id': 'TodosController.getTodo',
-	'delete /api/todos/:id': 'TodosController.deleteTodo',
-	'delete /api/todos': 'TodosController.deleteAll',
-	
-	'get /api/projects': 'ProjectController.getProjects'
+  /***************************************************************************
+   *                                                                          *
+   * Make the view located at `views/homepage.ejs` (or `views/homepage.jade`, *
+   * etc. depending on your default view engine) your home page.              *
+   *                                                                          *
+   * (Alternatively, remove this and add an `index.html` file in your         *
+   * `assets` directory)                                                      *
+   *                                                                          *
+   ***************************************************************************/
+  
+  // the default sails homepage when creating a new app
+  '/sailshomepage': {
+    view: 'sailshomepage'
+  },
+  
+  /***************************************************************************
+   *                                                                          *
+   * Custom routes here...                                                    *
+   *                                                                          *
+   * If a request to a URL doesn't match any of the custom routes above, it   *
+   * is matched against Sails route blueprints. See `config/blueprints.js`    *
+   * for configuration options and examples.                                  *
+   *                                                                          *
+   ***************************************************************************/
+  
+  'post /api/todos': 'TodosController.createTodo',
+  'put /api/todos/:id': 'TodosController.updateTodo',
+  'get /api/todos': 'TodosController.getTodos',
+  'get /api/todos/:id': 'TodosController.getTodo',
+  'delete /api/todos/:id': 'TodosController.deleteTodo',
+  'delete /api/todos': 'TodosController.deleteAll',
+  
+  'get /api/projects': 'ProjectController.getProjects',
+
+  'post /api/endpoints/establish': 'EndpointController.establish',
+  'get /api/endpoints': 'EndpointController.index',
 };
 
 // the same app will be rendered at all these routes
 var indexRoutes = ['/',
-	'/todos',
-	'/page1',
-	'/page2'];
+  '/todos',
+  '/page1',
+  '/page2'];
 indexRoutes.forEach(function (r) {
-	routes['GET ' + r] = 'IndexController.index';
+  routes['GET ' + r] = 'IndexController.index';
 });
 
 module.exports.routes = routes;
