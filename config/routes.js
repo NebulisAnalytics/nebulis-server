@@ -30,12 +30,12 @@ var routes = {
    * `assets` directory)                                                      *
    *                                                                          *
    ***************************************************************************/
-  
+
   // the default sails homepage when creating a new app
   '/sailshomepage': {
     view: 'sailshomepage'
   },
-  
+
   /***************************************************************************
    *                                                                          *
    * Custom routes here...                                                    *
@@ -45,23 +45,23 @@ var routes = {
    * for configuration options and examples.                                  *
    *                                                                          *
    ***************************************************************************/
-  
+
   'post /api/todos': 'TodosController.createTodo',
   'put /api/todos/:id': 'TodosController.updateTodo',
   'get /api/todos': 'TodosController.getTodos',
   'get /api/todos/:id': 'TodosController.getTodo',
   'delete /api/todos/:id': 'TodosController.deleteTodo',
   'delete /api/todos': 'TodosController.deleteAll',
-  
+
   'get /api/projects': 'ProjectController.getProjects',
 
-  
+
 };
 
 // the same app will be rendered at all these routes
 var indexRoutes = ['/',
-  '/todos',
-  '/page1',
+  '/login',
+  '/projectpage',
   '/page2'];
 indexRoutes.forEach(function (r) {
   routes['GET ' + r] = 'IndexController.index';
