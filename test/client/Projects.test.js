@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
 
-//import Projects from '../../src/components/Projects';
+import Projects from '../../src/components/Projects';
 
 const projects = [{
   id: 1,
@@ -17,11 +17,11 @@ let testComponent;
 before(function(done) {
   const onDelete = function() {};
   const onClick = function() {};
-  
-  // testComponent = TestUtils.renderIntoDocument(
-  //   <Projects projects={projects} onDelete={onDelete} onClick={onClick}/>
-  // );
-  
+
+  testComponent = TestUtils.renderIntoDocument(
+    <Projects projects={projects} onDelete={onDelete} onClick={onClick}/>
+  );
+
   done();
 });
 
@@ -33,15 +33,15 @@ describe('JSDom', () => {
   });
 });
 
-xdescribe('Projects component', () => {
+describe('Projects component', () => {
   it('renders correctly', () => {
-    
+
     let testNode = ReactDOM.findDOMNode(testComponent);
-    
+
     expect(testNode.nodeName).to.be.equal('DIV');
     expect(testNode.className).to.be.equal('projects');
     expect(testNode.getElementsByTagName('LI').length).to.be.equal(1);
     expect(testNode.getElementsByTagName('LI')[0]).to.be.an('object');
-    expect(testNode.getElementsByTagName('SPAN')[0].textContent).to.be.equal(projects[0].name);
+    expect(testNode.getElementsByTagName('SPAN')[0].textContent).to.be.equal(`Title: ${projects[0].name} Updated At: ${projects[0].updatedAt}`);
   });
 });
