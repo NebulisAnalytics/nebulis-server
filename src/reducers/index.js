@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import fuelSavings from './fuelSavingsReducer';
-import {routerReducer} from 'react-router-redux';
+import {reducer as projectsModel} from './../reducers/projectReducers';
+import ghoulie from 'ghoulie';
+// ghoulieReducer intercepts redux events and outputs them to console.log for debugging
+let ghoulieReducer = ghoulie.reducer();
 
 const rootReducer = combineReducers({
-  fuelSavings,
-  routing: routerReducer
+	projectsModel,
+	ghoulieReducer
 });
 
 export default rootReducer;

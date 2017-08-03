@@ -1,18 +1,8 @@
-export default {
-  fuelSavings: {
-    newMpg: '',
-    tradeMpg: '',
-    newPpg: '',
-    tradePpg: '',
-    milesDriven: '',
-    milesDrivenTimeframe: 'week',
-    displayResults: false,
-    dateModified: null,
-    necessaryDataIsProvidedToCalculateSavings: false,
-    savings: {
-      monthly: 0,
-      annual: 0,
-      threeYear: 0
-    }
-  }
-};
+export default function getInitialState() {
+	return {
+		error: null,
+		loading: false,
+		projects: [],
+    isAddingProject: false
+	}
+}
