@@ -15,10 +15,10 @@ export default class IndexPage extends Component {
 					<Counter/>
 
 					<div>
-						<Link to="/todos">Todos</Link>
+						<Link to="/login">Login</Link>
 					</div>
 					<div>
-						<Link to="/page1">Page 1</Link>
+						<Link to="/projectpage">Project Page</Link>
 					</div>
 					<div>
 						<Link to="/page2">Page 2</Link>
