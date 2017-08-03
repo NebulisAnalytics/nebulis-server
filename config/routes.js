@@ -55,7 +55,8 @@ var routes = {
 
   'get /api/projects': 'ProjectController.getProjects',
 
-
+  'post /api/endpoints/establish': 'EndpointController.establish',
+  'get /api/endpoints': 'EndpointController.index',
 };
 
 // the same app will be rendered at all these routes
