@@ -74,9 +74,10 @@
 	},
 	"scripts": {
 		"debug": "NODE_ENV=dev node debug app.js",
-		"dev": "NODE_ENV=dev npm run build:dev; npm run server:dev",
-		"prod": "NODE_ENV=dev npm run build:prod; npm run server:prod",
-		"server:dev": "NODE_ENV=dev nodemon ./node_modules/sails/bin/sails.js lift",
+		"gitnet": "node gitnet.js",
+		"dev": "NODE_ENV=dev npm run build:dev & npm run server:dev & yarn run gitnet",
+		"prod": "NODE_ENV=dev npm run build:prod; npm run server:prod & yarn run gitnet",
+		"server:dev": "NODE_ENV=dev nodemon --ignore 'public/build/*.*' ./node_modules/sails/bin/sails.js lift",
 		"server:prod": "NODE_ENV=prod node app.js",
 		"build:dev": "NODE_ENV=dev node node_modules/webpack/bin/webpack.js --progress",
 		"build:prod": "NODE_ENV=prod node node_modules/webpack/bin/webpack.js -p --optimize-minimize",
