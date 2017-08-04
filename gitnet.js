@@ -4,4 +4,6 @@ const config = JSON.parse(fs.readFileSync('./.babelrc'));
 require('babel-core/register')(config);
 require('babel-polyfill');
 
-require('./nebugit');
+const nebugit = require('./nebugit');
+
+module.exports = nebugit;
