@@ -3,25 +3,25 @@ import messages from './messages';
 const request = require('async-request');
 const GitServer = require('git-server');
 
-// configuration
-const standardUser = {
-  username: 'nebu',
-  password: 'lis',
-};
-const port = '7000';
-const serverPort = '1337';
-const repoLocation = '/tmp/repos';
-const repoProto = () => { return {
-  // name: 'myrepo',
-  anonRead: false,
-  users: [
-    { user: standardUser, permissions: ['W'] }
-  ],
-}};
-
 messages.logo();
 
-const listen = async () => {
+const listen = async (
+// default configuration
+  repoLocation = '/tmp/repos',
+  port = '7000',
+  serverPort = '1337',
+  standardUser = {
+    username: 'nebu',
+    password: 'lis',
+  },
+  repoProto = () => { return {
+    // name: 'myrepo',
+    anonRead: false,
+    users: [
+      { user: standardUser, permissions: ['W'] }
+    ],
+  }; },
+) => {
   const repos = []
 
   messages.connectionInfo('::', port);
