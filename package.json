@@ -45,6 +45,7 @@
 		"react-tap-event-plugin": "^2.0.1",
 		"redux": "^3.6.0",
 		"redux-thunk": "^2.1.0",
+		"respawn": "^2.5.0",
 		"sails": "~0.12.9",
 		"sails-disk": "~0.10.9",
 		"yarn": "^0.27.5"

@@ -4,8 +4,7 @@ import wrap from 'express-async-wrap';
 import messages from './messages';
 
 const Router = new Express.Router();
-const request = require('async-request');
-const GitServer = require('git-server');
+const respawn = require('respawn');
 
 messages.logo();
 
@@ -18,31 +17,33 @@ const listen = async (
   standardUser = {
     username: 'nebu',
     password: 'lis',
-  },
-  repoProto = () => { return {
-    // name: 'myrepo',
-    anonRead: false,
-    users: [
-      { user: standardUser, permissions: ['W'] }
-    ],
-  }; },
+  }
 ) => {
-  const repos = []
+  
+  var monitor = respawn(['./nebugit/gitLoader.js'], {
+    name: 'test',          // set monitor name 
+    env: {
+      ENV_VAR:'test',
+      vars: JSON.stringify({
+        repoLocation,
+        port,
+        serverPort,
+        listenPort,
+        standardUser,
+      }),
+    }, // set env vars 
+    cwd: '.',              // set cwd 
+    maxRestarts:10,        // how many restarts are allowed within 60s 
+                            // or -1 for infinite restarts 
+    sleep:1000,            // time to sleep between restarts, 
+    kill:30000,            // wait 30s before force killing after stopping 
+    // stdio: [...],          // forward stdio options 
+    fork: true             // fork instead of spawn 
+  })
 
-  messages.connectionInfo('::', port);
-  let res = await request(`http://localhost:${serverPort}/api/endpoints`);
 
-  JSON.parse(res.body).forEach((info) => {
-    const repo = repoProto();
-    repo.name = info.id;
-    repos.push(repo);
-  });
+  monitor.start() // spawn and watch 
 
-  const gitServer = new GitServer({
-    repos: repos,
-    port: port.toString(),
-    repoLocation: repoLocation,
-  });
 
   const app = new Express();
   const server = new http.Server(app);
@@ -52,13 +53,16 @@ const listen = async (
   app.use([
     Router.post('/reset', wrap(async function(req, res) {
       console.log('updating server');
+      monitor.stop(() => {
+        monitor.start();
+      });
+      res.send('updating...');
     }))
   ]);
 
   server.listen(listenPort, () => {
     const host = server.address().address;
     const port = server.address().port;
-
     messages.listenerConnectionInfo('::', port);
   });
 
