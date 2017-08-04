@@ -47,14 +47,14 @@ describe('Endpoint connection cases for POST /api/endpoints/establish', () => {
     })
       .end(function(err, res){
         let s = res.body.remote;
-        let id1 = s.slice(s.indexOf('7000/') + 5,s.indexOf('.git'))
+        let id1 = s.slice(s.indexOf('7000/') + 5, s.indexOf('.git'));
         chai.request(server).post('/api/endpoints/establish').send({
           owner: "NebulisAnalytics", 
           project: "nebulis-endpoint"
         })
           .end(function(err, res){
             s = res.body.remote;
-            let id2 = s.slice(s.indexOf('7000/') + 5,s.indexOf('.git'));
+            let id2 = s.slice(s.indexOf('7000/') + 5, s.indexOf('.git'));
             expect(id1).to.be.equal(id2);
 
             Endpoint.find(id1).populate('member').exec((err, endpoint) => {
@@ -100,7 +100,7 @@ describe('Endpoint connection cases for POST /api/endpoints/establish', () => {
       owner: "NebulisAnalytics+2", 
       project: "nebulis-endpoint"
     })
-      .end(function(err, res){
+      .end((err, res) => {
         expect(res.body.error).to.be.equal('INPUT ERROR');
         expectNoAlter(done);
       });
@@ -110,7 +110,7 @@ describe('Endpoint connection cases for POST /api/endpoints/establish', () => {
       owner: "NebulisAnalytics", 
       project: "project-does-not-exist"
     })
-      .end(function(err, res){
+      .end((err, res) => {
         expect(res.body.error).to.be.equal('INPUT ERROR');
         expectNoAlter(done);
       });
@@ -121,7 +121,7 @@ describe('Endpoint connection cases for POST /api/endpoints/establish', () => {
         owner: "NebulisAnalytics", 
         project: "nebulis-endpoint"
       })
-        .end(function(err, res){
+        .end((err, res) => {
           Member.find(member.id).populate('endpoints').exec((err, member) => {
             const eid = member[0].endpoints[0].id;
             expect(res.body.remote).to.be.equal(`http://nebu:lis@localhost:7000/${eid}.git`);
@@ -134,4 +134,29 @@ describe('Endpoint connection cases for POST /api/endpoints/establish', () => {
         });
     });
   });
+});
+
+describe('GET /api/endpoints', () => {
+  let e1;
+  let e2;
+  before(async () => {
+    e1 = await Endpoint.create();
+    e2 = await Endpoint.create();
+  });
+  after(async() => {
+    await Endpoint.destroy(e1);
+    await Endpoint.destroy(e2);
+  });
+  it('should return array of endpoints', function(done) {
+    chai.request(server)
+      .get('/api/endpoints')
+      .end(function(err, res){
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.an('array');
+        expect(res.body.length).to.be.equal(2);
+        done();
+      });
+  });
+  xit('should not allow external ip addresses to get the list', () => {});
 });
