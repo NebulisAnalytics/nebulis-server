@@ -20,8 +20,8 @@ const logoText = `                                                     .,,,,
   ;;;;;;::,,::;;;;;;;;;:.                                  
      ,:;;;;;;;;;:,.\n`;
 
-const connectionText = `Nebulis git subsystem is listening on %s:%s`.magenta;
-const listenerConnectionText = 'Nebulis Listener is listening on http://%s:%s'.magenta;
+const connectionText = `🔥  Nebulis git subsystem is listening on %s:%s`.magenta;
+const listenerConnectionText = '🔥  Nebulis Listener is listening on http://%s:%s'.magenta;
 
 const messages = {
   logo: () => { console.log(logoText, '0.1.0'); },
