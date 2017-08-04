@@ -5,6 +5,23 @@ const should = chai.should();
 chai.use(chaiHttp);
 const expect = chai.expect;
 
+describe('Endpoint Git Subsystem', () => {
+  xit('should create a new repo when a new endpoint is created.', () => {
+    //create project
+    //create endpoint
+    //check to see if it makes a new directory
+  });
+  xit('should listen on port 7000', () => {
+
+  });
+  xit('should receive pushes from an endpoint', () => {
+    //try pushing to endpoint.
+  });
+  xit('should not allow pulls from an endpoint [SECURITY]', () => {
+    
+  });
+});
+
 describe('Endpoint Model Relationships', function() {
   let endpoint;
   let project;
