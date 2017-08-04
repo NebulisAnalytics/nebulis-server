@@ -19,13 +19,13 @@ module.exports = {
       return res.send('ENDPOINT ERROR'); }
     if (!req.body.owner) { 
       sails.log.info('Request missing project owner');
-      return res.send('ENDPOINT ERROR'); }
+      return res.send({error: 'INPUT ERROR'}); }
 
     //find project
     const projects = await Project.find({ slug: req.body.project });
     if (projects.length < 1) { 
       sails.log.info(`Request for unknown project: ${req.body.project}`);
-      return res.send('ENDPOINT ERROR'); }
+      return res.send({error: 'INPUT ERROR'}); }
 
     let members = await Member.find({ username: req.body.owner });
     //if user not found try to find on github to confirm existence before creating new user.
@@ -37,7 +37,7 @@ module.exports = {
       if (match && match[2]) {
         if (match[2].indexOf('Page not found') !== -1) {
           sails.log.error('User not found on Github. Disregarding this endpoint request.');
-          return res.send('ENDPOINT ERROR');
+          return res.send({error: 'INPUT ERROR'});
         }
       }
       //assuming the user exists on github, so creating in the db.
