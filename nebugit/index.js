@@ -3,12 +3,17 @@ import http from 'http';
 import wrap from 'express-async-wrap';
 import messages from './messages';
 
+const GitServer = require('git-server');
 const Router = new Express.Router();
-const respawn = require('respawn');
+const request = require('request-promise');
+const netstat = require('node-netstat');
+
+let repos = [];
+let monitor_stopping = false;
+let sendVars;
+let gitServer;
 
 messages.logo();
-
-let monitor;
 
 const listen = (
 // default configuration
@@ -21,28 +26,66 @@ const listen = (
     password: 'lis',
   }
 ) => {
+
+  const repoProto = () => {
+    return {
+      anonRead: false,
+      users: [
+        { user: standardUser, permissions: ['W'] },
+      ],
+    };
+  };
   
-  monitor = respawn(['./nebugit/gitLoader.js'], {
-    name: 'test',          // set monitor name 
-    env: {
-      ENV_VAR:'test',
-      vars: JSON.stringify({
-        repoLocation,
-        port,
-        serverPort,
-        listenPort,
-        standardUser,
-      }),
-    },
-    cwd: '.',              // set cwd 
-    maxRestarts:0,        // how many restarts are allowed within 60s 
-    sleep:1000,            // time to sleep between restarts, 
-    kill:0,            // wait 30s before force killing after stopping 
-    fork: true             // fork instead of spawn 
-  });
+  const getEndpoints = async () => {
+    try {
+      const res = await request(`http://localhost:${serverPort}/api/endpoints`);
 
-  monitor.start(); // spawn and watch 
+      JSON.parse(res).forEach((info) => {
+        const repo = repoProto();
+        repo.name = info.id;
 
+//check for array duplicates
+        let found = false;
+        repos.forEach((existing) => {
+          if (existing.name === repo.name) found = true;
+        })
+
+//if new then add to list
+        if (found === false) {
+          repos.push(repo);
+          if (gitServer) gitServer.createRepo(repo, (err) => {
+            if(err) console.log('git-server: ', e);
+          });
+        }
+//if server already up then insert hot
+
+      });
+      startServer();
+
+    } catch (err) {
+      setTimeout(() => { 
+        // console.log(err);
+        process.stdout.write('.');
+        getEndpoints(); 
+      }, 250);
+    }
+  }
+
+  const startServer = () => {
+    if (!gitServer) {
+      gitServer = new GitServer({
+        repos: [],
+        port: port.toString(),
+        repoLocation: repoLocation,
+      });
+    }
+  }
+
+//main entry point for function
+  getEndpoints(); 
+
+
+//express app to receive update requests from api.
   const app = new Express();
   const server = new http.Server(app);
 
@@ -50,10 +93,7 @@ const listen = (
   // app.use(cors());
   app.use([
     Router.post('/reset', wrap(async (req, res) => {
-      console.log('*updating server endpoint list');
-      monitor.stop(() => {
-        monitor.start();
-      });
+      getEndpoints();
       res.send({message: 'updating server endpoint list'});
     })),
   ]);
@@ -66,10 +106,17 @@ const listen = (
 
 };
 
-const kill = () => {
-  monitor.stop(() => {
-    messages.killed();
-  });
+const stop = (cb) => {
+  // if (monitor_stopping === false) {
+    // monitor_stopping = true;
+    // kill(7000).then(pids => {
+      messages.killed();
+      // monitor.stop(() => {
+        // cb();
+        // monitor_stopping = false;
+      // });
+    // });
+  // };
 };
 
-export { listen, kill };
+export { listen, stop };
