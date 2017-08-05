@@ -41,7 +41,7 @@ const listen = (
     fork: true             // fork instead of spawn 
   });
 
-  monitor.start() // spawn and watch 
+  monitor.start(); // spawn and watch 
 
   const app = new Express();
   const server = new http.Server(app);
@@ -50,11 +50,11 @@ const listen = (
   // app.use(cors());
   app.use([
     Router.post('/reset', wrap(async (req, res) => {
-      console.log('updating server enpoint list');
+      console.log('*updating server endpoint list');
       monitor.stop(() => {
         monitor.start();
       });
-      res.send('updating server endpoint list');
+      res.send({message: 'updating server endpoint list'});
     })),
   ]);
 
