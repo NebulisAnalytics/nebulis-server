@@ -31,16 +31,11 @@ module.exports = {
     });
   },
 
-  //TODO: should destroy endpoint
   afterDestroy: function(destroyedRecords, cb) {
     let count = 0;
-    // destroyedRecords.forEach((record) => {
-    //   console.log('deleting repo:' + record.id);
-    //   rimraf('/tmp/repos/' + record.id + '.git', () => {
-    //     count += 1;
-    //   });
-    //   if(count === destroyedRecords.length) cb();
-    // });
+    destroyedRecords.forEach((record) => {
+      rimraf.sync('/tmp/repos/' + record.id + '.git');
+    });
     cb();
   },
 };
