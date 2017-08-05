@@ -67,7 +67,7 @@ const actions = createActions(getStore, fetchOptions, {
 		success: types.CREATE_MEMBER_SUCCESS,
 		error: types.MEMBERS_ERROR
 	},
-	getMember: {
+	getMembers: {
 		method: 'get',
 		url: '/api/members/:id',
 		request: types.GET_MEMBER,

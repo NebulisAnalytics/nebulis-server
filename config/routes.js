@@ -54,6 +54,7 @@ var routes = {
   'delete /api/todos': 'TodosController.deleteAll',
 
   'get /api/projects': 'ProjectController.getProjects',
+  'get /api/members': 'MemberController.getMembers'
 
 
 };
@@ -62,7 +63,7 @@ var routes = {
 var indexRoutes = ['/',
   '/login',
   '/projectpage',
-  '/page2'];
+  '/memberspage'];
 indexRoutes.forEach(function (r) {
   routes['GET ' + r] = 'IndexController.index';
 });

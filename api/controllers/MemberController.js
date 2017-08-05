@@ -6,6 +6,14 @@
  */
 
 module.exports = {
-	
-};
+	getMembers: function (req, res) {
+		Member.find({}).exec(function (err, members) {
+			if (err) {
+				res.status(500);
+				res.send(err);
+			}
+			else res.send(members);
+		});
+	}
 
+};
