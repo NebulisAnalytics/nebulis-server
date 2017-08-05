@@ -31,11 +31,10 @@ module.exports = {
     });
   },
 
+//TODO: make this work for multiple records
   afterDestroy: function(destroyedRecords, cb) {
-    let count = 0;
-    destroyedRecords.forEach((record) => {
-      rimraf.sync('/tmp/repos/' + record.id + '.git');
+    rimraf('/tmp/repos/' + destroyedRecords[0].id + '.git', () => {
+      cb();
     });
-    cb();
   },
 };
