@@ -58,7 +58,9 @@ module.exports = {
         project: projects[0].id,
       })];
     }
-    res.json({remote: `http://nebu:lis@localhost:7000/${endpoints[0].id}.git`});
+    res.json({
+      id: endpoints[0].id,
+      remote: `http://nebu:lis@localhost:7000/${endpoints[0].id}.git`});
   },
 
 //used by git server to get the list of endpoints
