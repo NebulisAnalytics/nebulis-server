@@ -4,6 +4,7 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 import Home from './routes/Home';
 import Login from './routes/Login';
 import ProjectPage from './routes/ProjectPage';
+import MembersPage from './routes/MembersPage';
 import Page2 from './routes/Page2';
 import NotFound from './routes/NotFound';
 
@@ -19,6 +20,7 @@ export default class App extends Component {
           <Route path="/login" component={Login} />
           <Route path="/projectpage" component={ProjectPage} />
           <Route path="/projectpage:id" component={Page2} /> //will fix later
+          <Route path="/memberspage" component={MembersPage} />
           <Route path="*" component={NotFound} />
         </Route>
       </Router>);

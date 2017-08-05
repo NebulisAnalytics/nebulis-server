@@ -19,7 +19,7 @@ describe('Project Model Relationships', function() {
     });
     endpoint = await Endpoint.create();
     team = await Team.create();
-    
+
     //associate
     project.teams.add(team.id);
     project.endpoints.add(endpoint.id);
@@ -55,14 +55,17 @@ xdescribe('.getAll()', function() {
 
 describe('create project', function() {
   it('creates a project', function(done) {
-    Project.create({name: 'Test Proj', gitLink: 'github.com/user/testProj', slug: 'testProj'}).exec(function(err, project) {
+    Project.create({name: 'Test Project1', gitLink: 'github.com/user/testProj', slug: 'testProj'}).exec(function(err, project) {
       expect(project).to.be.an('object');
-      expect(project.name).to.be.equal('Test Proj');
+      expect(project.name).to.be.equal('Test Project1');
       expect(project.gitLink).to.be.equal('github.com/user/testProj');
       expect(project.slug).to.be.equal('testProj');
       Project.find({}).exec(function(err, projects) {
         expect(projects.length).to.be.above(0);
-        done();
+        Project.destroy(project.id).exec((err) => {
+          console.log(err);
+          done();
+        });
       });
     });
   });

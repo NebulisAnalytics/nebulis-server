@@ -9,19 +9,21 @@ const server = 'http://localhost:1337';
 
 // /projects/index (get) (list all the units)
 describe('GET /api/projects', function() {
+  let p1;
+  let p2;
   beforeEach(async () => {
-    await Project.destroy({});
     // add 2 projects
-    await Project.create({name: 'Test Proj', gitLink: 'github.com/user/testProj', slug: 'testProj'});
-    await Project.create({name: 'Test Proj2', gitLink: 'github.com/user/testProj2', slug: 'testProj2'});
+    p1 = await Project.create({name: 'Test Proj', gitLink: 'github.com/user/testProj', slug: 'testProj'});
+    p2 = await Project.create({name: 'Test Proj2', gitLink: 'github.com/user/testProj2', slug: 'testProj2'});
   });
   after(async () => {
-    await Project.destroy({});
+    await Project.destroy([p1.id, p2.id]);
   });
-  it('lists all the projects', function(done) {
+  it('returns all projects in db', function(done) {
     chai.request(server)
       .get('/api/projects')
       .end(function(err, res){
+        console.log('output of GET /api/projects', res.body)
         expect(res.body.length).to.be.equal(2);
         done();
       });
