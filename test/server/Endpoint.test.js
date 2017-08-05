@@ -14,6 +14,7 @@ describe('Endpoint Model Relationships', function() {
   let team;
 
   before(async function() {
+    this.timeout(3500);
     //create
     endpoint = await Endpoint.create();
     project = await Project.create({
@@ -79,7 +80,7 @@ describe('Endpoint Git Subsystem', function() {
         endpoint = res;
         setTimeout(() => {
           done();
-        }, 2500);
+        }, 1000);
       });
     });
   });
