@@ -63,11 +63,12 @@ describe('Endpoint Model Relationships', function() {
   });
 });
 
-describe('Endpoint Git Subsystem', () => {
+describe('Endpoint Git Subsystem', function() {
+  this.timeout(3000);
   let endpoint;
   let project;
 
-  before((done) => {
+  before(function (done) {	
     Project.create({
       name: 'cool project',
       slug: 'cool-proj',
@@ -78,7 +79,7 @@ describe('Endpoint Git Subsystem', () => {
         endpoint = res;
         setTimeout(() => {
           done();
-        }, 1500);
+        }, 2500);
       });
     });
   });

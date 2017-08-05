@@ -8,6 +8,12 @@ var expect = chai.expect;
 var server = 'http://localhost:1337';
 
 
+describe('get /api/teams/:id/download', () => {
+  xit('should be able to download a project package', () => {
+
+  });
+});
+
 describe('Endpoint connection cases for POST /api/endpoints/establish', () => {
   let req;
   let endpoints;
