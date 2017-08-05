@@ -1,35 +1,45 @@
 import messages from './messages';
 
 const GitServer = require('git-server');
-const request = require('async-request');
+const request = require('request-promise');
 
-const repos = []
+const repos = [];
 
 const vars = JSON.parse(process.env.vars);
 
-const repoProto = () => { return {
-  // name: 'myrepo',
-  anonRead: false,
-  users: [
-    { user: vars.standardUser, permissions: ['W'] }
-  ],
-}; };
+const repoProto = () => {
+  return {
+    anonRead: false,
+    users: [
+      { user: vars.standardUser, permissions: ['W'] },
+    ],
+  };
+};
 
-(async () => {
+const serve = async () => {
+  let res;
 
-  messages.connectionInfo('::', vars.port);
-  let res = await request(`http://localhost:${vars.serverPort}/api/endpoints`);
+  try {
+    res = await request(`http://localhost:${vars.serverPort}/api/endpoints`);
 
-  JSON.parse(res.body).forEach((info) => {
-    const repo = repoProto();
-    repo.name = info.id;
-    repos.push(repo);
-  });
+    JSON.parse(res).forEach((info) => {
+      const repo = repoProto();
+      repo.name = info.id;
+      repos.push(repo);
+    });
 
-  const gitServer = new GitServer({
-    repos: repos,
-    port: vars.port.toString(),
-    repoLocation: vars.repoLocation,
-  });
+    messages.connectionInfo('::', vars.port);
 
-})();
+    const gitServer = new GitServer({
+      repos,
+      port: vars.port.toString(),
+      repoLocation: vars.repoLocation,
+    });
+
+  } catch (err) {
+    console.log('API is not online...'.red);
+    // setTimeout(() => serve(), 3000);
+  }
+};
+
+serve();
