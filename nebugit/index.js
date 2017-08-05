@@ -77,6 +77,7 @@ const listen = (
         port: port.toString(),
         repoLocation: repoLocation,
       });
+      messages.connectionInfo('::', port);
     }
   }
 
@@ -106,16 +107,7 @@ const listen = (
 };
 
 const stop = (cb) => {
-  // if (monitor_stopping === false) {
-    // monitor_stopping = true;
-    // kill(7000).then(pids => {
-      messages.killed();
-      // monitor.stop(() => {
-        // cb();
-        // monitor_stopping = false;
-      // });
-    // });
-  // };
+  messages.killed();
 };
 
 export { listen, stop };
