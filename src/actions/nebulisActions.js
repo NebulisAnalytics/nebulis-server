@@ -59,8 +59,28 @@ const actions = createActions(getStore, fetchOptions, {
 		request: types.DELETE_PROJECTS,
 		success: types.DELETE_PROJECTS_SUCCESS,
 		error: types.PROJECTS_ERROR
+	},
+	createMember: {
+		method: 'post',
+		url: '/api/members',
+		request: types.CREATE_MEMBER,
+		success: types.CREATE_MEMBER_SUCCESS,
+		error: types.MEMBERS_ERROR
+	},
+	getMember: {
+		method: 'get',
+		url: '/api/members/:id',
+		request: types.GET_MEMBER,
+		success: types.GET_MEMBER_SUCCESS,
+		error: types.MEMBERS_ERROR
+	},
+	deleteMember: {
+		method: 'delete',
+		url: '/api/members/:id',
+		request: types.DELETE_MEMBER,
+		success: types.DELETE_MEMBER_SUCCESS,
+		error: types.MEMBERS_ERROR
 	}
-	//	get members
 	//	get teams
 });
 
@@ -70,4 +90,10 @@ export function addProject(){
 }
 export function closeProject(){
 	return {type: types.CLOSE_PROJECT}
+}
+export function makeAdmin(){
+	return {type: types.MAKE_ADMIN}
+}
+export function removeAdmin(){
+	return {type: types.REMOVE_ADMIN}
 }
