@@ -6,7 +6,6 @@ import messages from './messages';
 const GitServer = require('git-server');
 const Router = new Express.Router();
 const request = require('request-promise');
-const netstat = require('node-netstat');
 
 let repos = [];
 let monitor_stopping = false;
