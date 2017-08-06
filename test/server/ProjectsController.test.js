@@ -19,10 +19,11 @@ describe('GET /api/projects', function() {
   after(async () => {
     await Project.destroy([p1.id, p2.id]);
   });
-  it('lists all the projects', function(done) {
+  it('returns all projects in db', function(done) {
     chai.request(server)
       .get('/api/projects')
       .end(function(err, res){
+        console.log('output of GET /api/projects', res.body)
         expect(res.body.length).to.be.equal(2);
         done();
       });

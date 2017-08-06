@@ -4,17 +4,22 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
 
-import Projects from '../../src/components/Projects';
+import Members from '../../src/components/Members';
 
-const projects = [{
-  id: 1,
-  name: "one",
-  updatedAt: 'Sept 2, 1990'
+//adding fake members
+const members = [{
+  gitAccess: 'repo1',
+  admin: true,
+  endpoints: null,
+  username: "member1",
+  teams: null
 },
 {
-  id: 2,
-  name: "two",
-  updatedAt: 'Feb 14, 1995'
+  gitAccess: 'repo1',
+  admin: false,
+  endpoints: null,
+  username: "member2",
+  teams: null
 }];
 
 let testComponent;
@@ -22,9 +27,11 @@ let testComponent;
 before(function(done) {
   const onDelete = function() {};
   const onClick = function() {};
+  const makeAdmin = function() {};
+  const deleteHandler = function() {};
 
   testComponent = TestUtils.renderIntoDocument(
-    <Projects projects={projects} onDelete={onDelete} onClick={onClick}/>
+    <Members members={ members } makeAdmin={ makeAdmin } onDelete={ deleteHandler } />
   );
 
   done();
@@ -38,16 +45,16 @@ describe('JSDom', () => {
   });
 });
 
-describe('Projects component', () => {
-  it(`should render 'project' div correctly`, () => {
+describe('Members component', () => {
+  it(`should render 'members' div correctly`, () => {
     let testNode = ReactDOM.findDOMNode(testComponent);
 
     expect(testNode.nodeName).to.be.equal('DIV');
-    expect(testNode.className).to.be.equal('projects');
+    expect(testNode.className).to.be.equal('members');
     expect(testNode.getElementsByTagName('LI')[0]).to.be.an('object');
-    expect(testNode.getElementsByTagName('SPAN')[0].textContent).to.be.equal(`Title: ${projects[0].name} Updated At: ${projects[0].updatedAt}`);
+    expect(testNode.getElementsByTagName('SPAN')[0].textContent).to.be.equal(`Name: ${members[0].username}`);
   });
-  it('should render list of all projects in db', () => {
+  it('should render list of all members in db (regardless of admin status)', () => {
     let testNode = ReactDOM.findDOMNode(testComponent);
     expect(testNode.getElementsByTagName('LI').length).to.be.equal(2);
   });

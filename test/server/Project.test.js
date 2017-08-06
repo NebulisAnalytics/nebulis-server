@@ -19,7 +19,7 @@ describe('Project Model Relationships', function() {
     });
     endpoint = await Endpoint.create();
     team = await Team.create();
-    
+
     //associate
     project.teams.add(team.id);
     project.endpoints.add(endpoint.id);
