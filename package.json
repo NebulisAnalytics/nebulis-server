@@ -10,6 +10,7 @@
 		"chai": "^3.5.0",
 		"coveralls": "^2.13.1",
 		"ejs": "2.3.4",
+		"enzyme": "^2.9.1",
 		"es6-promise": "^4.0.5",
 		"express": "^4.14.0",
 		"express-async-wrap": "^1.0.0",
