@@ -10,6 +10,17 @@ const expect = chai.expect;
 
 let connector;
 
+before((done) => {
+  connector = spawn( 'npm', [ 'install' ], {
+    cwd: './test/endpoint/testingProject/',
+  });
+
+  connector.stdout.on('data', (message) => {
+    console.log(message.toString());
+    done();
+  });
+});
+
 describe('Endpoint Application Integration', function() {
   before((done) => {
     this.timeout(20000);
@@ -40,11 +51,13 @@ describe('Endpoint Application Integration', function() {
 
   });
   after((done) => {
-    
-    // spawnSync( 'rm', [ './testingProject/.git/config' ], {
-    //   cwd: './test/endpoint/',
-    // });
-    
+    spawnSync( 'rm', [ './newfile.js' ], {
+      cwd: './test/endpoint/testingProject/',
+    });
+    spawnSync( 'rm', [ './testingProject/.git/config' ], {
+      cwd: './test/endpoint/',
+    });
+  
     spawnSync( 'rm', [ '-rf', './testingProject/.nebugit' ], {
       cwd: './test/endpoint/',
     });
