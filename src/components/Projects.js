@@ -36,7 +36,7 @@ class Project extends Component {
 				</span></Link>
 				&nbsp;
 				<a href="javascript://" onClick={ ::this.props.onDownload }>
-					✓
+					◊ {/* option+shift+k  */}
 				</a>
 				&nbsp;
 				<a href="javascript://" onClick={ ::this.props.onDelete }>

@@ -1,20 +1,31 @@
 import { AppContainer } from 'react-hot-loader';
 import React from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import ReactDOM from 'react-dom';
 
 // http://stackoverflow.com/a/34015469/988941
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
+
 import App from './App';
 
 injectTapEventPlugin();
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: '#FF8442',
+    accent1Color: '#02C5FF',
+    textColor: '#00BCD4',
+  }})
 
 const rootEl = document.getElementById('app');
 
 function render() {
   ReactDOM.render(
     <AppContainer>
+      <MuiThemeProvider muiTheme={muiTheme}>
       <App />
+    </MuiThemeProvider>
     </AppContainer>,
     rootEl
   );

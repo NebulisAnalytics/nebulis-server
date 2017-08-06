@@ -16,7 +16,7 @@ module.exports = {
   establish: async (req, res) => {
     if (!req.body.project) { 
       sails.log.info('Request missing project name');
-      return res.send('ENDPOINT ERROR'); }
+      return res.send({error: 'ENDPOINT ERROR'}); }
     if (!req.body.owner) { 
       sails.log.info('Request missing project owner');
       return res.send({error: 'INPUT ERROR'}); }
