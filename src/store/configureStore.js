@@ -7,10 +7,10 @@ es6promise.polyfill();
 
 // import the generated reducer and actions
 
-import {actions as todosActions, addProject, closeProject} from './../actions/nebulisActions';
+import {actions as todosActions, addProject, makeAdmin, removeAdmin, closeProject} from './../actions/nebulisActions';
 
 // export the actions so they can be used elsewhere in the app
-export {todosActions, addProject, closeProject};
+export {todosActions, addProject, closeProject, makeAdmin, removeAdmin};
 
 
 
