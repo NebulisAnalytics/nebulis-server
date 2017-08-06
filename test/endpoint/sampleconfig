@@ -1,0 +1,13 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+	precomposeunicode = true
+[remote "github-nebulis"]
+	url = git@github.com:NebulisAnalytics/nebulis-endpoint.git
+	fetch = +refs/heads/*:refs/remotes/github-nebulis/*
+[branch "master"]
+	remote = chrisdobler
+	merge = refs/heads/master
