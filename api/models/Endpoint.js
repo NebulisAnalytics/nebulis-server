@@ -5,7 +5,7 @@
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
  */
 var rimraf = require('rimraf');
-const request = require('request');
+const request = require('request-promise');
 
 module.exports = {
 
