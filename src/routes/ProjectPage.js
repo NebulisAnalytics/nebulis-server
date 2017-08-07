@@ -2,18 +2,14 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Layout from './Layout';
 import Projects from '../components/Projects';
-<<<<<<< HEAD
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Dialog from 'material-ui/Dialog';
 import Form from '../components/Form';
 
 import { PlusIcon } from 'mdi-material-ui';
 
-import { getStore, nebulisActions, addProject, closeProject } from './../store/configureStore';
-=======
 import * as actions from '../actions/nebulisActions.js'
 import { getStore, addProject, closeProject } from './../store/configureStore';
->>>>>>> 90a3bac432db463847105b01b3822fa41d3ff022
 
 import ghoulie from 'ghoulie';
 

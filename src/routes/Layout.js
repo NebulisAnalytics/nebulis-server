@@ -49,7 +49,7 @@ export default class Layout extends Component {
 					<IconButton style={styles.IconButton} onTouchTap={this.handleToggle}><CloseIcon /></IconButton>
 					<Link to="/"><MenuItem style={styles.MenuItem}>Home</MenuItem></Link>
 					<Link to="/login"><MenuItem style={styles.MenuItem}>Login</MenuItem></Link>
-					<Link to="/projectpage"><MenuItem style={styles.MenuItem}>Project</MenuItem></Link>
+					<Link to="/projects"><MenuItem style={styles.MenuItem}>Projects</MenuItem></Link>
 					<Link to="/memberspage"><MenuItem style={styles.MenuItem}>Members</MenuItem></Link>
 				</Drawer>
 				{this.props.children}
@@ -61,7 +61,8 @@ export default class Layout extends Component {
 const styles = {
 	MenuItem: {
 		height: '64px',
-		lineHeight: '64px'
+		lineHeight: '64px',
+		textAlign: 'center'
 	},
 	IconButton: {
 		height: '64px',
