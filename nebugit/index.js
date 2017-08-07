@@ -43,6 +43,9 @@ const listen = (
         const repo = repoProto();
         repo.name = info.id;
 
+        repo.event = (response) => {
+        }
+
 //check for array duplicates
         let found = false;
         repos.forEach((existing) => {
