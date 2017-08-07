@@ -38,6 +38,8 @@ const listen = (
   const getEndpoints = async () => {
     try {
       const res = await request(`http://localhost:${serverPort}/api/endpoints`);
+      //clear repo list before populating it
+      repos = [];
 
       JSON.parse(res).forEach((info) => {
         const repo = repoProto();
@@ -45,23 +47,9 @@ const listen = (
 
         repo.event = (response) => {
           console.log(`LISTENER: ${JSON.stringify(response)}`);
-        }
+        };
 
-//check for array duplicates
-        let found = false;
-        repos.forEach((existing) => {
-          if (existing.name === repo.name) found = true;
-        })
-
-//if new then add to list
-        if (found === false) {
-          repos.push(repo);
-          if (gitServer) gitServer.createRepo(repo, (err) => {
-            if(err) console.log('git-server: ', e);
-          });
-        }
-//if server already up then insert hot
-
+        repos.push(repo);
       });
 
       stop(() => {
@@ -71,7 +59,6 @@ const listen = (
 
     } catch (err) {
       setTimeout(() => { 
-        // console.log(err);
         process.stdout.write('.');
         getEndpoints(); 
       }, 250);
@@ -81,7 +68,7 @@ const listen = (
   const startServer = () => {
     if (!gitServer) {
       gitServer = new GitServer({
-        repos: [],
+        repos: repos,
         port: port.toString(),
         repoLocation: repoLocation,
       });

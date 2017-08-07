@@ -39,7 +39,7 @@ module.exports = {
         sails.log.error('User not found on Github. Disregarding this endpoint request.');
         return res.send({error: 'INPUT ERROR: This is not a github user.'});
       }
-    //assuming the user exists on github, so creating in the db.
+      //assuming the user exists on github,` so creating in the db.
       members = [await Member.create({username: req.body.owner})];
     }
 
