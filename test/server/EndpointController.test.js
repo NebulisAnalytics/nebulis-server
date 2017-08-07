@@ -107,7 +107,7 @@ describe('Endpoint connection cases for POST /api/endpoints/establish', () => {
       project: "nebulis-endpoint"
     })
       .end((err, res) => {
-        expect(res.body.error).to.be.equal('INPUT ERROR');
+        expect(res.body.error).to.be.equal('INPUT ERROR: This is not a github user.');
         expectNoAlter(done);
       });
   });

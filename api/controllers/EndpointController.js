@@ -5,7 +5,7 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-const request = require('async-request');
+const request = require('request-promise');
 
 module.exports = {
 
@@ -32,15 +32,14 @@ module.exports = {
     if (members.length < 1) { 
       sails.log.info(`Request for unknown user: ${req.body.owner}`);
       const re = /(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/gi;
-      let response = await request(`https://github.com/${req.body.owner}`);
-      const match = re.exec(response.body);
-      if (match && match[2]) {
-        if (match[2].indexOf('Page not found') !== -1) {
-          sails.log.error('User not found on Github. Disregarding this endpoint request.');
-          return res.send({error: 'INPUT ERROR'});
-        }
+      let response;
+      try {
+        response = await request(`https://github.com/${req.body.owner}`);
+      } catch (err) {
+        sails.log.error('User not found on Github. Disregarding this endpoint request.');
+        return res.send({error: 'INPUT ERROR: This is not a github user.'});
       }
-      //assuming the user exists on github, so creating in the db.
+      //assuming the user exists on github,` so creating in the db.
       members = [await Member.create({username: req.body.owner})];
     }
 
