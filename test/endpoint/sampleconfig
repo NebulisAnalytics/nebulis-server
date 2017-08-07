@@ -6,8 +6,8 @@
 	ignorecase = true
 	precomposeunicode = true
 [remote "github-nebulis"]
-	url = git@github.com:NebulisAnalytics/nebulis-endpoint.git
+	url = git@github.com:LabUser/coding-challenge-1.git
 	fetch = +refs/heads/*:refs/remotes/github-nebulis/*
 [branch "master"]
-	remote = chrisdobler
+	remote = user
 	merge = refs/heads/master

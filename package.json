@@ -5,7 +5,6 @@
 	"description": "Nebulis provides realtime analytics and reporting for coding projects. With Nebulis you can embed an endpoint into your coding units so that you can gather code changes to a project fork. Nebulis is set up to be close to zero configuration, so as soon as the endpoint is launched on a fork, that user will be instantly registered into the system and attached to the associated project.",
 	"keywords": [],
 	"dependencies": {
-		"async-request": "^1.2.0",
 		"body-parser": "^1.15.2",
 		"chai": "^3.5.0",
 		"coveralls": "^2.13.1",
@@ -85,7 +84,7 @@
 		"gitnet:prod": "node gitnetLifter.js",
 		"dev": "NODE_ENV=dev npm run build:dev & npm run server:dev & yarn run gitnet:dev",
 		"prod": "NODE_ENV=dev npm run build:prod; npm run server:prod & yarn run gitnet:prod",
-		"server:dev": "NODE_ENV=dev nodemon --ignore 'public/build/*.*' --ignore ./nebugit ./node_modules/sails/bin/sails.js lift",
+		"server:dev": "NODE_ENV=dev nodemon --ignore 'public/build/*.*' --ignore ./nebugit --ignore ./test ./node_modules/sails/bin/sails.js lift",
 		"server:prod": "NODE_ENV=prod node app.js",
 		"build:dev": "NODE_ENV=dev node node_modules/webpack/bin/webpack.js --progress",
 		"build:prod": "NODE_ENV=prod node node_modules/webpack/bin/webpack.js -p --optimize-minimize",

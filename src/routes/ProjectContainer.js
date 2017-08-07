@@ -7,7 +7,7 @@ import { getStore, addProject, closeProject } from './../store/configureStore';
 
 import ghoulie from 'ghoulie';
 
-export default class ProjectsPage extends Component {
+export default class ProjectsContainer extends Component {
 	constructor(props) {
 		super(props);
 

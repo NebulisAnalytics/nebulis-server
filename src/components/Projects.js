@@ -31,7 +31,7 @@ class Project extends Component {
 		const project = this.props.project;
 		return (
 			<li className="project">
-				<Link to="./../project:id"><span>
+				<Link to={'/projects/' + project.id}><span>
 					Title: { project.name } Updated At: { project.updatedAt }
 				</span></Link>
 				&nbsp;
