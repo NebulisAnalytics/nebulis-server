@@ -44,6 +44,7 @@ const listen = (
         repo.name = info.id;
 
         repo.event = (response) => {
+          console.log(`LISTENER: ${JSON.stringify(response)}`);
         }
 
 //check for array duplicates
@@ -63,7 +64,6 @@ const listen = (
 
       });
 
-      messages.logo();
       startServer();
 
     } catch (err) {
@@ -87,6 +87,7 @@ const listen = (
   }
 
 //main entry point for function
+  messages.logo();
   getEndpoints(); 
 
 
@@ -112,7 +113,6 @@ const listen = (
 };
 
 const stop = (cb) => {
-  messages.killed();
 };
 
 export { listen, stop };
