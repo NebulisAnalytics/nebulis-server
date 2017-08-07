@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
-import Counter from '../components/Counter';
 import Layout from './Layout';
 
 export default class IndexPage extends Component {
@@ -12,8 +11,6 @@ export default class IndexPage extends Component {
     return (
       <Layout title="Home">
         <div id="page-index" className="page">
-          <Counter/>
-
           <div>
             <Link to="/login">Login</Link>
           </div>
