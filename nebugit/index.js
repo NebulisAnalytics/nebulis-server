@@ -113,6 +113,20 @@ const listen = (
 };
 
 const stop = (cb) => {
+  if (gitServer) {
+    gitServer.server.close(() => {
+      if (server) {
+        server.close(() => {
+          gitServer = null;
+          cb();
+        });
+      } else {
+        cb();  
+      }
+    });
+  } else {
+    cb();
+  }
 };
 
 export { listen, stop };
