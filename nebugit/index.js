@@ -64,7 +64,10 @@ const listen = (
 
       });
 
-      startServer();
+      stop(() => {
+        startListener();
+        startServer();
+      });
 
     } catch (err) {
       setTimeout(() => { 
@@ -86,29 +89,31 @@ const listen = (
     }
   }
 
+  const startListener = () => {
+    //express app to receive update requests from api.
+    app = new Express();
+    server = new http.Server(app);
+
+    app.set('trust proxy', 1);
+    // app.use(cors());
+    app.use([
+      Router.post('/reset', wrap(async (req, res) => {
+        getEndpoints();
+        console.log('LISTENER: updating server endpoint list');
+        res.send({message: 'updating server endpoint list'});
+      })),
+    ]);
+
+    server.listen(listenPort, () => {
+      const host = server.address().address;
+      const port = server.address().port;
+      messages.listenerConnectionInfo('::', port);
+    });
+  };
+
 //main entry point for function
   messages.logo();
   getEndpoints(); 
-
-
-//express app to receive update requests from api.
-  app = new Express();
-  server = new http.Server(app);
-
-  app.set('trust proxy', 1);
-  // app.use(cors());
-  app.use([
-    Router.post('/reset', wrap(async (req, res) => {
-      getEndpoints();
-      res.send({message: 'updating server endpoint list'});
-    })),
-  ]);
-
-  server.listen(listenPort, () => {
-    const host = server.address().address;
-    const port = server.address().port;
-    messages.listenerConnectionInfo('::', port);
-  });
 
 };
 
