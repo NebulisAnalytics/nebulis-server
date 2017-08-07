@@ -5,10 +5,10 @@ const chaiHttp = require('chai-http');
 const fs = require('fs');
 const request = require('request');
 const {spawn, spawnSync} = require( 'child_process' );
-
 const should = chai.should();
 chai.use(chaiHttp);
 const expect = chai.expect;
+var git = require("nodegit");
 
 let connector;
 
@@ -60,33 +60,43 @@ describe('Endpoint Application Integration', function() {
     }
     // connector.on('close', (code, signal) => { done(); });
   });
-  after((done) => {
-    spawnSync( 'rm', [ './newfile.js' ], {
-      cwd: './test/endpoint/testingProject/',
-    });
-    spawnSync( 'rm', [ './testingProject/.git/config' ], {
-      cwd: './test/endpoint/',
-    });
-    spawnSync( 'rm', [ '-rf', '.git' ], {
-      cwd: './test/endpoint/testingProject',
-    });
-    spawnSync( 'rm', [ '-rf', './testingProject/.nebugit' ], {
-      cwd: './test/endpoint/',
-    });
-    Project.destroy(project.id).exec((err) => {
-      Endpoint.find(endpointID).populate('member').exec((err, endpoints) => {
-        Endpoint.destroy(endpointID).exec((err) => {
-          Member.destroy(endpoints[0].member.id).exec((err) => {
-            done();
-          });
-        });
-      });
-    });
-  });
   xit('should be able to connect to the server', () => {
 
   });
-  it('on file change change, it should make a successful push to a git repo', (done) => {
+  it('on file change change, it should make a successful commit for a repo', (done) => {
+    let madeCommit = false;
+    const pushListener = (message) => {
+      if (message.toString().indexOf('1 file changed, 0 insertions(+)') !== -1) {
+        madeCommit = true;
+      };
+      if (message.toString().indexOf('Syncing endpoint to server...') !== -1) {
+        expect(madeCommit).to.be.equal(true);
+        setTimeout(() => {
+          //store repo information before testing
+          // const path = `/tmp/repos/ --git-dir=${endpointID}.git`;
+          const path = '/tmp/repos/4.git';
+          git.Repository.openBare(path)
+            .then(function(repo) {
+              repo.getHeadCommit().then(function(commit) {
+                currentHEAD = commit;
+                console.log('currentHEAD:' + currentHEAD);
+              });
+            });
+
+          connector.stdout.removeListener('data', pushListener);
+          done();
+        }, 1750);
+      };
+      console.log(message.toString());
+    };
+    connector.stdout.on('data', pushListener);
+    spawnSync( 'touch', [ './newfile.js' ], {
+      cwd: './test/endpoint/testingProject',
+    });
+  });
+  it('when restarted, the server should still accept repo pushes', (done) => {
+    nebugit.stop();
+    nebugit.listen();
     let madeCommit = false;
     const pushListener = (message) => {
       if (message.toString().indexOf('1 file changed, 0 insertions(+)') !== -1) {
@@ -97,13 +107,36 @@ describe('Endpoint Application Integration', function() {
         setTimeout(() => {
           connector.stdout.removeListener('data', pushListener);
           done();
-        }, 750);
+        }, 1750);
       };
       console.log(message.toString());
     };
     connector.stdout.on('data', pushListener);
     spawnSync( 'touch', [ './newfile.js' ], {
       cwd: './test/endpoint/testingProject',
+    });
+  });
+  after((done) => {
+    Project.destroy(project.id).exec((err) => {
+      Endpoint.find(endpointID).populate('member').exec((err, endpoints) => {
+        Endpoint.destroy(endpointID).exec((err) => {
+          Member.destroy(endpoints[0].member.id).exec((err) => {
+            spawnSync( 'rm', [ './newfile.js' ], {
+              cwd: './test/endpoint/testingProject/',
+            });
+            spawnSync( 'rm', [ './testingProject/.git/config' ], {
+              cwd: './test/endpoint/',
+            });
+            spawnSync( 'rm', [ '-rf', '.git' ], {
+              cwd: './test/endpoint/testingProject',
+            });
+            spawnSync( 'rm', [ '-rf', './testingProject/.nebugit' ], {
+              cwd: './test/endpoint/',
+            });
+            done();
+          });
+        });
+      });
     });
   });
   xit('should report an additional commit in the server repo', (done) => {
