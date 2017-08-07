@@ -11,8 +11,8 @@ let repos = [];
 let monitor_stopping = false;
 let sendVars;
 let gitServer;
-
-messages.logo();
+let app;
+let server;
 
 const listen = (
 // default configuration
@@ -59,6 +59,8 @@ const listen = (
 //if server already up then insert hot
 
       });
+
+      messages.logo();
       startServer();
 
     } catch (err) {
@@ -86,8 +88,8 @@ const listen = (
 
 
 //express app to receive update requests from api.
-  const app = new Express();
-  const server = new http.Server(app);
+  app = new Express();
+  server = new http.Server(app);
 
   app.set('trust proxy', 1);
   // app.use(cors());
