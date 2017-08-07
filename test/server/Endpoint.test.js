@@ -44,7 +44,7 @@ describe('Endpoint Model Relationships', function() {
       .exec(function(err, endpoint) {
         expect(endpoint[0].member.admin).to.be.equal(false);
         done();
-    });
+      });
   });
   it('should be able to get it\'s team', function(done) {
     Endpoint.find(endpoint.id)
@@ -52,7 +52,7 @@ describe('Endpoint Model Relationships', function() {
       .exec(function(err, endpoint) {
         expect(endpoint[0].team.id).to.be.equal(team.id);
         done();
-    });
+      });
   });
   it('should be able to get the project it belongs to', function(done) {
     Endpoint.find(endpoint.id)
@@ -60,7 +60,7 @@ describe('Endpoint Model Relationships', function() {
       .exec(function(err, endpoint) {
         expect(endpoint[0].project.name).to.be.equal('cool project');
         done();
-    });
+      });
   });
 });
 
@@ -115,5 +115,9 @@ describe('Endpoint Git Subsystem', function() {
       expect(found).to.be.equal(false);
       done();
     });
+  });
+  xit('should be able to delete multiple repos when destroying multiple endpoints', (done) => {});
+  xit('repo folder count should be the same as before starting the test', (done) => {
+    //TODO: this one will fail
   });
 });
