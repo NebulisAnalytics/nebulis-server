@@ -75,7 +75,7 @@ describe('Endpoint Application Integration', function() {
       Endpoint.find(endpointID).populate('member').exec((err, endpoints) => {
         Endpoint.destroy(endpointID).exec((err) => {
           Member.destroy(endpoints[0].member.id).exec((err) => {
-          done();
+            done();
           });
         });
       });

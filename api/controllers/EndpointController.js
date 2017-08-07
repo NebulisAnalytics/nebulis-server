@@ -36,16 +36,10 @@ module.exports = {
       try {
         response = await request(`https://github.com/${req.body.owner}`);
       } catch (err) {
-        return res.send({error: 'INPUT ERROR'});
+        sails.log.error('User not found on Github. Disregarding this endpoint request.');
+        return res.send({error: 'INPUT ERROR: This is not a github user.'});
       }
-      const match = re.exec(response);
-      if (match && match[2]) {
-        if (match[2].indexOf('Page not found') !== -1) {
-          sails.log.error('User not found on Github. Disregarding this endpoint request.');
-          return res.send({error: 'INPUT ERROR'});
-        }
-      }
-      //assuming the user exists on github, so creating in the db.
+    //assuming the user exists on github, so creating in the db.
       members = [await Member.create({username: req.body.owner})];
     }
 
