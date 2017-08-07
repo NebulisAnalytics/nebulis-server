@@ -18,9 +18,9 @@ export default class App extends Component {
         <Route path="/">
           <IndexRoute component={Home} />
           <Route path="/login" component={Login} />
-          <Route path="/projectpage" component={ProjectPage} />
-          <Route path="/projectpage:id" component={Page2} /> //will fix later
-          <Route path="/memberspage" component={MembersPage} />
+          <Route path="/projects" component={ProjectPage} />
+          <Route path="/projects:id" component={Page2} />
+          <Route path="/members" component={MembersPage} />
           <Route path="*" component={NotFound} />
         </Route>
       </Router>);

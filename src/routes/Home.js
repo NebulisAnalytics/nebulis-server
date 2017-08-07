@@ -18,10 +18,10 @@ export default class IndexPage extends Component {
 						<Link to="/login">Login</Link>
 					</div>
 					<div>
-						<Link to="/projectpage">Projects Page</Link>
+						<Link to="/projects">Projects Page</Link>
 					</div>
 					<div>
-						<Link to="/memberspage">Members Page</Link>
+						<Link to="/members">Members Page</Link>
 					</div>
 					<div>
 						<a href="sailshomepage">Sails default page</a>
