@@ -45,6 +45,8 @@ var routes = {
    * for configuration options and examples.                                  *
    *                                                                          *
    ***************************************************************************/
+  'get /auth/github': 'GitController.githubLogin',
+  'get /auth/github/callback': 'GitController.githubCallback',
 
   'post /api/todos': 'TodosController.createTodo',
   'put /api/todos/:id': 'TodosController.updateTodo',

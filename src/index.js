@@ -13,9 +13,9 @@ import App from './App';
 injectTapEventPlugin();
 const muiTheme = getMuiTheme({
   palette: {
-    primary1Color: '#FF8442',
+    primary1Color: '#FF6A1A',
     accent1Color: '#02C5FF',
-    textColor: '#00BCD4',
+    // textColor: '#00BCD4',
   }})
 
 const rootEl = document.getElementById('app');
