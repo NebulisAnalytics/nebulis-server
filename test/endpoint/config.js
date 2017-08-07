@@ -16,3 +16,5 @@ after((done) => {
   nebugit.stop();
   done();
 });
+
+exports.nebugit = nebugit;
