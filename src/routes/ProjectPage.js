@@ -2,6 +2,12 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Layout from './Layout';
 import Projects from '../components/Projects';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import Dialog from 'material-ui/Dialog';
+import Form from '../components/Form';
+
+import { PlusIcon } from 'mdi-material-ui';
+
 import * as actions from '../actions/nebulisActions.js'
 import { getStore, addProject, closeProject } from './../store/configureStore';
 
@@ -10,13 +16,13 @@ import ghoulie from 'ghoulie';
 export default class ProjectsPage extends Component {
 	constructor(props) {
 		super(props);
+		this.handleClose = this.handleClose.bind(this);
 
 		this.state = {
-
+			open: false,
 			// map the model to state
 			projectsModel: getStore().getState().projectsModel
 		};
-
 		// when the store changes re-map the model to state
 		getStore().subscribe(() => {
 			this.setState({
@@ -71,7 +77,7 @@ export default class ProjectsPage extends Component {
 				<div id="page-projects" className="page">
 
 					{ this.renderLoading() }
-
+					Projects:<br/>
 					<Projects projects={this.state.projectsModel.projects} onDelete={::this.onDelete} onToggleCompleted={::this.onAdd}/>
 
 					<div>
@@ -79,8 +85,22 @@ export default class ProjectsPage extends Component {
 						<div id="projectList">
 
 						</div>
-						Add a project:<br/>
-						<button onClick={::this.onAdd}>add</button>
+
+						<FloatingActionButton secondary={true} onTouchTap={::this.onAdd} mini={true}>
+							<PlusIcon />
+						</FloatingActionButton>
+						<Dialog
+							title="Add a Project"
+							actions={[<Form
+													action="/"
+													method="GET"
+													fields={['Project Name', 'Github Project Link', 'Members']}
+													cancel={true}
+													handleClose={this.handleClose}
+													/>]}
+							modal={true}
+							open={this.state.open}
+						/>
 					</div>
 				</div>
 			</Layout>);
@@ -98,8 +118,8 @@ export default class ProjectsPage extends Component {
     //  replaces current list with a form to insert Github URL and project title
     //  Toggle state between current project list display OR new project form
     //  Add one at a time for now
-    getStore().dispatch(addProject());
-
+    // getStore().dispatch(addProject());
+		this.setState({open: true});
 		// const name = ReactDOM.findDOMNode(this.refs.project).value;
 		// nebulisActions.createProject({
 		// 	name
@@ -109,7 +129,9 @@ export default class ProjectsPage extends Component {
 		// });
     console.log('adding project(s)...')
 	}
-
+	handleClose() {
+		this.setState({open: false});
+	}
   //  retrive project info from github
 
   //  add project info to DB
