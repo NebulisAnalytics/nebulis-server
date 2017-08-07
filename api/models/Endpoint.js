@@ -23,14 +23,20 @@ module.exports = {
 
 //lifecycle callbacks
 
-  afterCreate: async (newRecord, cb) => {
+  afterCreate: (newRecord, cb) => {
     let res;
-    try {
-      res = await request.post(`http://localhost:7010/reset`);
-      cb();
-    } catch (err) {
-      cb(err);
+    const resetGit = async () => {
+      try {
+        res = await request.post(`http://localhost:7010/reset`);
+        cb();
+      } catch (err) {
+        sails.log.info('waiting for git sub system');
+        setTimeout(() => {
+          resetGit();
+        }, 250);
+      };
     };
+    resetGit();
   },
 
 //TODO: make this work for multiple records
