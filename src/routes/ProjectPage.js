@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Layout from './Layout';
 import Projects from '../components/Projects';
-
-import { getStore, nebulisActions, addProject, closeProject } from './../store/configureStore';
+import * as actions from '../actions/nebulisActions.js'
+import { getStore, addProject, closeProject } from './../store/configureStore';
 
 import ghoulie from 'ghoulie';
 
@@ -37,13 +37,13 @@ export default class ProjectsPage extends Component {
 		});
 	}
 
-	// componentWillMount() {
-	// 	this.getProjects();
-	// }
+	componentWillMount() {
+		this.getProjects();
+	}
 
 	getProjects() {
 		ghoulie.log('getting projects...');
-		nebulisActions.getProjects().then(store => {
+		actions.getProjects().then(store => {
 
 			// store returned is same as getStore().getState()
 			ghoulie.log('got projects', store);
