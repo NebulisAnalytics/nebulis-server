@@ -23,18 +23,25 @@ module.exports = {
 
 //lifecycle callbacks
 
-  afterCreate: function(newRecord, cb) {
+  afterCreate: async (newRecord, cb) => {
     let res;
-    request.post(`http://localhost:7010/reset`, (err, httpResponse, body) => {
-      if (err) { return cb(err); }
+    try {
+      res = await request.post(`http://localhost:7010/reset`);
       cb();
-    });
+    } catch (err) {
+      cb(err);
+    };
   },
 
 //TODO: make this work for multiple records
   afterDestroy: function(destroyedRecords, cb) {
-    rimraf('/tmp/repos/' + destroyedRecords[0].id + '.git', () => {
-      cb();
-    });
+    try {
+      rimraf('/tmp/repos/' + destroyedRecords[0].id + '.git', () => {
+        cb();
+      });
+    }
+    catch (err) {
+      cb(err);
+    }
   },
 };
