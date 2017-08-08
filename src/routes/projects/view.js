@@ -74,14 +74,10 @@ export default class ProjectsContainer extends Component {
 
 					<Projects projects={this.state.projectsModel.projects} onDelete={::this.onDelete} onToggleCompleted={::this.onAdd}/>
 
-					<div>
-						{/*will add styling */}
-						<div id="projectList">
-
-						</div>
+					{/* <div>
 						Add a project:<br/>
 						<button onClick={::this.onAdd}>add</button>
-					</div>
+					</div> */}
 				</div>
 			</Layout>);
 	}

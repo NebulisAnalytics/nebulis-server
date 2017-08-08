@@ -3,6 +3,8 @@ const expect = chai.expect;
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
+import { shallow } from 'enzyme';
+import {List, ListItem } from 'material-ui/List';
 
 import Projects from '../../src/components/Projects';
 
@@ -23,7 +25,7 @@ before(function(done) {
   const onDelete = function() {};
   const onClick = function() {};
 
-  testComponent = TestUtils.renderIntoDocument(
+  testComponent = shallow(
     <Projects projects={projects} onDelete={onDelete} onClick={onClick}/>
   );
 
@@ -40,15 +42,12 @@ describe('JSDom', () => {
 
 describe('Projects component', () => {
   it(`should render 'project' div correctly`, () => {
-    let testNode = ReactDOM.findDOMNode(testComponent);
-
-    expect(testNode.nodeName).to.be.equal('DIV');
-    expect(testNode.className).to.be.equal('projects');
-    expect(testNode.getElementsByTagName('LI')[0]).to.be.an('object');
-    expect(testNode.getElementsByTagName('SPAN')[0].textContent).to.be.equal(`Title: ${projects[0].name} Updated At: ${projects[0].updatedAt}`);
+    expect(testComponent.node.props.className).to.be.equal('projects');
+    expect(testComponent.node.type).to.be.equal('div');
+    // expect(testNode.getElementsByTagName('SPAN')[0].textContent).to.be.equal(`Title: ${projects[0].name} Updated At: ${projects[0].updatedAt}`);
   });
   it('should render list of all projects in db', () => {
-    let testNode = ReactDOM.findDOMNode(testComponent);
-    expect(testNode.getElementsByTagName('LI').length).to.be.equal(2);
+        console.log('this is tcom node', testComponent)
+        expect(testComponent.length).to.be.equal(1)
   });
 });
