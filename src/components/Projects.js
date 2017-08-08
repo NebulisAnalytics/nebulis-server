@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
-import { DeleteIcon, DownloadIcon } from 'mdi-material-ui';
 import {List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 
@@ -16,7 +15,7 @@ export default class Projects extends Component {
 		if (this.props.projects.length) {
 			return (
 				<List>
-					<Subheader inset={true}>Projects</Subheader>
+					<Subheader>Projects</Subheader>
 				{ this.props.projects.map((project, index) => {
 					let completeHandler = () => {
 						this.props.onToggleCompleted(project.id, !project.completed);
@@ -38,9 +37,9 @@ class Project extends Component {
 		return (
 			<Link to={"/projects/" + project.id}>
 			<ListItem
-				primaryText= { "Title: " + project.name }
-				secondaryText= { "Updated At: " + project.updatedAt }>
-
+				primaryText= { "Name: " + project.name }
+				secondaryText= { "Updated At: " + project.updatedAt }
+				hoverColor= { '#FF8442' }>
 				 {/* <a href="javascript://" onClick={ ::this.props.onDownload }>
 					<DownloadIcon/>
 				</a>
