@@ -84,7 +84,7 @@ describe('Endpoint Application Integration', function() {
 
           connector.stdout.removeListener('data', pushListener);
           done();
-          }, 1050);
+        }, 1050);
       };
       console.log(message.toString());
     };
@@ -118,13 +118,15 @@ describe('Endpoint Application Integration', function() {
   });
   it('should report an additional commit in the server repo', (done) => {
     const path = `/tmp/repos/${endpointID}.git`;
-  console.log(path);
     git.Repository.openBare(path)
       .then(function(repo) {
-        console.log('hey');
         
         repo.getReferenceCommit('refs/heads/master').then(function(commit) {
-          expect(currentHEAD).to.not.be.equal(commit);
+          const newHead = commit.sha();
+
+          expect(currentHEAD).to.not.be.equal(newHead);
+          expect(currentHEAD.length).to.be.equal(newHead.length);
+          expect(newHead.length).to.be.equal(40);
           done();
         });
       });

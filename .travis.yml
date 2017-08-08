@@ -10,6 +10,7 @@ cache:
 script:
   - npm run test:server
   - npm run test:client
+  - npm run test:endpoint
 addons:
   apt:
     sources:
