@@ -67,7 +67,8 @@ describe('Endpoint Application Integration', function() {
   xit('should be able to connect to the server', () => {
 
   });
-  it('on file change change, it should make a successful commit for a repo', (done) => {
+  it('on file change change, it should make a successful commit for a repo', function(done) {
+    this.timeout(25000);
     let madeCommit = false;
     const pushListener = (message) => {
       if (message.toString().indexOf('1 file changed, 0 insertions(+)') !== -1) {
@@ -82,12 +83,12 @@ describe('Endpoint Application Integration', function() {
             .then(function(repo) {
               repo.getReferenceCommit('refs/heads/master').then(function(commit) {
                 currentHEAD = commit.sha();
+                console.log('precurrentHEAD',currentHEAD);
+                connector.stdout.removeListener('data', pushListener);
+                done();
               });
             });
-
-          connector.stdout.removeListener('data', pushListener);
-          done();
-        }, 1050);
+          }, 1450);
       };
       console.log(message.toString());
     };
@@ -109,7 +110,7 @@ describe('Endpoint Application Integration', function() {
           setTimeout(() => {
             connector.stdout.removeListener('data', pushListener);
             done();
-          }, 1050);
+          }, 1750);
         };
         console.log(message.toString());
       };
@@ -119,16 +120,21 @@ describe('Endpoint Application Integration', function() {
       });
     });
   });
-  it('should report an additional commit in the server repo', (done) => {
+  it('should report an additional commit in the server repo', function(done) {
+    this.timeout(20000);
     const path = `/tmp/repos/${endpointID}.git`;
     git.Repository.openBare(path)
       .then(function(repo) {
-        
         repo.getReferenceCommit('refs/heads/master').then(function(commit) {
+          console.log('stage3');
           const newHead = commit.sha();
-
+          console.log('stage4');
+          console.log('currentHEAD',currentHEAD);
+          console.log('newHead',newHead);
           expect(currentHEAD).to.not.be.equal(newHead);
+          console.log('stage5');
           expect(currentHEAD.length).to.be.equal(newHead.length);
+          console.log('stage6');
           expect(newHead.length).to.be.equal(40);
           done();
         });
