@@ -77,7 +77,7 @@ export default class ProjectsPage extends Component {
 				<div id="page-projects" className="page">
 
 					{ this.renderLoading() }
-					Projects:<br/>
+					{/* Projects:<br/> */}
 					<Projects projects={this.state.projectsModel.projects} onDelete={::this.onDelete} onToggleCompleted={::this.onAdd}/>
 
 					<div>

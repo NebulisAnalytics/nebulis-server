@@ -67,10 +67,12 @@ var routes = {
 };
 
 // the same app will be rendered at all these routes
-var indexRoutes = ['/',
+var indexRoutes = [
+  '/',
   '/login',
   '/projects',
-  '/members'];
+  '/members'
+];
 indexRoutes.forEach(function (r) {
   routes['GET ' + r] = 'IndexController.index';
 });
