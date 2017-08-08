@@ -12,17 +12,20 @@ var git = require("nodegit");
 
 let connector;
 
-before((done) => {
+before(function(done) {
+  this.timeout(20000);
   connector = spawn( 'yarn', {
     cwd: './test/endpoint/testingProject/',
   });
 
-  connector.stdout.on('data', (message) => {
+  const yarnListener = (message) => {
     console.log(message.toString());
     if (message.toString().indexOf('Done in') !== -1) {
+      connector.stdout.removeListener('data', yarnListener);
       done();
     }
-  });
+  };
+  connector.stdout.on('data', yarnListener);
 });
 
 describe('Endpoint Application Integration', function() {
