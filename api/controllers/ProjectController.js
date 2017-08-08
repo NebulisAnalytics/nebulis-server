@@ -14,6 +14,12 @@ module.exports = {
       }
       else res.send(projects);
     });
-  }
+  },
   
+  create: (req, res) => {
+    sails.log('create project');
+    sails.log(req.body);
+    res.send('success');
+  }
+
 };

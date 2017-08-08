@@ -19,7 +19,7 @@ before(function(done) {
   });
 
   const yarnListener = (message) => {
-    console.log(message.toString());
+    console.log('yarnListener: ', message.toString());
     if (message.toString().indexOf('Done in') !== -1) {
       connector.stdout.removeListener('data', yarnListener);
       done();
@@ -49,7 +49,7 @@ describe('Endpoint Application Integration', function() {
       connector.stderr.on('data', beforeListener);
     });
     const beforeListener = (message) => {
-      console.log(message.toString());
+      console.log('beforeListener: ', message.toString());
       if (message.toString().indexOf('Endpoint ID:') !== -1) {
         const m = message.toString();
         const i = m.indexOf('ID:');
@@ -68,7 +68,7 @@ describe('Endpoint Application Integration', function() {
 
   });
   it('on file change change, it should make a successful commit for a repo', function(done) {
-    this.timeout(25000);
+    this.timeout(20000);
     let madeCommit = false;
     const pushListener = (message) => {
       if (message.toString().indexOf('1 file changed, 0 insertions(+)') !== -1) {
@@ -90,10 +90,13 @@ describe('Endpoint Application Integration', function() {
             });
           }, 1450);
       };
-      console.log(message.toString());
+      console.log('pushListener:', message.toString());
     };
     connector.stdout.on('data', pushListener);
     spawnSync( 'touch', [ './newfile.js' ], {
+      cwd: './test/endpoint/testingProject',
+    });
+    spawnSync( 'echo', [ 'something', '>', './newfile.js' ], {
       cwd: './test/endpoint/testingProject',
     });
   });
@@ -112,10 +115,13 @@ describe('Endpoint Application Integration', function() {
             done();
           }, 1750);
         };
-        console.log(message.toString());
+        console.log('pushListener2:', message.toString());
       };
       connector.stdout.on('data', pushListener);
       spawnSync( 'touch', [ './newfile2.js' ], {
+        cwd: './test/endpoint/testingProject',
+      });
+      spawnSync( 'echo', [ 'something2', '>', './newfile2.js' ], {
         cwd: './test/endpoint/testingProject',
       });
     });
@@ -126,15 +132,11 @@ describe('Endpoint Application Integration', function() {
     git.Repository.openBare(path)
       .then(function(repo) {
         repo.getReferenceCommit('refs/heads/master').then(function(commit) {
-          console.log('stage3');
           const newHead = commit.sha();
-          console.log('stage4');
           console.log('currentHEAD',currentHEAD);
           console.log('newHead',newHead);
           expect(currentHEAD).to.not.be.equal(newHead);
-          console.log('stage5');
           expect(currentHEAD.length).to.be.equal(newHead.length);
-          console.log('stage6');
           expect(newHead.length).to.be.equal(40);
           done();
         });

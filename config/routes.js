@@ -56,6 +56,9 @@ var routes = {
   'delete /api/todos': 'TodosController.deleteAll',
 
   'get /api/projects': 'ProjectController.getProjects',
+  'get /api/projects/:id/teams': 'TeamController.projectIndex',
+  'post /api/projects': 'ProjectController.create',
+
   'get /api/members': 'MemberController.getMembers',
 
   'post /api/endpoints/establish': 'EndpointController.establish',
