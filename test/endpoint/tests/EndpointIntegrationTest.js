@@ -124,8 +124,6 @@ describe('Endpoint Application Integration', function() {
         console.log('hey');
         
         repo.getReferenceCommit('refs/heads/master').then(function(commit) {
-          console.log('commit',commit.sha());
-          console.log('precommit',currentHEAD);
           expect(currentHEAD).to.not.be.equal(commit);
           done();
         });

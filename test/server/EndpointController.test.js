@@ -172,4 +172,4 @@ describe('GET /api/teams/:id/download', () => {
   xit('should be able to download a file', () => {
 
   });
-}
+});
