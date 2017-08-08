@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import Layout from './Layout';
-import Projects from '../components/Projects';
+import Layout from './../Layout';
+import Projects from '../../components/Projects';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Dialog from 'material-ui/Dialog';
-import Form from '../components/Form';
+import Form from '../../components/Form';
 
 import { PlusIcon } from 'mdi-material-ui';
 
-import * as actions from '../actions/nebulisActions.js'
-import { getStore, addProject, closeProject } from './../store/configureStore';
+import * as actions from '../../actions/nebulisActions.js'
+import { getStore, addProject, closeProject } from './../../store/configureStore';
 
 import ghoulie from 'ghoulie';
 
@@ -77,7 +77,7 @@ export default class ProjectsPage extends Component {
 				<div id="page-projects" className="page">
 
 					{ this.renderLoading() }
-					Projects:<br/>
+					{/* Projects:<br/> */}
 					<Projects projects={this.state.projectsModel.projects} onDelete={::this.onDelete} onToggleCompleted={::this.onAdd}/>
 
 					<div>
