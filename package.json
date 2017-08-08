@@ -39,6 +39,7 @@
 		"mdi-material-ui": "^1.0.0",
 		"minimatch": "^3.0.4",
 		"mocha": "^3.5.0",
+		"nodegit": "^0.18.3",
 		"nyc": "^11.1.0",
 		"passport": "^0.3.2",
 		"passport-github2": "^0.1.10",

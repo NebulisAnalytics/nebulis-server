@@ -7,3 +7,9 @@ node_js:
 script:
   - npm run test:server
   - npm run test:client
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - libstdc++-4.9-dev

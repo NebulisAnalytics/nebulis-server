@@ -28,6 +28,7 @@ before((done) => {
 describe('Endpoint Application Integration', function() {
   let project;
   let endpointID;
+  let currentHEAD;
   before((done) => {
     this.timeout(20000);
     spawnSync( 'mkdir', [ './.git' ], {
@@ -73,19 +74,17 @@ describe('Endpoint Application Integration', function() {
         expect(madeCommit).to.be.equal(true);
         setTimeout(() => {
           //store repo information before testing
-          // const path = `/tmp/repos/ --git-dir=${endpointID}.git`;
-          const path = '/tmp/repos/4.git';
+          const path = `/tmp/repos/${endpointID}.git`;
           git.Repository.openBare(path)
             .then(function(repo) {
-              repo.getHeadCommit().then(function(commit) {
-                currentHEAD = commit;
-                console.log('currentHEAD:' + currentHEAD);
+              repo.getReferenceCommit('refs/heads/master').then(function(commit) {
+                currentHEAD = commit.sha();
               });
             });
 
           connector.stdout.removeListener('data', pushListener);
           done();
-        }, 1750);
+          }, 1050);
       };
       console.log(message.toString());
     };
@@ -95,26 +94,42 @@ describe('Endpoint Application Integration', function() {
     });
   });
   it('when restarted, the server should still accept repo pushes', (done) => {
-    nebugit.stop();
-    nebugit.listen();
-    let madeCommit = false;
-    const pushListener = (message) => {
-      if (message.toString().indexOf('1 file changed, 0 insertions(+)') !== -1) {
-        madeCommit = true;
+    nebugit.stop(() => {
+      nebugit.listen();
+      let madeCommit = false;
+      const pushListener = (message) => {
+        if (message.toString().indexOf('1 file changed, 0 insertions(+)') !== -1) {
+          madeCommit = true;
+        };
+        if (message.toString().indexOf('Syncing endpoint to server...') !== -1) {
+          expect(madeCommit).to.be.equal(true);
+          setTimeout(() => {
+            connector.stdout.removeListener('data', pushListener);
+            done();
+          }, 1050);
+        };
+        console.log(message.toString());
       };
-      if (message.toString().indexOf('Syncing endpoint to server...') !== -1) {
-        expect(madeCommit).to.be.equal(true);
-        setTimeout(() => {
-          connector.stdout.removeListener('data', pushListener);
-          done();
-        }, 1750);
-      };
-      console.log(message.toString());
-    };
-    connector.stdout.on('data', pushListener);
-    spawnSync( 'touch', [ './newfile.js' ], {
-      cwd: './test/endpoint/testingProject',
+      connector.stdout.on('data', pushListener);
+      spawnSync( 'touch', [ './newfile2.js' ], {
+        cwd: './test/endpoint/testingProject',
+      });
     });
+  });
+  it('should report an additional commit in the server repo', (done) => {
+    const path = `/tmp/repos/${endpointID}.git`;
+  console.log(path);
+    git.Repository.openBare(path)
+      .then(function(repo) {
+        console.log('hey');
+        
+        repo.getReferenceCommit('refs/heads/master').then(function(commit) {
+          console.log('commit',commit.sha());
+          console.log('precommit',currentHEAD);
+          expect(currentHEAD).to.not.be.equal(commit);
+          done();
+        });
+      });
   });
   after((done) => {
     Project.destroy(project.id).exec((err) => {
@@ -122,6 +137,9 @@ describe('Endpoint Application Integration', function() {
         Endpoint.destroy(endpointID).exec((err) => {
           Member.destroy(endpoints[0].member.id).exec((err) => {
             spawnSync( 'rm', [ './newfile.js' ], {
+              cwd: './test/endpoint/testingProject/',
+            });
+            spawnSync( 'rm', [ './newfile2.js' ], {
               cwd: './test/endpoint/testingProject/',
             });
             spawnSync( 'rm', [ './testingProject/.git/config' ], {
@@ -138,8 +156,5 @@ describe('Endpoint Application Integration', function() {
         });
       });
     });
-  });
-  xit('should report an additional commit in the server repo', (done) => {
-
   });
 });

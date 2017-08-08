@@ -86,7 +86,7 @@ module.exports = {
         rimraf(`${store}/browse/.git/`, () => {
           rimraf(`${store}/browse/`, () => {
             if(!err) {
-                res.sendfile(`${store}/archive.zip`);
+              res.sendfile(`${store}/archive.zip`);
             } else {
               res.send('error preparing files');
             }
