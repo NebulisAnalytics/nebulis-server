@@ -6,6 +6,9 @@
  */
 
 const request = require('request-promise');
+const git = require('nodegit');
+var zipFolder = require('zip-folder');
+var rimraf = require('rimraf');
 
 module.exports = {
 
@@ -71,5 +74,27 @@ module.exports = {
       }
       else res.send(endpoints);
     });
+  },
+
+  download: (req, res) => {
+    const store = '/tmp';
+    const path = `${store}/repos/${req.param('id')}.git`;
+    console.log(path);
+    git.Clone.clone(path, `${store}/browse`).then(function(repository) {
+      console.log('repo',repository)
+      zipFolder(`${store}/browse/`, `${store}/archive.zip`, function(err) {
+        rimraf(`${store}/browse/.git/`, () => {
+          rimraf(`${store}/browse/`, () => {
+            if(!err) {
+              res.sendfile(`${store}/archive.zip`);
+            } else {
+              res.send('error preparing files');
+            }
+          });
+        });
+      });
+    });
+
   }
+
 };

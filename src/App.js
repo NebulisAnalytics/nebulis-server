@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Router, Route, browserHistory, IndexRoute } from 'react-router';
-
+import routes from './routes';
+import { Route, Router, IndexRoute, browserHistory } from 'react-router';
 import Home from './routes/Home';
 import Login from './routes/Login';
 import ProjectPage from './routes/projects/index';
