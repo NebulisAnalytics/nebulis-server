@@ -78,21 +78,29 @@ module.exports = {
 
   download: (req, res) => {
     const store = '/tmp';
-    const path = `${store}/repos/${req.param('id')}.git`;
-    console.log(path);
-    git.Clone.clone(path, `${store}/browse`).then(function(repository) {
-      console.log('repo',repository)
-      zipFolder(`${store}/browse/`, `${store}/archive.zip`, function(err) {
-        rimraf(`${store}/browse/.git/`, () => {
-          rimraf(`${store}/browse/`, () => {
-            if(!err) {
-              res.sendfile(`${store}/archive.zip`);
-            } else {
-              res.send('error preparing files');
-            }
+    Team.find(req.param('id')).populate('endpoints').exec((err, team) => {
+      console.log(team);
+      if (team[0].endpoints.length > 0) {
+        const eid = team[0].endpoints[0].id;
+        const path = `${store}/repos/${eid}.git`;
+        console.log(path);
+        git.Clone.clone(path, `${store}/browse`).then(function(repository) {
+          console.log('repo',repository)
+          zipFolder(`${store}/browse/`, `${store}/archive.zip`, function(err) {
+            rimraf(`${store}/browse/.git/`, () => {
+              rimraf(`${store}/browse/`, () => {
+                if(!err) {
+                  res.sendfile(`${store}/archive.zip`);
+                } else {
+                  res.send('error preparing files');
+                }
+              });
+            });
           });
         });
-      });
+      } else {
+        res.send({error: 'no endpoints found'});
+      }
     });
 
   }
