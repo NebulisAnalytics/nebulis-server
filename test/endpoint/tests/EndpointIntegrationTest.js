@@ -59,7 +59,7 @@ describe('Endpoint Application Integration', function() {
         setTimeout(() => {
           connector.stdout.removeListener('data', beforeListener);
           done();
-        }, 1000);
+        }, 1500);
       }
     }
     // connector.on('close', (code, signal) => { done(); });
@@ -93,12 +93,11 @@ describe('Endpoint Application Integration', function() {
       console.log('pushListener:', message.toString());
     };
     connector.stdout.on('data', pushListener);
-    spawnSync( 'touch', [ './newfile.js' ], {
-      cwd: './test/endpoint/testingProject',
-    });
-    spawnSync( 'echo', [ 'something', '>', './newfile.js' ], {
-      cwd: './test/endpoint/testingProject',
-    });
+    setTimeout(() => {
+      spawnSync( 'touch', [ './newfile.js' ], {
+        cwd: './test/endpoint/testingProject',
+      });
+    }, 500);
   });
   it('when restarted, the server should still accept repo pushes', (done) => {
     nebugit.stop(() => {
@@ -118,16 +117,15 @@ describe('Endpoint Application Integration', function() {
         console.log('pushListener2:', message.toString());
       };
       connector.stdout.on('data', pushListener);
-      spawnSync( 'touch', [ './newfile2.js' ], {
-        cwd: './test/endpoint/testingProject',
-      });
-      spawnSync( 'echo', [ 'something2', '>', './newfile2.js' ], {
-        cwd: './test/endpoint/testingProject',
-      });
+      setTimeout(() => {
+        spawnSync( 'touch', [ './newfile2.js' ], {
+          cwd: './test/endpoint/testingProject',
+        });
+      }, 500);
     });
   });
   it('should report an additional commit in the server repo', function(done) {
-    this.timeout(20000);
+    this.timeout(40000);
     const path = `/tmp/repos/${endpointID}.git`;
     git.Repository.openBare(path)
       .then(function(repo) {

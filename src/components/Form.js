@@ -3,22 +3,40 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
 const Form = (props) => {
+
   const cancelButton = props.cancel ? <RaisedButton
     label="Cancel"
     secondary={true}
     onTouchTap={props.handleClose}
     /> : '';
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    props.handleSubmit(form);
+  }
+
+  let form;
+
   return (
-  <form action={props.action} method={props.method} style={styles.form}>
+    <form 
+      action={props.action} 
+      method={props.method} 
+      style={styles.form} 
+      onSubmit={handleSubmit}
+      ref={f => form = f}
+    >
     {
       props.fields.map((field, i) => {
         return (
+
           <TextField
             key={i}
-            name={field}
-            hintText={field}
-            floatingLabelText={field}
+            name={field.name}
+            hintText={field.hint || field.label}
+            floatingLabelText={field.label}
+            // errorText={fields.touched && fields.error}
             floatingLabelFixed
+            {...field}
           />);
         }
       )
