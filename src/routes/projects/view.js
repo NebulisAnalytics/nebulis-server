@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Layout from './../Layout';
+
 import Projects from '../../components/Projects';
+import ProjectListItems from '../../components/ProjectListItems'
 import * as actions from '../../actions/nebulisActions.js'
 import { getStore, addProject, closeProject } from './../../store/configureStore';
 
@@ -74,14 +76,10 @@ export default class ProjectsContainer extends Component {
 
 					<Projects projects={this.state.projectsModel.projects} onDelete={::this.onDelete} onToggleCompleted={::this.onAdd}/>
 
-					<div>
-						{/*will add styling */}
-						<div id="projectList">
-
-						</div>
+					{/* <div>
 						Add a project:<br/>
 						<button onClick={::this.onAdd}>add</button>
-					</div>
+					</div> */}
 				</div>
 			</Layout>);
 	}

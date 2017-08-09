@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router';
-import { DeleteIcon, DownloadIcon } from 'mdi-material-ui';
-import {List, ListItem } from 'material-ui/List';
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
+import ProjectListItems from './ProjectListItems';
+// import s from './style.scss';
 
 export default class Projects extends Component {
 	render() {
@@ -16,41 +17,44 @@ export default class Projects extends Component {
 		if (this.props.projects.length) {
 			return (
 				<List>
-					<Subheader inset={true}>Projects</Subheader>
-				{ this.props.projects.map((project, index) => {
-					let completeHandler = () => {
-						this.props.onToggleCompleted(project.id, !project.completed);
-					};
-					let deleteHandler = () => {
-						this.props.onDelete(project.id);
-					};
-					return (<Project key={index} project={project} onDownload={completeHandler} onDelete={deleteHandler}/>);
+					<Subheader>Projects</Subheader>
+					{ this.props.projects.map((project, index) => {
+					return (<ProjectListItems key={index} project={project}/>);
 				})}
-			</List>
+				</List>
 			);
 		}
 	}
 }
 
-class Project extends Component {
-	render() {
-		const project = this.props.project;
-		return (
-			<Link to={"/projects/" + project.id}>
-			<ListItem
-				primaryText= { "Title: " + project.name }
-				secondaryText= { "Updated At: " + project.updatedAt }>
 
-				 {/* <a href="javascript://" onClick={ ::this.props.onDownload }>
-					<DownloadIcon/>
-				</a>
+//  project completed and delete functions
+		// let completeHandler = () => {
+		// 	this.props.onToggleCompleted(project.id, !project.completed);
+		// };
+		// let deleteHandler = () => {
+		// 	this.props.onDelete(project.id);
+		// };
 
-				<a href="javascript://" onClick={ ::this.props.onDelete }>
-					<DeleteIcon/>
-				</a> */}
-		</ListItem>
-			</Link>
-		);
-
-	}
-}
+// export class Project extends Component {
+// 	render() {
+// 		const project = this.props.project;
+// 		return (
+// 			<Link to={"/projects/" + project.id}>
+// 			<ListItem
+// 				primaryText= { "Name: " + project.name }
+// 				secondaryText= { "Updated At: " + project.updatedAt }
+// 				hoverColor= { '#FF8442' }>
+// 				 {/* <a href="javascript://" onClick={ ::this.props.onDownload }>
+// 					<DownloadIcon/>
+// 				</a>
+//
+// 				<a href="javascript://" onClick={ ::this.props.onDelete }>
+// 					<DeleteIcon/>
+// 				</a> */}
+// 		</ListItem>
+// 			</Link>
+// 		);
+//
+// 	}
+// }

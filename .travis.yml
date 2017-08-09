@@ -4,6 +4,16 @@ notifications:
   slack: codesmith-15:pJzGP558zsfbulY3uQSdl2n0
 node_js:
   - '8'
+cache:
+  directories:
+    - node_modules
 script:
+  - npm run test:endpoint
   - npm run test:server
   - npm run test:client
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - libstdc++-4.9-dev

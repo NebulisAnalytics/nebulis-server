@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import Layout from './Layout';
-import Members from '../components/Members';
+import Layout from './../Layout';
 
-import { getStore, nebulisActions, addMember, closeMember } from './../store/configureStore';
+import Members from '../../components/Members';
+import MemberListItems from '../../components/MemberListItems'
+import * as actions from '../../actions/nebulisActions.js'
+import { getStore, makeAdmin, removeAdmin } from './../../store/configureStore';
 
 import ghoulie from 'ghoulie';
 
 
-export default class MembersPage extends Component {
+export default class MembersContainer extends Component {
 	constructor(props) {
 		super(props);
 
@@ -38,13 +40,13 @@ export default class MembersPage extends Component {
 		});
 	}
 
-	// componentWillMount() {
-	// 	this.getMembers();
-	// }
+	componentWillMount() {
+		this.getMembers();
+	}
 
 	getMembers() {
 		ghoulie.log('getting members...');
-		nebulisActions.getMembers().then(store => {
+		actions.getMembers().then(store => {
 
 			// store returned is same as getStore().getState()
 			ghoulie.log('got members', store);
@@ -70,9 +72,9 @@ export default class MembersPage extends Component {
 
     let membersComponent = '';
     if(this.state.membersModel) {
-      membersComponent = <Members members={this.state.membersModel.members} onDelete={::this.onDelete} onToggleCompleted={::this.onAdd}/>;
+      membersComponent = <Members members={this.state.membersModel.members} onDelete={::this.onDelete}/>;
     }
-    
+
 		return (
 			<Layout title="Members">
 				<div id="page-members" className="page">
@@ -82,11 +84,10 @@ export default class MembersPage extends Component {
 					{membersComponent}
 
 					<div>
-						{/*will add styling */}
 						<div id="memberList">
 
 						</div>
-						Add a member:<br/>
+						{/* Add a member:<br/> */}
 						<button onClick={::this.onAdd}>add</button>
 					</div>
 				</div>
