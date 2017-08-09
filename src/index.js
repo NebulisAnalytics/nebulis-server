@@ -24,8 +24,8 @@ function render() {
   ReactDOM.render(
     <AppContainer>
       <MuiThemeProvider muiTheme={muiTheme}>
-      <App />
-    </MuiThemeProvider>
+        <App />
+      </MuiThemeProvider>
     </AppContainer>,
     rootEl
   );
@@ -43,7 +43,9 @@ if (module.hot) {
     const NextApp = require('./App').default;
     ReactDOM.render(
       <AppContainer>
-        <NextApp />
+        <MuiThemeProvider muiTheme={muiTheme}>
+          <App />
+        </MuiThemeProvider>
       </AppContainer>,
       rootEl
     );
