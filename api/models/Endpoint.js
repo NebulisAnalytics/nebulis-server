@@ -5,7 +5,7 @@
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
  */
 var rimraf = require('rimraf');
-const request = require('request');
+const request = require('request-promise');
 
 module.exports = {
 
@@ -23,18 +23,31 @@ module.exports = {
 
 //lifecycle callbacks
 
-  afterCreate: function(newRecord, cb) {
+  afterCreate: (newRecord, cb) => {
     let res;
-    request.post(`http://localhost:7010/reset`, (err, httpResponse, body) => {
-      if (err) { return cb(err); }
-      cb();
-    });
+    const resetGit = async () => {
+      try {
+        res = await request.post(`http://localhost:7010/reset`);
+        cb();
+      } catch (err) {
+        sails.log.info('waiting for git sub system');
+        setTimeout(() => {
+          resetGit();
+        }, 250);
+      };
+    };
+    resetGit();
   },
 
 //TODO: make this work for multiple records
   afterDestroy: function(destroyedRecords, cb) {
-    rimraf('/tmp/repos/' + destroyedRecords[0].id + '.git', () => {
-      cb();
-    });
+    try {
+      rimraf('/tmp/repos/' + destroyedRecords[0].id + '.git', () => {
+        cb();
+      });
+    }
+    catch (err) {
+      cb(err);
+    }
   },
 };

@@ -5,7 +5,10 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-const request = require('async-request');
+const request = require('request-promise');
+const git = require('nodegit');
+var zipFolder = require('zip-folder');
+var rimraf = require('rimraf');
 
 module.exports = {
 
@@ -16,7 +19,7 @@ module.exports = {
   establish: async (req, res) => {
     if (!req.body.project) { 
       sails.log.info('Request missing project name');
-      return res.send('ENDPOINT ERROR'); }
+      return res.send({error: 'ENDPOINT ERROR'}); }
     if (!req.body.owner) { 
       sails.log.info('Request missing project owner');
       return res.send({error: 'INPUT ERROR'}); }
@@ -32,15 +35,14 @@ module.exports = {
     if (members.length < 1) { 
       sails.log.info(`Request for unknown user: ${req.body.owner}`);
       const re = /(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/gi;
-      let response = await request(`https://github.com/${req.body.owner}`);
-      const match = re.exec(response.body);
-      if (match && match[2]) {
-        if (match[2].indexOf('Page not found') !== -1) {
-          sails.log.error('User not found on Github. Disregarding this endpoint request.');
-          return res.send({error: 'INPUT ERROR'});
-        }
+      let response;
+      try {
+        response = await request(`https://github.com/${req.body.owner}`);
+      } catch (err) {
+        sails.log.error('User not found on Github. Disregarding this endpoint request.');
+        return res.send({error: 'INPUT ERROR: This is not a github user.'});
       }
-      //assuming the user exists on github, so creating in the db.
+      //assuming the user exists on github,` so creating in the db.
       members = [await Member.create({username: req.body.owner})];
     }
 
@@ -72,5 +74,27 @@ module.exports = {
       }
       else res.send(endpoints);
     });
+  },
+
+  download: (req, res) => {
+    const store = '/tmp';
+    const path = `${store}/repos/${req.param('id')}.git`;
+    console.log(path);
+    git.Clone.clone(path, `${store}/browse`).then(function(repository) {
+      console.log('repo',repository)
+      zipFolder(`${store}/browse/`, `${store}/archive.zip`, function(err) {
+        rimraf(`${store}/browse/.git/`, () => {
+          rimraf(`${store}/browse/`, () => {
+            if(!err) {
+              res.sendfile(`${store}/archive.zip`);
+            } else {
+              res.send('error preparing files');
+            }
+          });
+        });
+      });
+    });
+
   }
+
 };

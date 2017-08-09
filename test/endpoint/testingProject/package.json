@@ -1,0 +1,15 @@
+{
+  "name": "testingproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "track": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "The Project Author",
+  "license": "ISC",
+  "dependencies": {
+    "nebulis-endpoint": "^0.2.8"
+  }
+}

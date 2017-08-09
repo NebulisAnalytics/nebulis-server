@@ -11,8 +11,8 @@ let repos = [];
 let monitor_stopping = false;
 let sendVars;
 let gitServer;
-
-messages.logo();
+let app;
+let server;
 
 const listen = (
 // default configuration
@@ -30,7 +30,7 @@ const listen = (
     return {
       anonRead: false,
       users: [
-        { user: standardUser, permissions: ['W'] },
+        { user: standardUser, permissions: ['R', 'W'] },
       ],
     };
   };
@@ -38,32 +38,27 @@ const listen = (
   const getEndpoints = async () => {
     try {
       const res = await request(`http://localhost:${serverPort}/api/endpoints`);
+      //clear repo list before populating it
+      repos = [];
 
       JSON.parse(res).forEach((info) => {
         const repo = repoProto();
         repo.name = info.id;
 
-//check for array duplicates
-        let found = false;
-        repos.forEach((existing) => {
-          if (existing.name === repo.name) found = true;
-        })
+        repo.event = (response) => {
+          console.log(`LISTENER: ${JSON.stringify(response)}`);
+        };
 
-//if new then add to list
-        if (found === false) {
-          repos.push(repo);
-          if (gitServer) gitServer.createRepo(repo, (err) => {
-            if(err) console.log('git-server: ', e);
-          });
-        }
-//if server already up then insert hot
-
+        repos.push(repo);
       });
-      startServer();
+
+      stop(() => {
+        startListener();
+        startServer();
+      });
 
     } catch (err) {
       setTimeout(() => { 
-        // console.log(err);
         process.stdout.write('.');
         getEndpoints(); 
       }, 250);
@@ -73,7 +68,7 @@ const listen = (
   const startServer = () => {
     if (!gitServer) {
       gitServer = new GitServer({
-        repos: [],
+        repos: repos,
         port: port.toString(),
         repoLocation: repoLocation,
       });
@@ -81,33 +76,49 @@ const listen = (
     }
   }
 
+  const startListener = () => {
+    //express app to receive update requests from api.
+    app = new Express();
+    server = new http.Server(app);
+
+    app.set('trust proxy', 1);
+    // app.use(cors());
+    app.use([
+      Router.post('/reset', wrap(async (req, res) => {
+        getEndpoints();
+        console.log('LISTENER: updating server endpoint list');
+        res.send({message: 'updating server endpoint list'});
+      })),
+    ]);
+
+    server.listen(listenPort, () => {
+      const host = server.address().address;
+      const port = server.address().port;
+      messages.listenerConnectionInfo('::', port);
+    });
+  };
+
 //main entry point for function
+  messages.logo();
   getEndpoints(); 
-
-
-//express app to receive update requests from api.
-  const app = new Express();
-  const server = new http.Server(app);
-
-  app.set('trust proxy', 1);
-  // app.use(cors());
-  app.use([
-    Router.post('/reset', wrap(async (req, res) => {
-      getEndpoints();
-      res.send({message: 'updating server endpoint list'});
-    })),
-  ]);
-
-  server.listen(listenPort, () => {
-    const host = server.address().address;
-    const port = server.address().port;
-    messages.listenerConnectionInfo('::', port);
-  });
 
 };
 
 const stop = (cb) => {
-  messages.killed();
+  if (gitServer) {
+    gitServer.server.close(() => {
+      if (server) {
+        server.close(() => {
+          gitServer = null;
+          cb();
+        });
+      } else {
+        cb();  
+      }
+    });
+  } else {
+    cb();
+  }
 };
 
 export { listen, stop };

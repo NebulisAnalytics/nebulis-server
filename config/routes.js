@@ -45,6 +45,8 @@ var routes = {
    * for configuration options and examples.                                  *
    *                                                                          *
    ***************************************************************************/
+  'get /auth/github': 'GitController.githubLogin',
+  'get /auth/github/callback': 'GitController.githubCallback',
 
   'post /api/todos': 'TodosController.createTodo',
   'put /api/todos/:id': 'TodosController.updateTodo',
@@ -54,17 +56,26 @@ var routes = {
   'delete /api/todos': 'TodosController.deleteAll',
 
   'get /api/projects': 'ProjectController.getProjects',
+  'get /api/projects/:id/teams': 'TeamController.projectIndex',
+  'post /api/projects': 'ProjectController.create',
+
   'get /api/members': 'MemberController.getMembers',
 
   'post /api/endpoints/establish': 'EndpointController.establish',
   'get /api/endpoints': 'EndpointController.index',
+
+  'get /api/teams/:id/download': 'EndpointController.download',
+  'get /api/teams': 'TeamController.index',
+  'get /api/teams/:id': 'TeamController.view',
 };
 
 // the same app will be rendered at all these routes
-var indexRoutes = ['/',
+var indexRoutes = [
+  '/',
   '/login',
-  '/projectpage',
-  '/memberspage'];
+  '/projects',
+  '/members'
+];
 indexRoutes.forEach(function (r) {
   routes['GET ' + r] = 'IndexController.index';
 });

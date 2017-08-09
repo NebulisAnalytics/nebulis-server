@@ -1,5 +1,9 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router';
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import { List, ListItem } from 'material-ui/List';
+import Subheader from 'material-ui/Subheader';
+import ProjectListItems from './ProjectListItems';
+// import s from './style.scss';
 
 export default class Projects extends Component {
 	render() {
@@ -11,37 +15,46 @@ export default class Projects extends Component {
 
 	renderProjects() {
 		if (this.props.projects.length) {
-			return (<ul>
-				{ this.props.projects.map((project, index) => {
-					let completeHandler = () => {
-						this.props.onToggleCompleted(project.id, !project.completed);
-					};
-					let deleteHandler = () => {
-						this.props.onDelete(project.id);
-					};
-					return (<Project key={index} project={project} onDownload={completeHandler} onDelete={deleteHandler}/>);
-				}) }
-			</ul>);
+			return (
+				<List>
+					<Subheader>Projects</Subheader>
+					{ this.props.projects.map((project, index) => {
+					return (<ProjectListItems key={index} project={project}/>);
+				})}
+				</List>
+			);
 		}
 	}
 }
 
-class Project extends Component {
-	render() {
-		const project = this.props.project;
-		return (
-			<li className="project">
-				<Link to="./../project:id"><span>
-					Title: { project.name } Updated At: { project.updatedAt }
-				</span></Link>
-				&nbsp;
-				<a href="javascript://" onClick={ ::this.props.onDownload }>
-					◊ {/* option+shift+k  */}
-				</a>
-				&nbsp;
-				<a href="javascript://" onClick={ ::this.props.onDelete }>
-					×
-				</a>
-			</li>);
-	}
-}
+
+//  project completed and delete functions
+		// let completeHandler = () => {
+		// 	this.props.onToggleCompleted(project.id, !project.completed);
+		// };
+		// let deleteHandler = () => {
+		// 	this.props.onDelete(project.id);
+		// };
+
+// export class Project extends Component {
+// 	render() {
+// 		const project = this.props.project;
+// 		return (
+// 			<Link to={"/projects/" + project.id}>
+// 			<ListItem
+// 				primaryText= { "Name: " + project.name }
+// 				secondaryText= { "Updated At: " + project.updatedAt }
+// 				hoverColor= { '#FF8442' }>
+// 				 {/* <a href="javascript://" onClick={ ::this.props.onDownload }>
+// 					<DownloadIcon/>
+// 				</a>
+//
+// 				<a href="javascript://" onClick={ ::this.props.onDelete }>
+// 					<DeleteIcon/>
+// 				</a> */}
+// 		</ListItem>
+// 			</Link>
+// 		);
+//
+// 	}
+// }
