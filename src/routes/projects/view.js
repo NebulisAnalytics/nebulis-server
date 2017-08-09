@@ -20,7 +20,8 @@ export default class ProjectsContainer extends Component {
 			loading: getStore().getState().projectsModel.loading,
 			downloading: getStore().getState().teamsModel.downloading,
 			project: getStore().getState().projectsModel.project,
-			teams: getStore().getState().teamsModel.teams
+			teams: getStore().getState().teamsModel.teams,
+			openAddTeams: false
 		};
 
 		// when the store changes re-map the model to state
@@ -120,8 +121,10 @@ export default class ProjectsContainer extends Component {
 						label="Add Team"
 						secondary={true}
 						icon={<PlusIcon />}
+						onTouchTap={::this.addTeam}
 					/>
-					{this.renderTeams()}
+				{this.renderAddTeams()}
+				{this.renderTeams()}
 				</div>
 			</Layout>
 		);
@@ -144,6 +147,16 @@ export default class ProjectsContainer extends Component {
 		}
 	}
 
+	renderAddTeams() {
+		if (this.state.openAddTeams) {
+			return (
+				<AddTeam
+					close={::this.closeAddTeam}
+					onSave={::this.onSave} />
+			);
+		}
+	}
+
 	onDownload(id) {
 		ghoulie.log('Dowloading...');
 		actions.downloadTeamProject(undefined, {id}).then(store => {
@@ -158,6 +171,19 @@ export default class ProjectsContainer extends Component {
 				debugger;
 			});
 		});
+	}
+
+	addTeam() {
+		this.setState({openAddTeams: true});
+	}
+
+	closeAddTeam() {
+		this.setState({openAddTeams: false});
+	}
+
+	onSave() {
+		this.closeAddTeam();
+		
 	}
 
 	onTeamTouch(id) {

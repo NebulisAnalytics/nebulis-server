@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Layout from './../Layout';
 import Projects from '../../components/Projects';
+import ProjectListItems from '../../components/ProjectListItems';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Dialog from 'material-ui/Dialog';
 import Form from '../../components/Form';
@@ -78,7 +79,7 @@ export default class ProjectsPage extends Component {
 
 					{ this.renderLoading() }
 					{/* Projects:<br/> */}
-					<Projects projects={this.state.projectsModel.projects} onDelete={::this.onDelete} onToggleCompleted={::this.onAdd}/>
+					<Projects projects={this.state.projectsModel.projects}/>
 
 					<div>
 						{/*will add styling */}

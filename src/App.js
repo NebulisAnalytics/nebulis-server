@@ -10,7 +10,6 @@ export default class App extends Component {
     return (
       <Router history={browserHistory}>
         {routes}
-      </Router>
-    );
+      </Router>);
   }
 }
