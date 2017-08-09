@@ -3,6 +3,7 @@ export default function getInitialState() {
 		error: null,
 		loading: false,
 		projects: [],
-    isAddingProject: false
+    isAddingProject: false,
+		project: null
 	}
 }
