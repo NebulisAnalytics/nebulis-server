@@ -29,6 +29,32 @@ describe('GET /api/projects', function() {
   });
 });
 
+// /projects/index (get) (list all the units)
+describe('POST /api/projects', function() {
+  let project;
+  after(async () => {
+    await Project.destroy(project.id);
+  });
+  it('returns all projects in db', function(done) {
+    chai.request(server)
+      .post('/api/projects')
+      .send({
+        name: 'test12',
+        gitLink: 'https://github.com/user/project12'
+      })
+      .end(function(err, res){
+        sails.log(JSON.stringify(res.body));
+        Project.find({slug: res.body.slug}, (err, q) => {
+          sails.log(err);
+          project = q[0]
+          expect(res.body.name).to.be.equal(q[0].name);
+          done();
+        });
+      });
+  });
+});
+
+
+
 // /projects/<ID> (get) (view a unit with associated teams)
-// /projects/new (post) (create a new unit page)
 // # /projects/<ID>/teams/<teamID> (get) (projectInstance) -- don't bother for now
