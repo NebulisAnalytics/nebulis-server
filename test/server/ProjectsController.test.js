@@ -31,7 +31,7 @@ describe('GET /api/projects', function() {
 
 // /projects/index (get) (list all the units)
 describe('POST /api/projects', function() {
-
+  let project;
   after(async () => {
     await Project.destroy(project.id);
   });
@@ -39,12 +39,17 @@ describe('POST /api/projects', function() {
     chai.request(server)
       .post('/api/projects')
       .send({
-        name: 'test',
-        gitLink: 'https://github.com/user/project'
+        name: 'test12',
+        gitLink: 'https://github.com/user/project12'
       })
       .end(function(err, res){
-        expect(res.body.length).to.be.equal(2);
-        done();
+        sails.log(JSON.stringify(res.body));
+        Project.find({slug: res.body.slug}, (err, q) => {
+          sails.log(err);
+          project = q[0]
+          expect(res.body.name).to.be.equal(q[0].name);
+          done();
+        });
       });
   });
 });
