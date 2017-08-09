@@ -16,10 +16,16 @@ module.exports = {
     });
   },
   
-  create: (req, res) => {
-    sails.log('create project');
-    sails.log(req.body);
-    res.send('success');
+  create: async (req, res) => {
+    try {
+      const name = req.body.name;
+      const gitLink = req.body.gitLink;
+      const slug = gitLink.split('/')[4];
+      const project = await Project.create({ name, slug, gitLink });
+      res.send(project);
+    } catch (err) {
+      res.send(err);
+    }
   }
 
 };

@@ -24,10 +24,7 @@ describe('Team Model Relationships', function() {
     await Team.destroy(team.id);
     await Member.destroy({username: 'user1'});
     await Member.destroy({username: 'user2'});
-
-    //TODO: should not delete entire db of entries.
     await Endpoint.destroy({team: team.id});
-    // await Endpoint.destroy({});
   });
   it('should be able to get a list of it\'s members', async function() {
     const teams = await Team.find(team.id).populate('members')
