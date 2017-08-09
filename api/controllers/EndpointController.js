@@ -76,6 +76,7 @@ module.exports = {
     });
   },
 
+  //TODO: pick the latest file in the repo, not the first occurence in the db.
   download: (req, res) => {
     const store = '/tmp';
     Team.find(req.param('id')).populate('endpoints').exec((err, team) => {
