@@ -14,13 +14,15 @@ export default class ProjectsContainer extends Component {
 		this.state = {
 
 			// map the model to state
-			projectsModel: getStore().getState().projectsModel
+			loading: getStore().getState().projectsModel.loading,
+			project: getStore().getState().projectsModel.project
 		};
 
 		// when the store changes re-map the model to state
 		getStore().subscribe(() => {
 			this.setState({
-				projectsModel: getStore().getState().projectsModel
+				loading: getStore().getState().projectsModel.loading,
+				project: getStore().getState().projectsModel.project
 			}, () => {
 
 			});
@@ -38,24 +40,27 @@ export default class ProjectsContainer extends Component {
 	}
 
 	componentWillMount() {
-		this.getProjects();
+		console.log('this.props', this.props);
+		this.getProject(this.props.params.id)
 	}
 
-	getProjects() {
-		ghoulie.log('getting projects...');
-		actions.getProjects().then(store => {
+	getProject(id) {
+		ghoulie.log('getting project...');
+		console.log(actions.getProject(undefined, {id}));
+		actions.getProject(undefined, {id}).then(store => {
 
 			// store returned is same as getStore().getState()
-			ghoulie.log('got projects', store);
+			ghoulie.log('got project', store);
 
-			// map the model to state
+			// map the project to state
 			this.setState({
-				projectsModel: store.projectsModel
+				loading: store.projectsModel.loading,
+				project: store.projectsModel.project
 			}, () => {
 
-				// emit TODOS_LOADED event for ghoulie test to use
-				const projects = store.projectsModel.projects;
-				ghoulie.emit('PROJECTS_LOADED', projects);
+				// emit PROJECT_LOADED event for ghoulie test to use
+				const project = store.projectsModel.project;
+				ghoulie.emit('PROJECT_LOADED', project);
 
 			});
 
@@ -66,49 +71,52 @@ export default class ProjectsContainer extends Component {
 	}
 
 	render() {
+		this.renderLoading();
+		console.log('render proj',this.state.project);
+		const subtitle = this.state.project !== null ? this.state.project.name : '';
 		return (
-			<Layout title="Projects">
-				<div id="page-projects" className="page">
 
-					{ this.renderLoading() }
+			<Layout title={`Project ${subtitle}`}>
+				{/* <div id="page-projects" className="page">
+
+
 
 					<Projects projects={this.state.projectsModel.projects} onDelete={::this.onDelete} onToggleCompleted={::this.onAdd}/>
 
 					<div>
-						{/*will add styling */}
 						<div id="projectList">
 
 						</div>
 						Add a project:<br/>
 						<button onClick={::this.onAdd}>add</button>
 					</div>
-				</div>
+				</div> */}
 			</Layout>);
 	}
 
 	renderLoading() {
-		if (this.state.projectsModel.loading) {
+		if (this.state.loading) {
 			return (<div>Loading...</div>);
 		}
 	}
 
  // @ TODO
-	onAdd() {
-
-    //  replaces current list with a form to insert Github URL and project title
-    //  Toggle state between current project list display OR new project form
-    //  Add one at a time for now
-    getStore().dispatch(addProject());
-
-		// const name = ReactDOM.findDOMNode(this.refs.project).value;
-		// nebulisActions.createProject({
-		// 	name
-		// }).then(store => {
-		// 	ReactDOM.findDOMNode(this.refs.project).value = '';
-		// 	this.getProjects();
-		// });
-    console.log('adding project(s)...')
-	}
+	// onAdd() {
+	//
+  //   //  replaces current list with a form to insert Github URL and project title
+  //   //  Toggle state between current project list display OR new project form
+  //   //  Add one at a time for now
+  //   getStore().dispatch(addProject());
+	//
+	// 	// const name = ReactDOM.findDOMNode(this.refs.project).value;
+	// 	// nebulisActions.createProject({
+	// 	// 	name
+	// 	// }).then(store => {
+	// 	// 	ReactDOM.findDOMNode(this.refs.project).value = '';
+	// 	// 	this.getProjects();
+	// 	// });
+  //   console.log('adding project(s)...')
+	// }
 
   //  retrive project info from github
 
@@ -116,12 +124,12 @@ export default class ProjectsContainer extends Component {
 
   //  move project name from unadded list to added list
 
-
-	onDelete(id) {
-    //  destroys selected project(s) in DB by id
-		nebulisActions.deleteProject(null, {
-			id
-      // then pulls updated list and replaces old list
-		}).then(::this.getProjects);
-	}
+	//
+	// onDelete(id) {
+  //   //  destroys selected project(s) in DB by id
+	// 	nebulisActions.deleteProject(null, {
+	// 		id
+  //     // then pulls updated list and replaces old list
+	// 	}).then(::this.getProjects);
+	// }
 }

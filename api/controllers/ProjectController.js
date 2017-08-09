@@ -14,6 +14,13 @@ module.exports = {
       }
       else res.send(projects);
     });
+  },
+  getProject: function (req, res) {
+    Project.find({id: req.params.id}).exec(function (err, project) {
+      if (err) {
+        res.status(500);
+        res.send(err);
+      } else res.send(project);
+    })
   }
-  
 };
