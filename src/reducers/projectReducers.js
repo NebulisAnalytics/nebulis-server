@@ -25,6 +25,21 @@ const reducer = createReducer(getInitialState, {
     });
   },
 
+  GET_PROJECT: function(state, action) {
+    return {
+      ...state,
+      loading: true
+    };
+  },
+
+  GET_PROJECT_SUCCESS: function(state, action) {
+    return {
+      ...state,
+      loading: false,
+      project: action.results[0]
+    };
+  },
+
   CREATE_PROJECT: function(state, action) {
     return Object.assign({}, state, {
       loading: true,
@@ -51,7 +66,7 @@ const reducer = createReducer(getInitialState, {
     return Object.assign({}, state, {
       isAddingProject: false
     });
-  },
+  }
 });
 
 export {reducer};

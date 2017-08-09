@@ -14,7 +14,9 @@ const HTTP_STATUS_CODES = {
 };
 
 export function createActions(getStore, fetchOptions, endpoints) {
-	let actions = {}, actionName, actionOptions;
+	let actions = {},
+		actionName,
+		actionOptions;
 	for (actionName in endpoints) {
 		actionOptions = endpoints[actionName];
 		actions[actionName] = createServerAction(getStore, actionOptions, fetchOptions);
@@ -25,20 +27,20 @@ export function createActions(getStore, fetchOptions, endpoints) {
 export function createFetch(fetchOptions, params) {
 	return function (actionOptions, args) {
 		let url = actionOptions.url;
-		
+
 		let value, newurl;
 		for (let param in params) {
 			value = params[param];
 			newurl = url.replace(new RegExp('/(:' + param + '\/?)(/|$)', "gm"), '/' + value + '$2');
 			url = newurl;
 		}
-		
+
 		const method = actionOptions.method ? actionOptions.method.toUpperCase() : 'GET';
-		
+
 		const options = Object.assign({}, fetchOptions, {
 			method
 		});
-		
+
 		if (typeof args === 'object' && args !== null) {
 			if (method === 'GET') {
 				if (url.indexOf('?') === -1) url += '?';
@@ -57,10 +59,10 @@ export function createServerAction(getStore, actionOptions, fetchOptions) {
 			dispatch({
 				type: actionOptions.request,
 			});
-			
+
 			let status;
 			const _fetch = createFetch(fetchOptions, params);
-			
+
 			return _fetch(actionOptions, args)
 			.then((response) => {
 				status = response.status;
@@ -69,10 +71,10 @@ export function createServerAction(getStore, actionOptions, fetchOptions) {
 			.then((json) => {
 				if (status >= 400) {
 					if (json.error && json.error.type) {
-						
+
 						if (actionOptions.error) {
 							const errorType = json.error.type;
-							
+
 							const a = {
 								type: actionOptions.error,
 								success: false,
@@ -119,11 +121,11 @@ export function createServerAction(getStore, actionOptions, fetchOptions) {
 }
 
 export function createDispatcher(getStore, actionFunction) {
-	
+
 	const getStoreState = function () {
 		return getStore().getState();
 	};
-	
+
 	return function (args, params) {
 		return new Promise((resolve, reject) => {
 			getStore().dispatch(actionFunction.call(null, args, params)).then(() => {
@@ -133,7 +135,7 @@ export function createDispatcher(getStore, actionFunction) {
 			});
 		});
 	}
-	
+
 }
 
 export function createReducer(getInitialState, responses) {
