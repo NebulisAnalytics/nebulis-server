@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Layout from './../Layout';
+
 import Projects from '../../components/Projects';
+import ProjectListItems from '../../components/ProjectListItems'
 import * as actions from '../../actions/nebulisActions.js'
 import { getStore, addProject, closeProject } from './../../store/configureStore';
 
