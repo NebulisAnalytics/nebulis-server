@@ -15,33 +15,39 @@ export default class ProjectsContainer extends Component {
 
 			// map the model to state
 			loading: getStore().getState().projectsModel.loading,
-			project: getStore().getState().projectsModel.project
+			project: getStore().getState().projectsModel.project,
+			teams: getStore().getState().projectsModel.teams
 		};
 
 		// when the store changes re-map the model to state
 		getStore().subscribe(() => {
 			this.setState({
 				loading: getStore().getState().projectsModel.loading,
-				project: getStore().getState().projectsModel.project
+				project: getStore().getState().projectsModel.project,
+				teams: getStore().getState().projectsModel.project
 			}, () => {
 
 			});
 		});
 
 		// notify ghoulie when this component is instantiated
-		ghoulie.emit('PROJECTS_PAGE_LOADED');
+		ghoulie.emit('PROJECT_PAGE_LOADED');
 
 		// when ghoulie receives a RELOAD_PROJECTS event (from within a
-    // unit test) log the event and call getProjects()
-		ghoulie.on('RELOAD_PROJECTS', () => {
-			ghoulie.log('RELOADING PROJECTS !!!!');
-			this.getProjects();
+    // unit test) log the event and call getProject()
+		ghoulie.on('RELOAD_PROJECT', () => {
+			ghoulie.log('RELOADING PROJECT !!!!');
+			this.getProject(this.props.params.id);
 		});
 	}
 
 	componentWillMount() {
 		console.log('this.props', this.props);
-		this.getProject(this.props.params.id)
+		this.getProject(this.props.params.id);
+	}
+
+	componentDidMount() {
+		this.getTeams();
 	}
 
 	getProject(id) {
@@ -70,29 +76,44 @@ export default class ProjectsContainer extends Component {
 		});
 	}
 
+	getTeams() {
+		actions.getTeams(undefined, {id}).then(store => {
+
+			// store returned is same as getStore().getState()
+			ghoulie.log('got Teams', store);
+
+			// map the project to state
+			this.setState({
+				loading: store.projectsModel.loading,
+				project: store.projectsModel.project
+			}, () => {
+
+				// emit PROJECT_LOADED event for ghoulie test to use
+				const project = store.projectsModel.project;
+				ghoulie.emit('PROJECT_LOADED', project);
+
+			});
+
+		}).catch(function(e, store) {
+			console.log('CAUGHT ERROR', e);
+			debugger;
+		});
+	}
+
 	render() {
-		this.renderLoading();
+
 		console.log('render proj',this.state.project);
 		const subtitle = this.state.project !== null ? this.state.project.name : '';
 		return (
 
 			<Layout title={`Project ${subtitle}`}>
-				{/* <div id="page-projects" className="page">
+				{this.renderLoading()}
 
-
-
-					<Projects projects={this.state.projectsModel.projects} onDelete={::this.onDelete} onToggleCompleted={::this.onAdd}/>
-
-					<div>
-						<div id="projectList">
-
-						</div>
-						Add a project:<br/>
-						<button onClick={::this.onAdd}>add</button>
-					</div>
-				</div> */}
-			</Layout>);
+			</Layout>
+		);
 	}
+
+
 
 	renderLoading() {
 		if (this.state.loading) {

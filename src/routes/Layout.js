@@ -50,7 +50,7 @@ export default class Layout extends Component {
 					<Link to="/"><MenuItem style={styles.MenuItem}>Home</MenuItem></Link>
 					<Link to="/login"><MenuItem style={styles.MenuItem}>Login</MenuItem></Link>
 					<Link to="/projects"><MenuItem style={styles.MenuItem}>Projects</MenuItem></Link>
-					<Link to="/memberspage"><MenuItem style={styles.MenuItem}>Members</MenuItem></Link>
+					<Link to="/members"><MenuItem style={styles.MenuItem}>Members</MenuItem></Link>
 				</Drawer>
 				{this.props.children}
 			</div>

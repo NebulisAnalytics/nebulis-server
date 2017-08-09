@@ -30,7 +30,7 @@ const listen = (
     return {
       anonRead: false,
       users: [
-        { user: standardUser, permissions: ['W'] },
+        { user: standardUser, permissions: ['R', 'W'] },
       ],
     };
   };
