@@ -12,22 +12,26 @@ var git = require("nodegit");
 
 let connector;
 
-before((done) => {
+before(function(done) {
+  this.timeout(20000);
   connector = spawn( 'yarn', {
     cwd: './test/endpoint/testingProject/',
   });
 
-  connector.stdout.on('data', (message) => {
-    console.log(message.toString());
+  const yarnListener = (message) => {
+    console.log('yarnListener: ', message.toString());
     if (message.toString().indexOf('Done in') !== -1) {
+      connector.stdout.removeListener('data', yarnListener);
       done();
     }
-  });
+  };
+  connector.stdout.on('data', yarnListener);
 });
 
 describe('Endpoint Application Integration', function() {
   let project;
   let endpointID;
+  let currentHEAD;
   before((done) => {
     this.timeout(20000);
     spawnSync( 'mkdir', [ './.git' ], {
@@ -45,7 +49,7 @@ describe('Endpoint Application Integration', function() {
       connector.stderr.on('data', beforeListener);
     });
     const beforeListener = (message) => {
-      console.log(message.toString());
+      console.log('beforeListener: ', message.toString());
       if (message.toString().indexOf('Endpoint ID:') !== -1) {
         const m = message.toString();
         const i = m.indexOf('ID:');
@@ -63,7 +67,8 @@ describe('Endpoint Application Integration', function() {
   xit('should be able to connect to the server', () => {
 
   });
-  it('on file change change, it should make a successful commit for a repo', (done) => {
+  it('on file change change, it should make a successful commit for a repo', function(done) {
+    this.timeout(20000);
     let madeCommit = false;
     const pushListener = (message) => {
       if (message.toString().indexOf('1 file changed, 0 insertions(+)') !== -1) {
@@ -73,48 +78,69 @@ describe('Endpoint Application Integration', function() {
         expect(madeCommit).to.be.equal(true);
         setTimeout(() => {
           //store repo information before testing
-          // const path = `/tmp/repos/ --git-dir=${endpointID}.git`;
-          const path = '/tmp/repos/4.git';
+          const path = `/tmp/repos/${endpointID}.git`;
           git.Repository.openBare(path)
             .then(function(repo) {
-              repo.getHeadCommit().then(function(commit) {
-                currentHEAD = commit;
-                console.log('currentHEAD:' + currentHEAD);
+              repo.getReferenceCommit('refs/heads/master').then(function(commit) {
+                currentHEAD = commit.sha();
+                console.log('precurrentHEAD',currentHEAD);
+                connector.stdout.removeListener('data', pushListener);
+                done();
               });
             });
-
-          connector.stdout.removeListener('data', pushListener);
-          done();
-        }, 1750);
+          }, 1450);
       };
-      console.log(message.toString());
+      console.log('pushListener:', message.toString());
     };
     connector.stdout.on('data', pushListener);
     spawnSync( 'touch', [ './newfile.js' ], {
+      cwd: './test/endpoint/testingProject',
+    });
+    spawnSync( 'echo', [ 'something', '>', './newfile.js' ], {
       cwd: './test/endpoint/testingProject',
     });
   });
   it('when restarted, the server should still accept repo pushes', (done) => {
-    nebugit.stop();
-    nebugit.listen();
-    let madeCommit = false;
-    const pushListener = (message) => {
-      if (message.toString().indexOf('1 file changed, 0 insertions(+)') !== -1) {
-        madeCommit = true;
+    nebugit.stop(() => {
+      nebugit.listen();
+      let madeCommit = false;
+      const pushListener = (message) => {
+        if (message.toString().indexOf('1 file changed, 0 insertions(+)') !== -1) {
+          madeCommit = true;
+        };
+        if (message.toString().indexOf('Syncing endpoint to server...') !== -1) {
+          expect(madeCommit).to.be.equal(true);
+          setTimeout(() => {
+            connector.stdout.removeListener('data', pushListener);
+            done();
+          }, 1750);
+        };
+        console.log('pushListener2:', message.toString());
       };
-      if (message.toString().indexOf('Syncing endpoint to server...') !== -1) {
-        expect(madeCommit).to.be.equal(true);
-        setTimeout(() => {
-          connector.stdout.removeListener('data', pushListener);
-          done();
-        }, 1750);
-      };
-      console.log(message.toString());
-    };
-    connector.stdout.on('data', pushListener);
-    spawnSync( 'touch', [ './newfile.js' ], {
-      cwd: './test/endpoint/testingProject',
+      connector.stdout.on('data', pushListener);
+      spawnSync( 'touch', [ './newfile2.js' ], {
+        cwd: './test/endpoint/testingProject',
+      });
+      spawnSync( 'echo', [ 'something2', '>', './newfile2.js' ], {
+        cwd: './test/endpoint/testingProject',
+      });
     });
+  });
+  it('should report an additional commit in the server repo', function(done) {
+    this.timeout(20000);
+    const path = `/tmp/repos/${endpointID}.git`;
+    git.Repository.openBare(path)
+      .then(function(repo) {
+        repo.getReferenceCommit('refs/heads/master').then(function(commit) {
+          const newHead = commit.sha();
+          console.log('currentHEAD',currentHEAD);
+          console.log('newHead',newHead);
+          expect(currentHEAD).to.not.be.equal(newHead);
+          expect(currentHEAD.length).to.be.equal(newHead.length);
+          expect(newHead.length).to.be.equal(40);
+          done();
+        });
+      });
   });
   after((done) => {
     Project.destroy(project.id).exec((err) => {
@@ -122,6 +148,9 @@ describe('Endpoint Application Integration', function() {
         Endpoint.destroy(endpointID).exec((err) => {
           Member.destroy(endpoints[0].member.id).exec((err) => {
             spawnSync( 'rm', [ './newfile.js' ], {
+              cwd: './test/endpoint/testingProject/',
+            });
+            spawnSync( 'rm', [ './newfile2.js' ], {
               cwd: './test/endpoint/testingProject/',
             });
             spawnSync( 'rm', [ './testingProject/.git/config' ], {
@@ -138,8 +167,5 @@ describe('Endpoint Application Integration', function() {
         });
       });
     });
-  });
-  xit('should report an additional commit in the server repo', (done) => {
-
   });
 });

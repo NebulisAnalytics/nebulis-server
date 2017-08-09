@@ -1,9 +1,11 @@
-var debug = require('../../api/utils/debug');
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var should = chai.should();
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const fs = require('fs');
+const request = require('request');
+
+const should = chai.should();
 chai.use(chaiHttp);
-var expect = chai.expect;
+const expect = chai.expect;
 
 var server = 'http://localhost:1337';
 
@@ -165,4 +167,11 @@ describe('GET /api/endpoints', () => {
       });
   });
   xit('should not allow external ip addresses to get the list', () => {});
+});
+
+
+describe('GET /api/teams/:id/download', () => {
+  xit('should be able to download a file', () => {
+
+  });
 });

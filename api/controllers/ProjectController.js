@@ -14,6 +14,18 @@ module.exports = {
       }
       else res.send(projects);
     });
-  }
+  },
   
+  create: async (req, res) => {
+    try {
+      const name = req.body.name;
+      const gitLink = req.body.gitLink;
+      const slug = gitLink.split('/')[4];
+      const project = await Project.create({ name, slug, gitLink });
+      res.send(project);
+    } catch (err) {
+      res.send(err);
+    }
+  }
+
 };
