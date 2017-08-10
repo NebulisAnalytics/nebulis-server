@@ -19,16 +19,16 @@ const Form = (props) => {
 
   return (
     <form 
-      action={props.action} 
-      method={props.method} 
-      style={styles.form} 
+      action={props.action}
+      method={props.method}
+      style={styles.form}
       onSubmit={handleSubmit}
       ref={f => form = f}
     >
+    <div style={styles.validation}>{props.validation}</div>
     {
       props.fields.map((field, i) => {
         return (
-
           <TextField
             key={i}
             name={field.name}
@@ -62,7 +62,13 @@ const styles = {
     justifyContent: 'space-around'
   },
   button: {
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
+    marginLeft: 5,
+    marginBottom: 20,
+    marginTop: 14
+  },
+  validation : {
+    color: 'red'
   }
 }
 
