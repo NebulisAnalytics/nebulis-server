@@ -19,14 +19,14 @@ export default class ProjectListItems extends Component {
 		const project = this.props.project;
 		return (
 			<Link to={"/projects/" + project.id} style={ styles.item }>
-			<ListItem
-				
-				primaryText= { "Name: " + project.name }
-				secondaryText= { "Updated At: " + project.updatedAt }
-				hoverColor= { '#FF8442' }
-				leftAvatar={<Avatar icon={<FileFolder />} />}
-			>
-		</ListItem>
+				<ListItem
+					
+					primaryText= { "Name: " + project.name }
+					secondaryText= { "Updated At: " + project.updatedAt }
+					hoverColor= { '#FF8442' }
+					leftAvatar={<Avatar icon={<FileFolder />} />}
+				>
+				</ListItem>
 			</Link>
 		);
 

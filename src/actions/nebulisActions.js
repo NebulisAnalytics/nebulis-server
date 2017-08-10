@@ -76,9 +76,9 @@ const actions = createActions(getStore, fetchOptions, {
   },
   getMembers: {
     method: 'get',
-    url: '/api/members/:id',
-    request: types.GET_MEMBER,
-    success: types.GET_MEMBER_SUCCESS,
+    url: '/api/members',
+    request: types.GET_MEMBERS,
+    success: types.GET_MEMBERS_SUCCESS,
     error: types.MEMBERS_ERROR
   },
   deleteMember: {
@@ -86,7 +86,7 @@ const actions = createActions(getStore, fetchOptions, {
     url: '/api/members/:id',
     request: types.DELETE_MEMBER,
     success: types.DELETE_MEMBER_SUCCESS,
-    error: types.MEMBERS_ERROR
+    error: types.MEMBER_ERROR
   },
   //	get teams
   getTeams: {

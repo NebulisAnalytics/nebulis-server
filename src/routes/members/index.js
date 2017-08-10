@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Layout from './../Layout';
-
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Members from '../../components/Members';
 import MemberListItems from '../../components/MemberListItems'
 import * as actions from '../../actions/nebulisActions.js'
 import { getStore, makeAdmin, removeAdmin } from './../../store/configureStore';
 
+import { PlusIcon } from 'mdi-material-ui';
 import ghoulie from 'ghoulie';
 
 
@@ -69,6 +70,12 @@ export default class MembersContainer extends Component {
 	}
 
 	render() {
+		const styles = {
+			action: {
+				margin: 20,
+			}
+		}
+
 
 		return (
 			<Layout title="Members">
@@ -78,12 +85,14 @@ export default class MembersContainer extends Component {
 
           <Members members={this.state.membersModel.members} onDelete={::this.onDelete}/>
 
+          <FloatingActionButton style={styles.action} secondary={true} onTouchTap={::this.onAdd} mini={true}>
+            <PlusIcon />
+          </FloatingActionButton>
+
 					<div>
 						<div id="memberList">
 
 						</div>
-						{/* Add a member:<br/> */}
-						<button onClick={::this.onAdd}>add</button>
 					</div>
 				</div>
 			</Layout>);
