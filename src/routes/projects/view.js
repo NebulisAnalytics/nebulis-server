@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Layout from './../Layout';
 import Teams from '../../components/Teams';
+import AddTeam from '../../components/AddTeam';
 import * as actions from '../../actions/nebulisActions.js'
 import { getStore } from './../../store/configureStore';
 import { PlusIcon } from 'mdi-material-ui';
@@ -21,6 +22,8 @@ export default class ProjectsContainer extends Component {
 			downloading: getStore().getState().teamsModel.downloading,
 			project: getStore().getState().projectsModel.project,
 			teams: getStore().getState().teamsModel.teams,
+			team: getStore().getState().teamsModel.team,
+			members: null,//getStore().getState().teamsModel.members,
 			openAddTeams: false
 		};
 
@@ -30,7 +33,9 @@ export default class ProjectsContainer extends Component {
 				loading: getStore().getState().projectsModel.loading,
 				downloading: getStore().getState().teamsModel.downloading,
 				project: getStore().getState().projectsModel.project,
-				teams: getStore().getState().teamsModel.project
+				teams: getStore().getState().teamsModel.project,
+				team: getStore().getState().teamsModel.team,
+				// members: getStore().getState().teamsModel.members,
 			}, () => {
 
 			});
@@ -107,9 +112,15 @@ export default class ProjectsContainer extends Component {
 		});
 	}
 
+	getMembers() {
+		this.setState({
+			members: [{id:1, username:'Jose'}, {id:2, username:'John'}, {id:3, username:'Jyu'}]
+		});
+	}
+
 	render() {
 
-		console.log('render proj',this.state.project);
+		console.log('render projects now',this.state.project);
 		const subtitle = this.state.project !== null ? this.state.project.name : '';
 		return (
 
@@ -151,7 +162,9 @@ export default class ProjectsContainer extends Component {
 		if (this.state.openAddTeams) {
 			return (
 				<AddTeam
-					close={::this.closeAddTeam}
+					members={this.state.members}
+					open={this.state.openAddTeams}
+					onClose={::this.closeAddTeam}
 					onSave={::this.onSave} />
 			);
 		}
@@ -174,6 +187,7 @@ export default class ProjectsContainer extends Component {
 	}
 
 	addTeam() {
+		this.getMembers();
 		this.setState({openAddTeams: true});
 	}
 
@@ -183,7 +197,7 @@ export default class ProjectsContainer extends Component {
 
 	onSave() {
 		this.closeAddTeam();
-		
+
 	}
 
 	onTeamTouch(id) {
@@ -194,31 +208,6 @@ export default class ProjectsContainer extends Component {
 		console.log('delete', id);
 	}
 
- // @ TODO
-	// onAdd() {
-	//
-  //   //  replaces current list with a form to insert Github URL and project title
-  //   //  Toggle state between current project list display OR new project form
-  //   //  Add one at a time for now
-  //   getStore().dispatch(addProject());
-	//
-	// 	// const name = ReactDOM.findDOMNode(this.refs.project).value;
-	// 	// nebulisActions.createProject({
-	// 	// 	name
-	// 	// }).then(store => {
-	// 	// 	ReactDOM.findDOMNode(this.refs.project).value = '';
-	// 	// 	this.getProjects();
-	// 	// });
-  //   console.log('adding project(s)...')
-	// }
-
-  //  retrive project info from github
-
-  //  add project info to DB
-
-  //  move project name from unadded list to added list
-
-	//
 	// onDelete(id) {
   //   //  destroys selected project(s) in DB by id
 	// 	nebulisActions.deleteProject(null, {
