@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { Members } from './Members';
 import { ListItem } from 'material-ui/List';
-// import AccountPlus from 'mdi-material-ui/AccountPlus';
-
+import AccountPlus from 'material-ui/svg-icons/social/person';
+import Avatar from 'material-ui/Avatar';
 
 export default class MemberListItems extends Component {
   render() {
@@ -12,7 +12,8 @@ export default class MemberListItems extends Component {
       <ListItem
   				primaryText= { "Name: " + member.username }
   				secondaryText= { "Admin? " + member.admin }
-  				hoverColor= { '#FF8442' }>
+          hoverColor= { '#FF8442' }
+          leftAvatar={<Avatar icon={<AccountPlus />} />}>
   		</ListItem>
   )}
 }
