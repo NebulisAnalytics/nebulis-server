@@ -37,11 +37,49 @@ const config = {
 			test: /\.js$/,
 			loaders: ['babel-loader'],
 			include: path.join(__dirname, 'src')
-		},
-		{
+		}, {
 			test: /\.css$/,
 			loader: 'style-loader!css-loader'
-		}]
+		}, {
+			// Loader for fonts (woff)
+			test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+			loader: 'url?limit=10000&mimetype=application/font-woff',
+		}, {
+			// Loader for fonts (woff2)
+			test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+			loader: 'url?limit=10000&mimetype=application/font-woff2',
+		}, {
+			// Loader for fonts (ttf)
+			test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+			loader: 'url?limit=10000&mimetype=application/octet-stream',
+		}, {
+			// Loader for fonts (otf)
+			test: /\.otf(\?v=\d+\.\d+\.\d+)?$/,
+			loader: 'url?limit=10000&mimetype=application/font-otf',
+		}, {
+			// Loader for fonts (eot)
+			test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+			loader: 'file',
+		}, {
+			// Loader for images (svg)
+			test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+			loader: 'url?limit=10000&mimetype=image/svg+xml',
+		}, {
+			// Loader for images (png)
+			test: /\.png$/,
+			loader: 'file?name=[name].[ext]',
+		}, {
+			// Loader for images (jpg)
+			test: /\.jpg$/,
+			loader: 'file?name=[name].[ext]',
+		}, {
+			// Loader for images (gif)
+			test: /\.gif$/,
+			loader: 'file?name=[name].[ext]',
+		}, {
+			test: /\.scss$/,
+			loaders: ["style-loader", "css-loader", "sass-loader"], // creates style nodes from JS strings
+		},]
 	},
 	performance: {
 		hints: false

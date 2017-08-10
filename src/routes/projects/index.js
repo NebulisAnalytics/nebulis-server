@@ -18,9 +18,11 @@ export default class ProjectsPage extends Component {
 	constructor(props) {
 		super(props);
 		this.handleClose = this.handleClose.bind(this);
+		this.onSave = this.onSave.bind(this);
 
 		this.state = {
 			open: false,
+			validation: '',
 			// map the model to state
 			projectsModel: getStore().getState().projectsModel
 		};
@@ -44,7 +46,7 @@ export default class ProjectsPage extends Component {
 		});
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.getProjects();
 	}
 
@@ -73,6 +75,12 @@ export default class ProjectsPage extends Component {
 	}
 
 	render() {
+		const styles = {
+			action: {
+				margin: 20,
+			}
+		}
+
 		return (
 			<Layout title="Projects">
 				<div id="page-projects" className="page">
@@ -87,22 +95,23 @@ export default class ProjectsPage extends Component {
 
 						</div>
 
-						<FloatingActionButton secondary={true} onTouchTap={::this.onAdd} mini={true}>
+						<FloatingActionButton style={styles.action} secondary={true} onTouchTap={::this.onAdd} mini={true}>
 							<PlusIcon />
 						</FloatingActionButton>
 						<Dialog
 							title="Add a Project"
 							actions={[<Form
-													action='http://localhost:1337/api/projects'
-													method="POST"
-													fields={[
-														{ name: 'name', label: 'Project Name' }, 
-														{ name: 'gitLink', label: 'Github Project Link' }]}
-													cancel={true}
-													handleClose={this.handleClose}
-													handleSubmit={this.onSave}
-													form={this.form}
-													/>]}
+								action='http://localhost:1337/api/projects'
+								method="POST"
+								fields={[
+									{ name: 'name', label: 'Project Name' }, 
+									{ name: 'gitLink', label: 'Github Project Link', hint: 'https://github.com/user/project' }]}
+								cancel={true}
+								handleClose={this.handleClose}
+								handleSubmit={this.onSave}
+								form={this.form}
+								validation={this.state.validation}
+								/>]}
 							modal={true}
 							open={this.state.open}
 						/>
@@ -118,9 +127,29 @@ export default class ProjectsPage extends Component {
 	}
 
 	onSave(form) {
-		this.handleClose();
-		let {name, gitLink} = form;		
-		actions.createProject({name: name.value, gitLink: gitLink.value});
+		ghoulie.emit('CREATE_PROJECT');
+		let {name, gitLink} = form;
+		actions.createProject({name: name.value, gitLink: gitLink.value}).then(store => {
+
+			// store returned is same as getStore().getState()
+			ghoulie.log('got response', store);
+
+			// map the model to state
+			this.setState({
+				projectsModel: store.projectsModel,
+				validation: store.projectsModel.results.summary
+			}, () => {
+				console.log('this.state.validation',this.state.validation);
+				if(this.state.validation === undefined) {
+					this.getProjects();
+					this.handleClose();
+				}
+			});
+
+		}).catch(function(e, store) {
+			console.log('CAUGHT ERROR', e);
+			debugger;
+		});
 	}
 
 	onAdd(e) {

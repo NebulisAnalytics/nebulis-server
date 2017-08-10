@@ -14,11 +14,10 @@ module.exports = {
     },
     slug: {
       type: 'string',
-      required: true,
       unique: true
     },
     gitLink: {
-      type: 'string',
+      type: 'url',
       required: true,
       unique: true
     },

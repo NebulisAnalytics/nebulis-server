@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import { List, ListItem } from 'material-ui/List';
+import MemberListItems from './MemberListItems';
 
 export default class Members extends Component {
 	render() {
@@ -10,18 +12,20 @@ export default class Members extends Component {
 	}
 
   renderMembers() {
-		if (this.props.members.length) {
-			return (<ul>
+		if (this.props.members && this.props.members.length) {
+			return (
+				<List>
 				{ this.props.members.map((member, index) => {
-					let adminHandler = () => {
-						this.props.makeAdmin(member.admin, !member.added);
-					};
-					let deleteHandler = () => {
-						this.props.onDelete(member.id);
-					};
-					return (<Members key={index} member={member} makeAdmin={adminHandler} onDelete={deleteHandler}/>);
-				}) }
-			</ul>);
+						let adminHandler = () => {
+							this.props.makeAdmin(member.admin, !member.added);
+						};
+						let deleteHandler = () => {
+							this.props.onDelete(member.id);
+						};
+						return (<MemberListItems key={index} member={member} makeAdmin={adminHandler} onDelete={deleteHandler}/>);
+					})
+				}
+				</List>);
 		}
 	}
 }

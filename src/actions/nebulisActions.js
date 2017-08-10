@@ -60,6 +60,13 @@ const actions = createActions(getStore, fetchOptions, {
     success: types.DELETE_PROJECTS_SUCCESS,
     error: types.PROJECTS_ERROR
   },
+  downloadTeamProject: {
+    method: 'get',
+    url: '/api/teams/:id/download',
+    request: types.DOWNLOAD_PROJECT,
+    success: types.DOWNLOAD_PROJECT_SUCCESS,
+    error: types.PROJECTS_ERROR
+  },
   createMember: {
     method: 'post',
     url: '/api/members',
@@ -69,9 +76,9 @@ const actions = createActions(getStore, fetchOptions, {
   },
   getMembers: {
     method: 'get',
-    url: '/api/members/:id',
-    request: types.GET_MEMBER,
-    success: types.GET_MEMBER_SUCCESS,
+    url: '/api/members',
+    request: types.GET_MEMBERS,
+    success: types.GET_MEMBERS_SUCCESS,
     error: types.MEMBERS_ERROR
   },
   deleteMember: {
@@ -79,7 +86,7 @@ const actions = createActions(getStore, fetchOptions, {
     url: '/api/members/:id',
     request: types.DELETE_MEMBER,
     success: types.DELETE_MEMBER_SUCCESS,
-    error: types.MEMBERS_ERROR
+    error: types.MEMBER_ERROR
   },
   //	get teams
   getTeams: {
@@ -91,9 +98,19 @@ const actions = createActions(getStore, fetchOptions, {
   }
 });
 
+function addTeamMember(teamMember) {
+  return {
+    type: types.ADD_TEAM_MEMBER,
+    results: teamMember
+  }
+}
+
 module.exports = {
-  ...actions
+  ...actions,
+  addTeamMember
 };
+
+
 export function addProject(){
   return {type: types.ADD_PROJECT}
 }

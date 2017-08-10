@@ -61,6 +61,7 @@ var routes = {
   'post /api/projects': 'ProjectController.create',
 
   'get /api/members': 'MemberController.getMembers',
+  // 'get /api/members/:id': 'MemberController.getMembers',
 
   'post /api/endpoints/establish': 'EndpointController.establish',
   'get /api/endpoints': 'EndpointController.index',

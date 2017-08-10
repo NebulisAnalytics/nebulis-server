@@ -8,17 +8,25 @@ import FileFolder from 'material-ui/svg-icons/file/folder';
 
 
 export default class ProjectListItems extends Component {
+
 	render() {
+		const styles = {
+			item: {
+				textDecoration: 'none'
+			}
+		}
+
 		const project = this.props.project;
 		return (
-			<Link to={"/projects/" + project.id}>
-			<ListItem
-				primaryText= { "Name: " + project.name }
-				secondaryText= { "Updated At: " + project.updatedAt }
-				hoverColor= { '#FF8442' }
-				leftAvatar={<Avatar icon={<FileFolder />} />}
-			>
-		</ListItem>
+			<Link to={"/projects/" + project.id} style={ styles.item }>
+				<ListItem
+					
+					primaryText= { "Name: " + project.name }
+					secondaryText= { "Updated At: " + project.updatedAt }
+					hoverColor= { '#FF8442' }
+					leftAvatar={<Avatar icon={<FileFolder />} />}
+				>
+				</ListItem>
 			</Link>
 		);
 

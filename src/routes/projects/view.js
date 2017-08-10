@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Layout from './../Layout';
-
-import Projects from '../../components/Projects';
-import ProjectListItems from '../../components/ProjectListItems'
+import Teams from '../../components/Teams';
+import AddTeam from '../../components/AddTeam';
 import * as actions from '../../actions/nebulisActions.js'
-import { getStore, addProject, closeProject } from './../../store/configureStore';
+import { getStore } from './../../store/configureStore';
+import { PlusIcon } from 'mdi-material-ui';
+import RaisedButton from 'material-ui/RaisedButton';
+
 
 import ghoulie from 'ghoulie';
 
@@ -17,16 +19,23 @@ export default class ProjectsContainer extends Component {
 
 			// map the model to state
 			loading: getStore().getState().projectsModel.loading,
+			downloading: getStore().getState().teamsModel.downloading,
 			project: getStore().getState().projectsModel.project,
-			teams: getStore().getState().projectsModel.teams
+			teams: getStore().getState().teamsModel.teams,
+			team: getStore().getState().teamsModel.team,
+			members: null,//getStore().getState().teamsModel.members,
+			openAddTeams: false
 		};
 
 		// when the store changes re-map the model to state
 		getStore().subscribe(() => {
 			this.setState({
 				loading: getStore().getState().projectsModel.loading,
+				downloading: getStore().getState().teamsModel.downloading,
 				project: getStore().getState().projectsModel.project,
-				teams: getStore().getState().projectsModel.project
+				teams: getStore().getState().teamsModel.project,
+				team: getStore().getState().teamsModel.team,
+				// members: getStore().getState().teamsModel.members,
 			}, () => {
 
 			});
@@ -46,15 +55,15 @@ export default class ProjectsContainer extends Component {
 	componentWillMount() {
 		console.log('this.props', this.props);
 		this.getProject(this.props.params.id);
+	  this.getTeams(this.props.params.id);
 	}
 
-	componentDidMount() {
-		this.getTeams();
-	}
+	// componentDidMount() {
+	// 	this.getTeams(this.props.params.id);
+	// }
 
 	getProject(id) {
 		ghoulie.log('getting project...');
-		console.log(actions.getProject(undefined, {id}));
 		actions.getProject(undefined, {id}).then(store => {
 
 			// store returned is same as getStore().getState()
@@ -78,7 +87,8 @@ export default class ProjectsContainer extends Component {
 		});
 	}
 
-	getTeams() {
+	getTeams(id) {
+		ghoulie.log('getting teams...');
 		actions.getTeams(undefined, {id}).then(store => {
 
 			// store returned is same as getStore().getState()
@@ -86,13 +96,13 @@ export default class ProjectsContainer extends Component {
 
 			// map the project to state
 			this.setState({
-				loading: store.projectsModel.loading,
-				project: store.projectsModel.project
+				loading: store.teamsModel.loading,
+				teams: store.teamsModel.teams
 			}, () => {
 
 				// emit PROJECT_LOADED event for ghoulie test to use
-				const project = store.projectsModel.project;
-				ghoulie.emit('PROJECT_LOADED', project);
+				const teams = store.teamsModel.teams;
+				ghoulie.emit('TEAMS_LOADED', teams);
 
 			});
 
@@ -102,15 +112,31 @@ export default class ProjectsContainer extends Component {
 		});
 	}
 
+	getMembers() {
+		this.setState({
+			members: [{id:1, username:'Jose'}, {id:2, username:'John'}, {id:3, username:'Jyu'}]
+		});
+	}
+
 	render() {
 
-		console.log('render proj',this.state.project);
+		console.log('render projects now',this.state.project);
 		const subtitle = this.state.project !== null ? this.state.project.name : '';
 		return (
 
 			<Layout title={`Project ${subtitle}`}>
 				{this.renderLoading()}
-
+				<div id="page-teams" className="page">
+				<RaisedButton
+						target="_blank"
+						label="Add Team"
+						secondary={true}
+						icon={<PlusIcon />}
+						onTouchTap={::this.addTeam}
+					/>
+				{this.renderAddTeams()}
+				{this.renderTeams()}
+				</div>
 			</Layout>
 		);
 	}
@@ -123,31 +149,65 @@ export default class ProjectsContainer extends Component {
 		}
 	}
 
- // @ TODO
-	// onAdd() {
-	//
-  //   //  replaces current list with a form to insert Github URL and project title
-  //   //  Toggle state between current project list display OR new project form
-  //   //  Add one at a time for now
-  //   getStore().dispatch(addProject());
-	//
-	// 	// const name = ReactDOM.findDOMNode(this.refs.project).value;
-	// 	// nebulisActions.createProject({
-	// 	// 	name
-	// 	// }).then(store => {
-	// 	// 	ReactDOM.findDOMNode(this.refs.project).value = '';
-	// 	// 	this.getProjects();
-	// 	// });
-  //   console.log('adding project(s)...')
-	// }
+	renderTeams() {
+		if (this.state.teams) {
+			return (<Teams
+				teams={this.state.teams}
+				onTeamTouch={::this.onTeamTouch}
+				onDownload={::this.onDownload} />);
+		}
+	}
 
-  //  retrive project info from github
+	renderAddTeams() {
+		if (this.state.openAddTeams) {
+			return (
+				<AddTeam
+					members={this.state.members}
+					open={this.state.openAddTeams}
+					onClose={::this.closeAddTeam}
+					onSave={::this.onSave} />
+			);
+		}
+	}
 
-  //  add project info to DB
+	onDownload(id) {
+		ghoulie.log('Dowloading...');
+		actions.downloadTeamProject(undefined, {id}).then(store => {
+			ghoulie.log('got Teams', store);
 
-  //  move project name from unadded list to added list
+			this.setState({
+				downloading: store.teamsModel.dowloading
+			}, () => {
+				ghoulie.emit('TEAM_PROJECT_DOWNLOADED');
+			}).catch(function(e, store) {
+				console.log('CAUGHT ERROR', e);
+				debugger;
+			});
+		});
+	}
 
-	//
+	addTeam() {
+		this.getMembers();
+		this.setState({openAddTeams: true});
+	}
+
+	closeAddTeam() {
+		this.setState({openAddTeams: false});
+	}
+
+	onSave() {
+		this.closeAddTeam();
+
+	}
+
+	onTeamTouch(id) {
+		console.log('opened team', id);
+	}
+
+	onDelete(id) {
+		console.log('delete', id);
+	}
+
 	// onDelete(id) {
   //   //  destroys selected project(s) in DB by id
 	// 	nebulisActions.deleteProject(null, {
