@@ -11,7 +11,30 @@ var server = 'http://localhost:1337';
 
 
 describe('get /api/teams/:id/download', () => {
-  xit('should be able to download a project package', () => {
+  let team;
+  let member1;
+  let member2;
+  let endpoint;
+  
+
+  //TODO: assert that the download is a valid package file
+  before(async function() {
+    team = await Team.create({name: 'greatness'});
+    member1 = await Member.create({username: 'user1'});
+    member2 = await Member.create({username: 'user2'});
+    endpoint = await Endpoint.create({team: team.id});
+
+    await team.members.add([member1.id, member2.id]);
+    await team.save();
+  });
+  after(async function() {
+    await Team.destroy(team.id);
+    await Member.destroy({username: 'user1'});
+    await Member.destroy({username: 'user2'});
+    await Endpoint.destroy({team: team.id});
+  });
+  xit('should be able to download a project package', async() => {
+    const teams = await Team.find(team.id).populate('members');
 
   });
 });
@@ -167,11 +190,4 @@ describe('GET /api/endpoints', () => {
       });
   });
   xit('should not allow external ip addresses to get the list', () => {});
-});
-
-
-describe('GET /api/teams/:id/download', () => {
-  xit('should be able to download a file', () => {
-
-  });
 });
