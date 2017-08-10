@@ -8,10 +8,16 @@
 module.exports = {
 
 //TODO: create test for this 
-  create: (req, res) => {
-    sails.log('create team');
-    sails.log(req.body);
-    res.send('success');
+  create: async (req, res) => {
+    try {
+      team = await Team.create({name: 'unnamed group'});
+      await team.members.add(req.body.members);
+      await team.save();
+      res.send(team);
+    } catch (err) {
+      sails.log(err);
+      res.send(err);
+    }
   },
   index: (req, res) => {
     sails.log('create team');
