@@ -4,7 +4,11 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import { DownloadIcon } from 'mdi-material-ui';
 
 export default function Team ({team, onTeamOpen, onDownload}) {
-  console.log('team',team);
+  // const downloadButton = (
+  //   <FloatingActionButton style={styles.button} secondary={true} onTouchTap={onDownload} mini={true}>
+  //     <DownloadIcon />
+  //   </FloatingActionButton>
+  // )
   return (
     <div style={styles.container}>
       <ListItem
@@ -23,19 +27,19 @@ export default function Team ({team, onTeamOpen, onDownload}) {
   )
 }
 
+
+
 const styles = {
   download : {
     float: 'right',
     marginRight: 15
   },
   container: {
-
   },
   button: {
-    width: '20%',
-    display: 'block'
+    marginRight: '20px'
   },
   listItem: {
-    display: 'block'
+    textAlign: 'center',
   }
 }

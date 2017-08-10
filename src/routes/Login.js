@@ -35,7 +35,7 @@ export default class Login extends Component {
 				<Paper style={styles.paper} zDepth={2} >
 					<h1 style={styles.h1}>Nebulis Analytics</h1>
 					<RaisedButton
-			      href="/github"
+			      href="/auth/github"
 			      target="_blank"
 			      label="Login with Github"
 			      primary={true}

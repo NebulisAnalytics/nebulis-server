@@ -47,10 +47,10 @@ export default class Layout extends Component {
 					}/>
 				<Drawer open={this.state.open}>
 					<IconButton style={styles.IconButton} onTouchTap={this.handleToggle}><CloseIcon /></IconButton>
-					<Link to="/"><MenuItem style={styles.MenuItem}>Home</MenuItem></Link>
-					<Link to="/login"><MenuItem style={styles.MenuItem}>Login</MenuItem></Link>
-					<Link to="/projects"><MenuItem style={styles.MenuItem}>Projects</MenuItem></Link>
-					<Link to="/members"><MenuItem style={styles.MenuItem}>Members</MenuItem></Link>
+					<Link to="/" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Home</MenuItem></Link>
+					<Link to="/login" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Login</MenuItem></Link>
+					<Link to="/projects" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Projects</MenuItem></Link>
+					<Link to="/members" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Members</MenuItem></Link>
 				</Drawer>
 				{this.props.children}
 			</div>
@@ -62,11 +62,14 @@ const styles = {
 	MenuItem: {
 		height: '64px',
 		lineHeight: '64px',
-		textAlign: 'center'
+		textAlign: 'center',
 	},
 	IconButton: {
 		height: '64px',
 		width: '100%',
 		alignSelf: ''
+	},
+	LinkItem: {
+		textDecoration: 'none'
 	}
 }
