@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import logo from '../../assets/images/nebulis-logo.png'
 // import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 // const themes = {
 // 	darkBaseTheme: getMuiTheme(darkBaseTheme, {userAgent: 'all'}),
@@ -38,19 +39,20 @@ export default class Layout extends Component {
 		return (
 			<div id="layout">
 				<AppBar
-					title={ this.props.title }
+					title={<img src="https://avatars0.githubusercontent.com/u/30535047?v=4&s=200"/>}
 					className="appbar"
 					iconElementLeft={
 						<IconButton onTouchTap={this.handleToggle}>
 						<MenuIcon />
 						</IconButton>
-					}/>
+					}
+			/>
 				<Drawer open={this.state.open}>
 					<IconButton style={styles.IconButton} onTouchTap={this.handleToggle}><CloseIcon /></IconButton>
-					<Link to="/"><MenuItem style={styles.MenuItem}>Home</MenuItem></Link>
-					<Link to="/login"><MenuItem style={styles.MenuItem}>Login</MenuItem></Link>
-					<Link to="/projects"><MenuItem style={styles.MenuItem}>Projects</MenuItem></Link>
-					<Link to="/members"><MenuItem style={styles.MenuItem}>Members</MenuItem></Link>
+					<Link to="/" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Home</MenuItem></Link>
+					<Link to="/login" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Login</MenuItem></Link>
+					<Link to="/projects" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Projects</MenuItem></Link>
+					<Link to="/members" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Members</MenuItem></Link>
 				</Drawer>
 				{this.props.children}
 			</div>
@@ -62,11 +64,14 @@ const styles = {
 	MenuItem: {
 		height: '64px',
 		lineHeight: '64px',
-		textAlign: 'center'
+		textAlign: 'center',
 	},
 	IconButton: {
 		height: '64px',
 		width: '100%',
 		alignSelf: ''
+	},
+	LinkItem: {
+		textDecoration: 'none'
 	}
 }
