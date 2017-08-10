@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import logo from '../../assets/images/nebulis-logo.png'
+
 // import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 // const themes = {
 // 	darkBaseTheme: getMuiTheme(darkBaseTheme, {userAgent: 'all'}),
@@ -34,12 +34,11 @@ export default class Layout extends Component {
 	static propTypes = {
 		title: React.PropTypes.string.isRequired
 	};
-
+// {<img src=/>}
 	render() {
 		return (
 			<div id="layout">
 				<AppBar
-					title={<img src="https://avatars0.githubusercontent.com/u/30535047?v=4&s=200"/>}
 					className="appbar"
 					iconElementLeft={
 						<IconButton onTouchTap={this.handleToggle}>
@@ -47,7 +46,12 @@ export default class Layout extends Component {
 						</IconButton>
 					}
 			/>
-				<Drawer open={this.state.open}>
+				<Drawer containerStyle={{
+					backgroundColor: '#ffd699',
+				}}
+					open={this.state.open}
+					>
+					<IconButton style={styles.IconButton}><img src='/images/nebulis-logo.png' width='65%'/></IconButton>
 					<IconButton style={styles.IconButton} onTouchTap={this.handleToggle}><CloseIcon /></IconButton>
 					<Link to="/" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Home</MenuItem></Link>
 					<Link to="/login" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Login</MenuItem></Link>

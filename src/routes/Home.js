@@ -10,19 +10,12 @@ export default class IndexPage extends Component {
   render() {
     return (
       <Layout title="Home">
-        <div id="page-index" className="page">
-          <div>
-            <Link to="/login">Login</Link>
-          </div>
-          <div>
-            <Link to="/projects">Projects Page</Link>
-          </div>
-          <div>
-            <Link to="/members">Members Page</Link>
-          </div>
-          <div>
-            <a href="sailshomepage">Sails default page</a>
-          </div>
+        <div style={{
+          opacity: .5,
+          objectPosition: '400px 50px'
+        }}
+        className="logoDiv">
+        <img src='/images/nebulis-logo.png' height='40%' alt='nebulis-logo' />
         </div>
       </Layout>);
   }
