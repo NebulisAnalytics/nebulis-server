@@ -47,7 +47,8 @@ const reducer = createReducer(getInitialState, {
   },
   CREATE_PROJECT_SUCCESS: function(state, action) {
     return Object.assign({}, state, {
-      loading: false,
+      loading: false, 
+      results: action.results
     });
   },
 
