@@ -19,7 +19,7 @@ export default class Projects extends Component {
 				<List>
 					<Subheader>Projects</Subheader>
 					{ this.props.projects.map((project, index) => {
-					return (<ProjectListItems key={index} project={project}/>);
+					return (<ProjectListItems key={index} project={project} />);
 				})}
 				</List>
 			);

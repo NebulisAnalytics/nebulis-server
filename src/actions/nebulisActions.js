@@ -60,6 +60,13 @@ const actions = createActions(getStore, fetchOptions, {
     success: types.DELETE_PROJECTS_SUCCESS,
     error: types.PROJECTS_ERROR
   },
+  downloadTeamProject: {
+    method: 'get',
+    url: '/api/teams/:id/download',
+    request: types.DOWNLOAD_PROJECT,
+    success: types.DOWNLOAD_PROJECT_SUCCESS,
+    error: types.PROJECTS_ERROR
+  },
   createMember: {
     method: 'post',
     url: '/api/members',
@@ -91,9 +98,19 @@ const actions = createActions(getStore, fetchOptions, {
   }
 });
 
+function addTeamMember(teamMember) {
+  return {
+    type: types.ADD_TEAM_MEMBER,
+    results: teamMember
+  }
+}
+
 module.exports = {
-  ...actions
+  ...actions,
+  addTeamMember
 };
+
+
 export function addProject(){
   return {type: types.ADD_PROJECT}
 }

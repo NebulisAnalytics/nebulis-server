@@ -25,6 +25,28 @@ const reducer = createReducer(getInitialState, {
       loading: false,
       error: action.error
     }
+  },
+  ADD_TEAM_MEMBER: function (state, action){
+    const newState = {
+      ...state,
+      team: {
+        ...team
+      }
+    };
+    newState[action.results.id] = action.results;
+    return newState;
+  },
+  DOWNLOAD_PROJECT: function(state, action) {
+    return {
+      ...state,
+      downloading: true
+    }
+  },
+  DOWNLOAD_PROJECT_SUCCESS: function(state, action) {
+    return {
+      ...state,
+      downloading:false
+    }
   }
 });
 
