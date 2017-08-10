@@ -10,7 +10,10 @@ module.exports = {
 //TODO: create test for this 
   create: async (req, res) => {
     try {
-      team = await Team.create({name: 'unnamed group'});
+      team = await Team.create({
+        name: 'unnamed group',
+        project: req.body.project
+      });
       await team.members.add(req.body.members);
       await team.save();
       res.send(team);
