@@ -33,7 +33,7 @@ describe('get /api/teams/:id/download', () => {
     await Member.destroy({username: 'user2'});
     await Endpoint.destroy({team: team.id});
   });
-  xit('should be able to download a project package', () => {
+  xit('should be able to download a project package', async() => {
     const teams = await Team.find(team.id).populate('members');
 
   });
