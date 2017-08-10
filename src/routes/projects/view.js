@@ -23,7 +23,7 @@ export default class ProjectsContainer extends Component {
 			project: getStore().getState().projectsModel.project,
 			teams: getStore().getState().teamsModel.teams,
 			team: getStore().getState().teamsModel.team,
-			members: null,//getStore().getState().teamsModel.members,
+			members: getStore().getState().teamsModel.members,
 			openAddTeams: false
 		};
 
@@ -35,7 +35,7 @@ export default class ProjectsContainer extends Component {
 				project: getStore().getState().projectsModel.project,
 				teams: getStore().getState().teamsModel.project,
 				team: getStore().getState().teamsModel.team,
-				// members: getStore().getState().teamsModel.members,
+				members: getStore().getState().teamsModel.members,
 			}, () => {
 
 			});
@@ -113,8 +113,26 @@ export default class ProjectsContainer extends Component {
 	}
 
 	getMembers() {
-		this.setState({
-			members: [{id:1, username:'Jose'}, {id:2, username:'John'}, {id:3, username:'Jyu'}]
+		ghoulie.log('getting members...');
+		actions.getMembers().then(store => {
+
+			// store returned is same as getStore().getState()
+			ghoulie.log('got members', store);
+
+			// map the model to state
+			this.setState({
+				members: store.membersModel.members
+			}, () => {
+
+
+				// emit TODOS_LOADED event for ghoulie test to use
+				const members = store.membersModel.members;
+				ghoulie.emit('MEMBERS_LOADED', members);
+			});
+
+		}).catch(function(e, store) {
+			console.log('CAUGHT ERROR', e);
+			debugger;
 		});
 	}
 
@@ -165,7 +183,8 @@ export default class ProjectsContainer extends Component {
 					members={this.state.members}
 					open={this.state.openAddTeams}
 					onClose={::this.closeAddTeam}
-					onSave={::this.onSave} />
+					onSave={::this.onSave}
+					handleMemberClick={::this.handleMemberClick}/>
 			);
 		}
 	}
@@ -192,12 +211,31 @@ export default class ProjectsContainer extends Component {
 	}
 
 	closeAddTeam() {
+		getStore().dispatch(actions.closeAddTeam());
 		this.setState({openAddTeams: false});
 	}
 
 	onSave() {
+		const teamMembers = Object.keys(this.state.team).map(id => id);
 		this.closeAddTeam();
+		actions.createTeam({members: teamMembers, project: this.props.params.id}).then(store => {
 
+			ghoulie.log('got response', store);
+
+			this.getTeams(this.state.project.id);
+		}).catch(function (e, store) {
+			console.log('CAUGHT ERROR', e);
+			debugger;
+		});
+	}
+
+	handleMemberClick(member) {
+		if (this.state.team[member.id]) {
+			getStore().dispatch(actions.removeTeamMember(member));
+		} else {
+			getStore().dispatch(actions.addTeamMember(member));
+		}
+		this.setState({team: getStore().getState().teamsModel.team});
 	}
 
 	onTeamTouch(id) {
