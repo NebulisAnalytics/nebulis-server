@@ -24,7 +24,6 @@ const reducer = createReducer(getInitialState, {
 			members: action.results  	// response JSON body is available in action.results
 		});
 	},
-
 	CREATE_MEMBER: function(state, action) {
 		return Object.assign({}, state, {
 			loading: true,
@@ -35,23 +34,12 @@ const reducer = createReducer(getInitialState, {
 			loading: false,
 		});
 	},
-
-	MEMBERS_ERROR: function(state, action) {
+	DELETE_MEMBER: function(state, action) {
 		return Object.assign({}, state, {
-			loading: false,
-			error: action.error
+			// loading: false, TODO: Add functionality
+
 		});
 	},
-  // ADD_MEMBER: function(state, action) {
-	// 	return Object.assign({}, state, {
-	// 		isAddingMember: true
-	// 	});
-	// },
-  // CLOSE_MEMBER: function(state, action) {
-  //   return Object.assign({}, state, {
-  //     isAddingMember: false
-  //   });
-  // },
 });
 
 export {reducer};
