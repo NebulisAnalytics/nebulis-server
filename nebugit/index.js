@@ -86,7 +86,7 @@ const listen = (
     app.use([
       Router.post('/reset', wrap(async (req, res) => {
         getEndpoints();
-        console.log('LISTENER: updating server endpoint list');
+        // console.log('LISTENER: updating server endpoint list');
         res.send({message: 'updating server endpoint list'});
       })),
     ]);

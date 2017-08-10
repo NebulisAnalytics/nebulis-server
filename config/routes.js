@@ -69,6 +69,7 @@ var routes = {
   'get /api/teams/:id/download': 'EndpointController.download',
   'get /api/teams': 'TeamController.index',
   'get /api/teams/:id': 'TeamController.view',
+  'post /api/teams': 'TeamController.create',
 };
 
 // the same app will be rendered at all these routes

@@ -6,6 +6,8 @@
  */
 
 module.exports = {
+
+//TODO: create test for this 
   create: (req, res) => {
     sails.log('create team');
     sails.log(req.body);
