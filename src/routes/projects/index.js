@@ -75,6 +75,12 @@ export default class ProjectsPage extends Component {
 	}
 
 	render() {
+		const styles = {
+			action: {
+				margin: 20,
+			}
+		}
+
 		return (
 			<Layout title="Projects">
 				<div id="page-projects" className="page">
@@ -89,23 +95,23 @@ export default class ProjectsPage extends Component {
 
 						</div>
 
-						<FloatingActionButton secondary={true} onTouchTap={::this.onAdd} mini={true}>
+						<FloatingActionButton style={styles.action} secondary={true} onTouchTap={::this.onAdd} mini={true}>
 							<PlusIcon />
 						</FloatingActionButton>
 						<Dialog
 							title="Add a Project"
 							actions={[<Form
-													action='http://localhost:1337/api/projects'
-													method="POST"
-													fields={[
-														{ name: 'name', label: 'Project Name' }, 
-														{ name: 'gitLink', label: 'Github Project Link', hint: 'https://github.com/user/project' }]}
-													cancel={true}
-													handleClose={this.handleClose}
-													handleSubmit={this.onSave}
-													form={this.form}
-													validation={this.state.validation}
-													/>]}
+								action='http://localhost:1337/api/projects'
+								method="POST"
+								fields={[
+									{ name: 'name', label: 'Project Name' }, 
+									{ name: 'gitLink', label: 'Github Project Link', hint: 'https://github.com/user/project' }]}
+								cancel={true}
+								handleClose={this.handleClose}
+								handleSubmit={this.onSave}
+								form={this.form}
+								validation={this.state.validation}
+								/>]}
 							modal={true}
 							open={this.state.open}
 						/>
