@@ -5,8 +5,8 @@ import Home from './routes/Home';
 import Login from './routes/Login';
 import ProjectPage from './routes/projects/index';
 import ProjectContainer from './routes/projects/view';
-import MemberPage from './routes/members/index';
-import MembersContainer from './routes/members/view';
+import MembersContainer from './routes/members/index';
+import MemberContainer from './routes/members/view';
 import Page2 from './routes/Page2';
 import NotFound from './routes/NotFound';
  
