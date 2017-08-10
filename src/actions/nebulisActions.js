@@ -53,7 +53,7 @@ const actions = createActions(getStore, fetchOptions, {
     success: types.DELETE_PROJECT_SUCCESS,
     error: types.PROJECTS_ERROR
   },
-  deleteAll: {
+  deleteAllProjects: {
     method: 'delete',
     url: '/api/projects',
     request: types.DELETE_PROJECTS,
@@ -80,8 +80,15 @@ const actions = createActions(getStore, fetchOptions, {
     request: types.DELETE_MEMBER,
     success: types.DELETE_MEMBER_SUCCESS,
     error: types.MEMBERS_ERROR
-  }
+  },
   //	get teams
+  getTeams: {
+    method: 'get',
+    url: '/api/projects/:id/teams',
+    request: types.GET_TEAMS,
+    success: types.GET_TEAMS_SUCCESS,
+    error: types.TEAMS_ERROR
+  }
 });
 
 module.exports = {

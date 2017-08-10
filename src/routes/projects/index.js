@@ -93,11 +93,15 @@ export default class ProjectsPage extends Component {
 						<Dialog
 							title="Add a Project"
 							actions={[<Form
-													action="/"
-													method="GET"
-													fields={['Project Name', 'Github Project Link', 'Members']}
+													action='http://localhost:1337/api/projects'
+													method="POST"
+													fields={[
+														{ name: 'name', label: 'Project Name' }, 
+														{ name: 'gitLink', label: 'Github Project Link' }]}
 													cancel={true}
 													handleClose={this.handleClose}
+													handleSubmit={this.onSave}
+													form={this.form}
 													/>]}
 							modal={true}
 							open={this.state.open}
@@ -113,24 +117,20 @@ export default class ProjectsPage extends Component {
 		}
 	}
 
- // @ TODO
-	onAdd() {
+	onSave(form) {
+		this.handleClose();
+		let {name, gitLink} = form;		
+		actions.createProject({name: name.value, gitLink: gitLink.value});
+	}
 
+	onAdd(e) {
     //  replaces current list with a form to insert Github URL and project title
     //  Toggle state between current project list display OR new project form
     //  Add one at a time for now
-    // getStore().dispatch(addProject());
 		this.setState({open: true});
-		// const name = ReactDOM.findDOMNode(this.refs.project).value;
-		// nebulisActions.createProject({
-		// 	name
-		// }).then(store => {
-		// 	ReactDOM.findDOMNode(this.refs.project).value = '';
-		// 	this.getProjects();
-		// });
-    console.log('adding project(s)...')
 	}
-	handleClose() {
+
+	handleClose(e) {
 		this.setState({open: false});
 	}
   //  retrive project info from github
