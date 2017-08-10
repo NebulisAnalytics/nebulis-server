@@ -4,6 +4,9 @@ export default function getInitialState() {
 		loading: false,
 		projects: [],
     isAddingProject: false,
-		project: null
+		project: null,
+		teams: null,
+		team: {},
+		downloading:false
 	}
 }
