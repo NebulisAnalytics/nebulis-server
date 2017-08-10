@@ -8,21 +8,25 @@ export default class IndexPage extends Component {
   }
 
   render() {
+    const styles = {
+      logoContainer: {
+        opacity: .15,
+        paddingTop: '100',
+        margin: '0 auto',
+        textAlign: 'center',
+        objectPosition: '400px 50px'
+      },
+      logo: {
+        height: '50%',
+        width: '50%',
+      }
+    }
+
     return (
       <Layout title="Home">
-        <div id="page-index" className="page">
-          <div>
-            <Link to="/login">Login</Link>
-          </div>
-          <div>
-            <Link to="/projects">Projects Page</Link>
-          </div>
-          <div>
-            <Link to="/members">Members Page</Link>
-          </div>
-          <div>
-            <a href="sailshomepage">Sails default page</a>
-          </div>
+        <div style={styles.logoContainer}
+        className="logoDiv">
+          <img src='/images/nebulis-logo.png' style={styles.logo} alt='nebulis-logo' />
         </div>
       </Layout>);
   }
