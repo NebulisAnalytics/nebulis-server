@@ -2,6 +2,7 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import { List, ListItem } from 'material-ui/List';
+import Checkbox from 'material-ui/Checkbox';
 
 export default function AddTeam({members, open, onClose, onSave, handleMemberClick}) {
   console.log('model members', members)
@@ -12,8 +13,8 @@ export default function AddTeam({members, open, onClose, onSave, handleMemberCli
           return (
             <ListItem
               key={i}
+              leftCheckbox={<Checkbox onCheck={() => handleMemberClick(member)}/>}
               primaryText={`Username: ${member.username}`}
-              onTouchTap={() => handleMemberClick(member)}
               />);
         })}
       </List>
@@ -33,6 +34,7 @@ export default function AddTeam({members, open, onClose, onSave, handleMemberCli
   );
   return (
     <Dialog
+      title="Select Students"
       open={open}
       onRequestClose={onClose}
       actions={renderModel}/>
