@@ -64,7 +64,7 @@ const styles = {
 	MenuItem: {
 		height: '64px',
 		lineHeight: '64px',
-		textAlign: 'center'
+		textAlign: 'center',
 	},
 	IconButton: {
 		height: '64px',
