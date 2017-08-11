@@ -85,6 +85,7 @@ describe('Endpoint Application Integration', function() {
                 currentHEAD = commit.sha();
                 console.log('precurrentHEAD',currentHEAD);
                 connector.stdout.removeListener('data', pushListener);
+                console.log('pushListener: listener removed')
                 done();
               });
             });
