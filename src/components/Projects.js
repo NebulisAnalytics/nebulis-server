@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
+import Paper from 'material-ui/List';
 import ProjectListItems from './ProjectListItems';
 // import s from './style.scss';
 
@@ -16,12 +17,16 @@ export default class Projects extends Component {
 	renderProjects() {
 		if (this.props.projects.length) {
 			return (
-				<List>
-					<Subheader>Projects</Subheader>
-					{ this.props.projects.map((project, index) => {
-					return (<ProjectListItems key={index} project={project} />);
-				})}
-				</List>
+				<Paper
+					zDepth={2}
+					>
+					<List>
+						<Subheader>Projects</Subheader>
+						{ this.props.projects.map((project, index) => {
+						return (<ProjectListItems key={index} project={project} />);
+					})}
+					</List>
+			</Paper>
 			);
 		}
 	}

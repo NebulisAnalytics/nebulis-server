@@ -51,7 +51,10 @@ export default class Layout extends Component {
 				}}
 					open={this.state.open}
 					>
-					<IconButton style={styles.IconButton}><img src='/images/nebulis-logo.png' width='65%'/></IconButton>
+					<div>
+					<IconButton style={styles.IconButton}><img src='/images/nebulis-logo.png' width='35%'/></IconButton>
+					<h3 style={styles.logoD}>Nebulis</h3>
+					</div>
 					<IconButton style={styles.IconButton} onTouchTap={this.handleToggle}><CloseIcon /></IconButton>
 					<Link to="/" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Home</MenuItem></Link>
 					<Link to="/login" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Login</MenuItem></Link>
@@ -70,10 +73,13 @@ const styles = {
 		lineHeight: '64px',
 		textAlign: 'center',
 	},
+	logoD: {
+		textAlign: 'center',
+		color: '#5F6D99'
+	},
 	IconButton: {
 		height: '64px',
-		width: '100%',
-		alignSelf: ''
+		width: '100%'
 	},
 	LinkItem: {
 		textDecoration: 'none'

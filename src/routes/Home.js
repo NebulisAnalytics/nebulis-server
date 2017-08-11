@@ -12,7 +12,11 @@ export default class IndexPage extends Component {
       <Layout title="Home">
         <div style={{
           opacity: .5,
-          objectPosition: '400px 50px'
+          textAlign: 'center',
+          position: 'relative',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          marginTop: '23%'
         }}
         className="logoDiv">
         <img src='/images/nebulis-logo.png' height='40%' alt='nebulis-logo' />
