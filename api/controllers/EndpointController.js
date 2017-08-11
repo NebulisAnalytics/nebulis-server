@@ -17,22 +17,22 @@ module.exports = {
 // POST /api/endpoints/establish
 // debug: { owner: 'NebulisAnalytics', project: 'nebulis-endpoint' }
   establish: async (req, res) => {
-    if (!req.body.project) { 
+    if (!req.body.project) {
       sails.log.info('Request missing project name');
       return res.send({error: 'ENDPOINT ERROR'}); }
-    if (!req.body.owner) { 
+    if (!req.body.owner) {
       sails.log.info('Request missing project owner');
       return res.send({error: 'INPUT ERROR'}); }
 
     //find project
     const projects = await Project.find({ slug: req.body.project });
-    if (projects.length < 1) { 
+    if (projects.length < 1) {
       sails.log.info(`Request for unknown project: ${req.body.project}`);
       return res.send({error: 'INPUT ERROR'}); }
 
     let members = await Member.find({ username: req.body.owner });
     //if user not found try to find on github to confirm existence before creating new user.
-    if (members.length < 1) { 
+    if (members.length < 1) {
       sails.log.info(`Request for unknown user: ${req.body.owner}`);
       const re = /(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/gi;
       let response;
@@ -79,31 +79,33 @@ module.exports = {
   //TODO: pick the latest file in the repo, not the first occurence in the db.
   download: (req, res) => {
     const store = '/tmp';
-    Team.find(req.param('id')).populate('endpoints').exec((err, team) => {
-      console.log(team);
-      if (team[0].endpoints.length > 0) {
-        const eid = team[0].endpoints[0].id;
-        const path = `${store}/repos/${eid}.git`;
-        console.log(path);
-        git.Clone.clone(path, `${store}/browse`).then(function(repository) {
-          console.log('repo',repository)
-          zipFolder(`${store}/browse/`, `${store}/archive.zip`, function(err) {
-            rimraf(`${store}/browse/.git/`, () => {
-              rimraf(`${store}/browse/`, () => {
-                if(!err) {
-                  res.sendfile(`${store}/archive.zip`);
-                } else {
-                  res.send('error preparing files');
-                }
+    Team.find(req.param('id')).populate('members').exec((err, team) => {
+      Member.find(team[0].members[0].id).populate('endpoints').exec((err, members) => {
+        console.log(members);
+        if (members[0].endpoints.length > 0) {
+          const eid = members[0].endpoints[0].id;
+          const path = `${store}/repos/${eid}.git`;
+          console.log(path);
+          git.Clone.clone(path, `${store}/browse`).then(function(repository) {
+            console.log('repo',repository)
+            zipFolder(`${store}/browse/`, `${store}/archive.zip`, function(err) {
+              rimraf(`${store}/browse/.git/`, () => {
+                rimraf(`${store}/browse/`, () => {
+                  if(!err) {
+                    res.sendfile(`${store}/archive.zip`);
+                  } else {
+                    res.send('error preparing files');
+                  }
+                });
               });
             });
           });
-        });
-      } else {
-        res.send({error: 'no endpoints found'});
-      }
+        } else {
+          res.send({error: 'no endpoints found'});
+        }
+      });
     });
-
   }
+
 
 };

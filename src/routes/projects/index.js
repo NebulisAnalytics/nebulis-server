@@ -100,11 +100,13 @@ export default class ProjectsPage extends Component {
 						</FloatingActionButton>
 						<Dialog
 							title="Add a Project"
+							onRequestClose={this.handleClose}
+							open={this.state.open}
 							actions={[<Form
 								action='http://localhost:1337/api/projects'
 								method="POST"
 								fields={[
-									{ name: 'name', label: 'Project Name' }, 
+									{ name: 'name', label: 'Project Name' },
 									{ name: 'gitLink', label: 'Github Project Link', hint: 'https://github.com/user/project' }]}
 								cancel={true}
 								handleClose={this.handleClose}
@@ -112,9 +114,7 @@ export default class ProjectsPage extends Component {
 								form={this.form}
 								validation={this.state.validation}
 								/>]}
-							modal={true}
-							open={this.state.open}
-						/>
+							/>
 					</div>
 				</div>
 			</Layout>);
