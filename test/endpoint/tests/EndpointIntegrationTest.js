@@ -68,7 +68,7 @@ describe('Endpoint Application Integration', function() {
 
   });
   it('on file change change, it should make a successful commit for a repo', function(done) {
-    this.timeout(20000);
+    this.timeout(15000);
     let madeCommit = false;
     const pushListener = (message) => {
       if (message.toString().indexOf('1 file changed, 0 insertions(+)') !== -1) {
@@ -87,18 +87,16 @@ describe('Endpoint Application Integration', function() {
                 connector.stdout.removeListener('data', pushListener);
                 console.log('pushListener: listener removed')
                 done();
-              });
-            });
-          }, 1450);
+              }, done);
+            }, done);
+          }, 2500);
       };
       console.log('pushListener:', message.toString());
     };
     connector.stdout.on('data', pushListener);
-    setTimeout(() => {
-      spawnSync( 'touch', [ './newfile.js' ], {
-        cwd: './test/endpoint/testingProject',
-      });
-    }, 500);
+    spawn( 'touch', [ './newfile.js' ], {
+      cwd: './test/endpoint/testingProject',
+    });
   });
   it('when restarted, the server should still accept repo pushes', (done) => {
     nebugit.stop(() => {
@@ -118,15 +116,13 @@ describe('Endpoint Application Integration', function() {
         console.log('pushListener2:', message.toString());
       };
       connector.stdout.on('data', pushListener);
-      setTimeout(() => {
-        spawnSync( 'touch', [ './newfile2.js' ], {
-          cwd: './test/endpoint/testingProject',
-        });
-      }, 500);
+      spawn( 'touch', [ './newfile2.js' ], {
+        cwd: './test/endpoint/testingProject',
+      });
     });
   });
   it('should report an additional commit in the server repo', function(done) {
-    this.timeout(40000);
+    this.timeout(20000);
     const path = `/tmp/repos/${endpointID}.git`;
     git.Repository.openBare(path)
       .then(function(repo) {
@@ -138,8 +134,8 @@ describe('Endpoint Application Integration', function() {
           expect(currentHEAD.length).to.be.equal(newHead.length);
           expect(newHead.length).to.be.equal(40);
           done();
-        });
-      });
+        }, done);
+      }, done);
   });
   after((done) => {
     Project.destroy(project.id).exec((err) => {
@@ -158,9 +154,9 @@ describe('Endpoint Application Integration', function() {
             spawnSync( 'rm', [ '-rf', '.git' ], {
               cwd: './test/endpoint/testingProject',
             });
-            spawnSync( 'rm', [ '-rf', './testingProject/.nebugit' ], {
-              cwd: './test/endpoint/',
-            });
+            // spawnSync( 'rm', [ '-rf', './testingProject/.nebugit' ], {
+            //   cwd: './test/endpoint/',
+            // });
             done();
           });
         });
