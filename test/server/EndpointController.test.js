@@ -117,7 +117,7 @@ describe('Endpoint connection cases for POST /api/endpoints/establish', () => {
         s = s.slice(s.indexOf('7000/') + 5,s.indexOf('.git'));
 
         Endpoint.find(s).populate('member').exec((err, endpoint) => {
-          expect(res.body.remote).to.be.equal(`http://nebu:lis@localhost:7000/${endpoint[0].id}.git`);
+          expect(res.body.remote).to.be.equal(`http://nebu:lis@${process.env['GIT_HOST']}/${endpoint[0].id}.git`);
           Member.destroy(endpoint[0].member.id).exec((err) => {
             Endpoint.destroy(endpoint[0].id).exec((err) => {
               expectNoAlter(done);
@@ -155,7 +155,7 @@ describe('Endpoint connection cases for POST /api/endpoints/establish', () => {
         .end((err, res) => {
           Member.find(member.id).populate('endpoints').exec((err, member) => {
             const eid = member[0].endpoints[0].id;
-            expect(res.body.remote).to.be.equal(`http://nebu:lis@localhost:7000/${eid}.git`);
+            expect(res.body.remote).to.be.equal(`http://nebu:lis@${process.env['GIT_HOST']}/${eid}.git`);
             Member.destroy(member.id).exec((err) => {
               Endpoint.destroy(eid).exec((err) => {
                 expectNoAlter(done);

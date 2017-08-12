@@ -14,18 +14,19 @@ let connector;
 
 before(function(done) {
   this.timeout(20000);
-  connector = spawn( 'yarn', {
+  connector = spawn( 'npm', ['install'], {
     cwd: './test/endpoint/testingProject/',
   });
 
-  const yarnListener = (message) => {
-    console.log('yarnListener: ', message.toString());
-    if (message.toString().indexOf('Done in') !== -1) {
-      connector.stdout.removeListener('data', yarnListener);
+  const npmListener = (message) => {
+    console.log('npmListener: ', message.toString());
+    if (message.toString().indexOf('packages') !== -1) {
+      connector.stdout.removeListener('data', npmListener);
       done();
     }
   };
-  connector.stdout.on('data', yarnListener);
+  connector.stdout.on('data', npmListener);
+  connector.stderr.on('data', npmListener);
 });
 
 describe('Endpoint Application Integration', function() {
