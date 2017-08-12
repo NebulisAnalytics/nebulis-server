@@ -3,6 +3,8 @@ import http from 'http';
 import wrap from 'express-async-wrap';
 import messages from './messages';
 
+require('dotenv').config();
+
 const GitServer = require('git-server');
 const Router = new Express.Router();
 const request = require('request-promise');
@@ -72,7 +74,7 @@ const listen = (
         port: port.toString(),
         repoLocation: repoLocation,
       });
-      messages.connectionInfo('::', port);
+      messages.connectionInfo(process.env['GIT_HOST'],'');
     }
   }
 

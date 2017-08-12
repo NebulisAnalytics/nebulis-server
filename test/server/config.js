@@ -9,7 +9,7 @@ before(function(done) {
     sails.lift(function() {
       done();
     });
-});	
+  });	
 });
 
 after((done) => {

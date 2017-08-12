@@ -18,6 +18,8 @@
  * `node app.js --silent --port=80 --prod`
  */
 
+require('dotenv').config()
+
 if (!process.env['NODE_ENV']) {
 	console.error('$NODE_ENV not set, try `export NODE_ENV=dev`');
 	process.exit();

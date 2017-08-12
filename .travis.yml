@@ -8,7 +8,7 @@ cache:
   directories:
     - node_modules
 script:
-  # - npm run test:endpoint
+  - npm run test:endpoint
   - npm run test:server
   - npm run test:client
 addons:
