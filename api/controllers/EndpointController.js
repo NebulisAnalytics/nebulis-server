@@ -20,8 +20,8 @@ module.exports = {
     if (!req.body.project) {
       sails.log.info('Request missing project name');
       return res.send({error: 'ENDPOINT ERROR'}); }
-    if (!req.body.owner) {
-      sails.log.info('Request missing project owner');
+    if (!req.body.owners) {
+      sails.log.info('Request missing project owners');
       return res.send({error: 'INPUT ERROR'}); }
 
     //find project
@@ -30,39 +30,68 @@ module.exports = {
       sails.log.info(`Request for unknown project: ${req.body.project}`);
       return res.send({error: 'INPUT ERROR'}); }
 
-    let members = await Member.find({ username: req.body.owner });
-    //if user not found try to find on github to confirm existence before creating new user.
-    if (members.length < 1) {
-      sails.log.info(`Request for unknown user: ${req.body.owner}`);
-      const re = /(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/gi;
-      let response;
-      try {
-        response = await request(`https://github.com/${req.body.owner}`);
-      } catch (err) {
-        sails.log.error('User not found on Github. Disregarding this endpoint request.');
-        return res.send({error: 'INPUT ERROR: This is not a github user.'});
+    const users = req.body.owners;
+    const memberIDs = [];
+    const userFullnames = [];
+    const endpoints = [];
+    users.forEach((user) => {
+      let members = await Member.find({ username: user.username });
+      //if user not found try to find on github to confirm existence before creating new user.
+      if (members.length < 1) {
+        sails.log.info(`Request for unknown user: ${req.body.owner}`);
+        const re = /(<\s*title[^>]*>(.+?)<\s*\/\s*title)>/gi;
+        let response;
+        try {
+          response = await request(`https://github.com/${req.body.owner}`);
+        } catch (err) {
+          sails.log.error('User not found on Github. Disregarding this endpoint request.');
+          return res.send({error: 'INPUT ERROR: This is not a github user.'});
+        }
+        //assuming the user exists on github,` so creating in the db.
+        members = [await Member.create({username: user.username})];
+        userFullnames.push(user.name);
+        memberIDs.push(members[0].id);
       }
-      //assuming the user exists on github,` so creating in the db.
-      members = [await Member.create({username: req.body.owner})];
-    }
 
-    let endpoints = await Endpoint.find({
-      where: {
-        project: projects[0].id,
-        member: members[0].id,
-      },
+      const teamName = userFullnames.reduce((acc, name) => {
+        acc += ` & ${name}`;
+        return acc;
+      })
+
+      // Create new team from members
+      let team = await Team.create({
+        name: teamName,
+        project: projects[0].id
+      })
+      await team.members.add(memberIDs);
+      await team.save();
+
+      let endpoint = await Endpoint.find({
+        where: {
+          project: projects[0].id,
+          member: members[0].id,
+        },
+      });
+      if (endpoint.length < 1) {
+        sails.log.info(`Request for new endpoint creation.`);
+
+        endpoint = [await Endpoint.create({
+          member: members[0].id,
+          project: projects[0].id,
+        })];
+      }
+
+      endpoints.concat(endpoint);
     });
-    if (endpoints.length < 1) {
-      sails.log.info(`Request for new endpoint creation.`);
 
-      endpoints = [await Endpoint.create({
-        member: members[0].id,
-        project: projects[0].id,
-      })];
-    }
-    res.json({
-      id: endpoints[0].id,
-      remote: `http://nebu:lis@${process.env['GIT_HOST']}/${endpoints[0].id}.git`});
+    const sendEnpoints = endpoints.map((endpoint) => {
+      return {
+        id: endpoint.id,
+        remote : `http://nebu:lis@${process.env['GIT_HOST']}/${endpoint.id}.git`
+      }
+    });
+
+    res.json(sendEnpoints);
   },
 
 //used by git server to get the list of endpoints
