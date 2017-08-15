@@ -49,8 +49,11 @@ describe('Endpoint Application Integration', function() {
         cwd: './test/endpoint/testingProject/',
       });
       connector.stdout.on('data', beforeListener);
-      // connector.stderr.on('data', beforeListener);
+      connector.stderr.on('data', beforeErrorListener);
     });
+    const beforeErrorListener = (message) => {
+      console.log('beforeErrorListener: ', message.toString());
+    }
     const beforeListener = (message) => {
       console.log('beforeListener: ', message.toString());
       if (message.toString().indexOf('Endpoint ID:') !== -1) {
@@ -61,12 +64,13 @@ describe('Endpoint Application Integration', function() {
       if (message.toString().indexOf('Checking for changes...') !== -1) {
         setTimeout(() => {
           connector.stdout.removeListener('data', beforeListener);
+          connector.stdout.removeListener('data', beforeErrorListener);
           done();
         }, 1500);
       }
     }
     // connector.on('close', (code, signal) => { done(); });
-  });
+  }); 
   xit('should be able to connect to the server', () => {
 
   });
