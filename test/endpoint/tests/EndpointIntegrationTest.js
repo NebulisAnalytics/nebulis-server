@@ -20,7 +20,7 @@ before(function(done) {
 
   const npmListener = (message) => {
     console.log('npmListener: ', message.toString());
-    if (message.toString().indexOf('packages') !== -1) {
+    if (message.toString().indexOf('packages') !== -1 || message.toString().indexOf('up to date') !== -1) {
       connector.stdout.removeListener('data', npmListener);
       done();
     }
