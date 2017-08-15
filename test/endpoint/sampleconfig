@@ -6,7 +6,7 @@
 	ignorecase = true
 	precomposeunicode = true
 [remote "github-nebulis"]
-	url = git@github.com:LabUser/coding-challenge-1.git
+	url = https://github.com/LabUser/coding-challenge-1.git
 	fetch = +refs/heads/*:refs/remotes/github-nebulis/*
 [branch "master"]
 	remote = user

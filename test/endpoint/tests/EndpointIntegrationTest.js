@@ -14,19 +14,21 @@ let connector;
 
 before(function(done) {
   this.timeout(20000);
+  
   connector = spawn( 'npm', ['install'], {
     cwd: './test/endpoint/testingProject/',
   });
 
   const npmListener = (message) => {
     console.log('npmListener: ', message.toString());
-    if (message.toString().indexOf('packages') !== -1 || message.toString().indexOf('up to date') !== -1) {
+    if (message.toString().indexOf('package') !== -1 || message.toString().indexOf('up to date') !== -1) {
       connector.stdout.removeListener('data', npmListener);
       done();
     }
   };
+
   connector.stdout.on('data', npmListener);
-  connector.stderr.on('data', npmListener);
+  // connector.stderr.on('data', npmListener);
 });
 
 describe('Endpoint Application Integration', function() {
@@ -47,7 +49,7 @@ describe('Endpoint Application Integration', function() {
         cwd: './test/endpoint/testingProject/',
       });
       connector.stdout.on('data', beforeListener);
-      connector.stderr.on('data', beforeListener);
+      // connector.stderr.on('data', beforeListener);
     });
     const beforeListener = (message) => {
       console.log('beforeListener: ', message.toString());
@@ -155,9 +157,9 @@ describe('Endpoint Application Integration', function() {
             spawnSync( 'rm', [ '-rf', '.git' ], {
               cwd: './test/endpoint/testingProject',
             });
-            // spawnSync( 'rm', [ '-rf', './testingProject/.nebugit' ], {
-            //   cwd: './test/endpoint/',
-            // });
+            spawnSync( 'rm', [ '-rf', './testingProject/.nebugit' ], {
+              cwd: './test/endpoint/',
+            });
             done();
           });
         });
