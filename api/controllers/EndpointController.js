@@ -9,6 +9,7 @@ const request = require('request-promise');
 const git = require('nodegit');
 var zipFolder = require('zip-folder');
 var rimraf = require('rimraf');
+require('dotenv').config;
 
 module.exports = {
 
