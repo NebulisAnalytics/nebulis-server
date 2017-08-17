@@ -35,12 +35,11 @@ export default class Layout extends Component {
 	static propTypes = {
 		title: React.PropTypes.string.isRequired
 	};
-
+// {<img src=/>}
 	render() {
 		return (
 			<div id="layout">
 				<AppBar
-					title={ this.props.title }
 					className="appbar"
 					iconElementLeft={
 						<IconButton onTouchTap={this.handleToggle}>
@@ -67,10 +66,13 @@ const styles = {
 		lineHeight: '64px',
 		textAlign: 'center',
 	},
+	logoD: {
+		textAlign: 'center',
+		color: '#5F6D99'
+	},
 	IconButton: {
 		height: '64px',
-		width: '100%',
-		alignSelf: ''
+		width: '100%'
 	},
 	LinkItem: {
 		textDecoration: 'none'
