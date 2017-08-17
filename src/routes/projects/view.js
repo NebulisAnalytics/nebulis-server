@@ -153,13 +153,14 @@ export default class ProjectsContainer extends Component {
 			<Layout title={`Project ${subtitle}`}>
 				{this.renderLoading()}
 				<div id="page-teams" className="page">
-				<RaisedButton
+				{/* <RaisedButton
 						target="_blank"
 						label="Add Team"
 						secondary={true}
 						icon={<PlusIcon />}
 						onTouchTap={::this.addTeam}
-					/>
+					/> */}
+
 				{this.renderAddTeams()}
 				{this.renderTeams()}
 				</div>
