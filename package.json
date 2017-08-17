@@ -95,7 +95,7 @@
 		"gitnet:dev": "nodemon --watch ./nebugit gitnetLifter.js",
 		"gitnet:prod": "node gitnetLifter.js",
 		"dev": "NODE_ENV=dev npm run build:dev & npm run server:dev & npm run gitnet:dev",
-		"prod": "NODE_ENV=dev npm run build:prod; npm run server:prod & yarn run gitnet:prod",
+		"prod": "npm run build:prod; npm run server:prod & npm run gitnet:prod",
 		"server:dev": "NODE_ENV=dev nodemon --ignore 'src/*.*' --ignore 'public/build/*.*' --ignore ./nebugit --ignore ./test ./node_modules/sails/bin/sails.js lift",
 		"server:prod": "NODE_ENV=prod node app.js",
 		"build:dev": "NODE_ENV=dev node node_modules/webpack/bin/webpack.js --progress",
@@ -109,7 +109,8 @@
 		"ghoulies:test": "NODE_ENV=test mocha --timeout 60000 --recursive ./test/ghoulies/config.js ./test/ghoulies",
 		"ghoulies:watch": "npm run ghoulies:build; NODE_ENV=test nodemon -w ./test/ghoulies -e js -x npm run ghoulies:test",
 		"ghoulies:build": "NODE_ENV=test node node_modules/webpack/bin/webpack.js -p --progress",
-		"coverage": "nyc report --reporter=text-lcov | coveralls"
+		"coverage": "nyc report --reporter=text-lcov | coveralls",
+		"start": "npm run prod"
 	},
 	"main": "app.js",
 	"repository": {
