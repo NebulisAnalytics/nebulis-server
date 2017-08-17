@@ -9,6 +9,8 @@
  * http://sailsjs.org/#!/documentation/concepts/ORM
  */
 
+
+
 module.exports.models = {
 
   /***************************************************************************
@@ -17,7 +19,11 @@ module.exports.models = {
   * connections (see `config/connections.js`)                                *
   *                                                                          *
   ***************************************************************************/
-  // connection: 'localDiskDb',
+  connection: (() => {
+      if(process.env['NODE_ENV'] === 'test') {
+        return 'localDiskTestingDb';
+      } else return 'localDiskDb';
+    })(),
 
   /***************************************************************************
   *                                                                          *

@@ -21,7 +21,6 @@ const logoText = `                                                     .,,,,
      ,:;;;;;;;;;:,.\n`;
 
 const connectionText = `🔥  Nebulis git subsystem is listening on %s:%s`.magenta;
-const killedText = `🛑  Nebulis git subsystem is killed`.magenta;
 const listenerConnectionText = '🔥  Nebulis Listener is listening on http://%s:%s'.magenta;
 
 const messages = {

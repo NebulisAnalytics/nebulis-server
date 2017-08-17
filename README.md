@@ -15,8 +15,8 @@ nenv local v6.9.1
 Clone boilerplate:
 
 ```
-git clone https://github.com/jaxcore/sails-react-redux-boilerplate.git
-cd sails-react-redux-boilerplate
+git clone https://github.com/NebulisAnalytics/nebulis-server.git
+cd nebulis-server
 ```
 
 Install prerequisites:
@@ -66,6 +66,14 @@ npm run server:test:watch
 ```
 
 ### Integration test
+
+### Endpoint Integration test
+
+Performs complete end to end test of the client connecting to this server.
+
+```
+npm run test:endpoint
+```
 
 Run integration test:
 

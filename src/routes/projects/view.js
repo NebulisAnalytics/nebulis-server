@@ -23,7 +23,7 @@ export default class ProjectsContainer extends Component {
 			project: getStore().getState().projectsModel.project,
 			teams: getStore().getState().teamsModel.teams,
 			team: getStore().getState().teamsModel.team,
-			members: null,//getStore().getState().teamsModel.members,
+			members: getStore().getState().teamsModel.members,
 			openAddTeams: false
 		};
 
@@ -35,7 +35,7 @@ export default class ProjectsContainer extends Component {
 				project: getStore().getState().projectsModel.project,
 				teams: getStore().getState().teamsModel.project,
 				team: getStore().getState().teamsModel.team,
-				// members: getStore().getState().teamsModel.members,
+				members: getStore().getState().membersModel.members,
 			}, () => {
 
 			});
@@ -52,15 +52,23 @@ export default class ProjectsContainer extends Component {
 		});
 	}
 
-	componentWillMount() {
-		console.log('this.props', this.props);
+	componentDidMount() {
 		this.getProject(this.props.params.id);
 	  this.getTeams(this.props.params.id);
+		this.getMembers();
 	}
 
-	// componentDidMount() {
-	// 	this.getTeams(this.props.params.id);
+	// componentWillUpdate() {
+	// 	this.getProject(this.props.params.id);
+	//   this.getTeams(this.props.params.id);
+	// 	this.getMembers();
 	// }
+
+	shouldComponentUpdate(nextProps, nextState) {
+		if ((this.state.openAddTeams && nextState.openAddTeams)) {
+			return false;
+		} else return true;
+	}
 
 	getProject(id) {
 		ghoulie.log('getting project...');
@@ -113,8 +121,26 @@ export default class ProjectsContainer extends Component {
 	}
 
 	getMembers() {
-		this.setState({
-			members: [{id:1, username:'Jose'}, {id:2, username:'John'}, {id:3, username:'Jyu'}]
+		ghoulie.log('getting members...');
+		actions.getMembers().then(store => {
+
+			// store returned is same as getStore().getState()
+			ghoulie.log('got members', store);
+
+			// map the model to state
+			this.setState({
+				members: store.membersModel.members
+			}, () => {
+
+
+				// emit TODOS_LOADED event for ghoulie test to use
+				const members = store.membersModel.members;
+				ghoulie.emit('MEMBERS_LOADED', members);
+			});
+
+		}).catch(function(e, store) {
+			console.log('CAUGHT ERROR', e);
+			debugger;
 		});
 	}
 
@@ -127,13 +153,14 @@ export default class ProjectsContainer extends Component {
 			<Layout title={`Project ${subtitle}`}>
 				{this.renderLoading()}
 				<div id="page-teams" className="page">
-				<RaisedButton
+				{/* <RaisedButton
 						target="_blank"
 						label="Add Team"
 						secondary={true}
 						icon={<PlusIcon />}
 						onTouchTap={::this.addTeam}
-					/>
+					/> */}
+
 				{this.renderAddTeams()}
 				{this.renderTeams()}
 				</div>
@@ -165,7 +192,8 @@ export default class ProjectsContainer extends Component {
 					members={this.state.members}
 					open={this.state.openAddTeams}
 					onClose={::this.closeAddTeam}
-					onSave={::this.onSave} />
+					onSave={::this.onSave}
+					handleMemberClick={::this.handleMemberClick}/>
 			);
 		}
 	}
@@ -187,17 +215,39 @@ export default class ProjectsContainer extends Component {
 	}
 
 	addTeam() {
-		this.getMembers();
 		this.setState({openAddTeams: true});
 	}
 
 	closeAddTeam() {
+		getStore().dispatch(actions.closeAddTeam());
+		this.getProject(this.props.params.id)
+		this.getTeams(this.props.params.id);
+		this.getMembers();
 		this.setState({openAddTeams: false});
 	}
 
 	onSave() {
-		this.closeAddTeam();
+		const teamMembers = Object.keys(this.state.team).map(id => id);
 
+		actions.createTeam({members: teamMembers, project: this.props.params.id}).then(store => {
+
+			ghoulie.log('got response', store);
+
+			this.closeAddTeam();
+
+		}).catch(function (e, store) {
+			console.log('CAUGHT ERROR', e);
+			debugger;
+		});
+	}
+
+	handleMemberClick(member) {
+		if (this.state.team[member.id]) {
+			getStore().dispatch(actions.removeTeamMember(member));
+		} else {
+			getStore().dispatch(actions.addTeamMember(member));
+		}
+		this.setState({team: getStore().getState().teamsModel.team});
 	}
 
 	onTeamTouch(id) {

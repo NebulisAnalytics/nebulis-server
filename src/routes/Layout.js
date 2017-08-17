@@ -19,6 +19,7 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import { Link } from 'react-router';
 import { MenuIcon, CloseIcon } from 'mdi-material-ui';
+import '../components/style.scss';
 
 export default class Layout extends Component {
 	constructor(props) {
@@ -44,13 +45,8 @@ export default class Layout extends Component {
 						<IconButton onTouchTap={this.handleToggle}>
 						<MenuIcon />
 						</IconButton>
-					}
-			/>
-				<Drawer containerStyle={{
-					backgroundColor: '#ffd699',
-				}}
-					open={this.state.open}
-					>
+					}/>
+				<Drawer docked={false} className='mainNavDrawer' open={this.state.open}>
 					<IconButton style={styles.IconButton}><img src='/images/nebulis-logo.png' width='65%'/></IconButton>
 					<IconButton style={styles.IconButton} onTouchTap={this.handleToggle}><CloseIcon /></IconButton>
 					<Link to="/" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Home</MenuItem></Link>
@@ -70,10 +66,13 @@ const styles = {
 		lineHeight: '64px',
 		textAlign: 'center',
 	},
+	logoD: {
+		textAlign: 'center',
+		color: '#5F6D99'
+	},
 	IconButton: {
 		height: '64px',
-		width: '100%',
-		alignSelf: ''
+		width: '100%'
 	},
 	LinkItem: {
 		textDecoration: 'none'

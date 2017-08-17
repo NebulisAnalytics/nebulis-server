@@ -95,6 +95,13 @@ const actions = createActions(getStore, fetchOptions, {
     request: types.GET_TEAMS,
     success: types.GET_TEAMS_SUCCESS,
     error: types.TEAMS_ERROR
+  },
+  createTeam: {
+    method: 'post',
+    url: '/api/teams',
+    request: types.CREATE_TEAM,
+    success: types.CREATE_TEAM_SUCCESS,
+    error: types.TEAMS_ERROR
   }
 });
 
@@ -105,9 +112,24 @@ function addTeamMember(teamMember) {
   }
 }
 
+function removeTeamMember(teamMember) {
+  return {
+    type: types.REMOVE_TEAM_MEMBER,
+    results: teamMember
+  }
+}
+
+function closeAddTeam() {
+  return {
+    type: types.CLOSE_ADD_TEAM
+  }
+}
+
 module.exports = {
   ...actions,
-  addTeamMember
+  addTeamMember,
+  removeTeamMember,
+  closeAddTeam
 };
 
 

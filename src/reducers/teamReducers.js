@@ -26,15 +26,31 @@ const reducer = createReducer(getInitialState, {
       error: action.error
     }
   },
-  ADD_TEAM_MEMBER: function (state, action){
+  ADD_TEAM_MEMBER: function(state, action) {
     const newState = {
       ...state,
       team: {
-        ...team
+        ...state.team
       }
     };
-    newState[action.results.id] = action.results;
+    newState.team[action.results.id] = action.results;
     return newState;
+  },
+  REMOVE_TEAM_MEMBER: function(state, action) {
+    const newState = {
+      ...state,
+      team: {
+        ...state.team
+      }
+    };
+    delete newState.team[action.results.id];
+    return newState;
+  },
+  CLOSE_ADD_TEAM: function(state, action) {
+    return {
+      ...state,
+      team: {}
+    }
   },
   DOWNLOAD_PROJECT: function(state, action) {
     return {

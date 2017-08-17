@@ -3,6 +3,8 @@ import http from 'http';
 import wrap from 'express-async-wrap';
 import messages from './messages';
 
+require('dotenv').config();
+
 const GitServer = require('git-server');
 const Router = new Express.Router();
 const request = require('request-promise');
@@ -72,7 +74,7 @@ const listen = (
         port: port.toString(),
         repoLocation: repoLocation,
       });
-      messages.connectionInfo('::', port);
+      messages.connectionInfo(process.env['GIT_HOST'],'');
     }
   }
 
@@ -86,7 +88,7 @@ const listen = (
     app.use([
       Router.post('/reset', wrap(async (req, res) => {
         getEndpoints();
-        console.log('LISTENER: updating server endpoint list');
+        // console.log('LISTENER: updating server endpoint list');
         res.send({message: 'updating server endpoint list'});
       })),
     ]);
