@@ -95,12 +95,12 @@ if (process.env['NODE_ENV'] === 'dev') {
 	config.plugins.push(new webpack.HotModuleReplacementPlugin());
 }
 else {
-	if (process.env['NODE_ENV'] === 'prod') {
-		// config.plugins.push(new webpack.optimize.UglifyJsPlugin({
-		// 	compressor: {
-		// 		warnings: false
-		// 	}
-		// }));
+	if (process.env['NODE_ENV'] === 'production') {
+		config.plugins.push(new webpack.optimize.UglifyJsPlugin({
+			compressor: {
+				warnings: false
+			}
+		}));
 	}
 }
 
