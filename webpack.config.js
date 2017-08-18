@@ -15,7 +15,7 @@ else { // prod
 const config = {
 	devtool: devtool,
 	entry: [
-		'./src' ///index'
+		'./src/index' ///index'
 	],
 	output: {
 		path: path.resolve(__dirname, './public/build'),
