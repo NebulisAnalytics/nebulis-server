@@ -15,13 +15,13 @@ describe('get /api/teams/:id/download', () => {
   let member1;
   let member2;
   let endpoint;
-  
+
 
   //TODO: assert that the download is a valid package file
   before(async function() {
     team = await Team.create({name: 'greatness'});
-    member1 = await Member.create({username: 'user1'});
-    member2 = await Member.create({username: 'user2'});
+    member1 = await Member.create({username: 'user1', fullname: 'user 1'});
+    member2 = await Member.create({username: 'user2', fullname: 'user 2'});
     endpoint = await Endpoint.create({team: team.id});
 
     await team.members.add([member1.id, member2.id]);
@@ -73,28 +73,32 @@ describe('Endpoint connection cases for POST /api/endpoints/establish', () => {
   })
   it('should respond with the same repo each time an endpoint connects', (done) => {
     req.send({
-      owner: "NebulisAnalytics", 
+      owners: [{username: "NebulisAnalytics", fullName: "Nebulis Analytics"}],
       project: "nebulis-endpoint"
     })
       .end(function(err, res){
         let s = res.body.remote;
+        console.log("err is lit: ", err);
         let id1 = s.slice(s.indexOf('7000/') + 5, s.indexOf('.git'));
         chai.request(server).post('/api/endpoints/establish').send({
-          owner: "NebulisAnalytics", 
+          owners: [{username: "NebulisAnalytics", fullName: "Nebulis Analytics"}],
           project: "nebulis-endpoint"
         })
           .end(function(err, res){
             s = res.body.remote;
             let id2 = s.slice(s.indexOf('7000/') + 5, s.indexOf('.git'));
+            console.log('These be my ids',id1, id2);
             expect(id1).to.be.equal(id2);
 
             Endpoint.find(id1).populate('member').exec((err, endpoint) => {
-              Member.destroy(endpoint[0].member.id).exec((err) => {
-                Endpoint.destroy(endpoint[0].id).exec((err) => {
-                  expectNoAlter(done);
+              Team.destroy(endpoint[0].team).exec((err) => {
+                Member.destroy(endpoint[0].member.id).exec((err) => {
+                  Endpoint.destroy(endpoint[0].id).exec((err) => {
+                    expectNoAlter(done);
+                  });
                 });
               });
-            })
+            });
           });
       });
   });
@@ -109,7 +113,7 @@ describe('Endpoint connection cases for POST /api/endpoints/establish', () => {
   });
   it('should create a new user and endpoint for a new connection without a user ', (done) => {
     req.send({
-      owner: "NebulisAnalytics", 
+      owners: [{username: "NebulisAnalytics", fullName: "Nebulis Analytics"}],
       project: "nebulis-endpoint"
     })
       .end(function(err, res){
@@ -128,7 +132,7 @@ describe('Endpoint connection cases for POST /api/endpoints/establish', () => {
   });
   it('should fail for a user name not on github', (done) => {
     req.send({
-      owner: "NebulisAnalytics+2", 
+      owners: [{username: "NebulisAnalytics+2", fullName: "Nebulis Analytics"}],
       project: "nebulis-endpoint"
     })
       .end((err, res) => {
@@ -138,7 +142,7 @@ describe('Endpoint connection cases for POST /api/endpoints/establish', () => {
   });
   it('should fail for a project that is not created', (done) => {
     req.send({
-      owner: "NebulisAnalytics", 
+      owners: [{username: "NebulisAnalytics", fullName: "Nebulis Analytics"}],
       project: "project-does-not-exist"
     })
       .end((err, res) => {
@@ -149,7 +153,7 @@ describe('Endpoint connection cases for POST /api/endpoints/establish', () => {
   it('should create a new endpoint for a new connection that already has a user ', (done) => {
     Member.create({username: 'NebulisAnalytics'}).exec((err, member)=>{
       req.send({
-        owner: "NebulisAnalytics", 
+        owners: [{username: "NebulisAnalytics", fullName: "Nebulis Analytics"}],
         project: "nebulis-endpoint"
       })
         .end((err, res) => {
