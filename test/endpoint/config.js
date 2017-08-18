@@ -6,7 +6,7 @@ var rimraf = require('rimraf');
 before(function(done) {
   this.timeout(20000);
   rimraf(`.tmp/localDiskTestingDb.db`, () => {
-    fs.mkdir('/tmp/repos', function (err) {
+    fs.mkdir(process.env['REPO_LOCATION'], function (err) {
       nebugit.listen();	
       sails.lift(function() {
         done();

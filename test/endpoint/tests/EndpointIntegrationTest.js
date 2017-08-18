@@ -85,7 +85,7 @@ describe('Endpoint Application Integration', function() {
         expect(madeCommit).to.be.equal(true);
         setTimeout(() => {
           //store repo information before testing
-          const path = `/tmp/repos/${endpointID}.git`;
+          const path = process.env['REPO_LOCATION']/${endpointID}.git`;
           git.Repository.openBare(path)
             .then(function(repo) {
               repo.getReferenceCommit('refs/heads/master').then(function(commit) {
@@ -130,7 +130,7 @@ describe('Endpoint Application Integration', function() {
   });
   it('should report an additional commit in the server repo', function(done) {
     this.timeout(20000);
-    const path = `/tmp/repos/${endpointID}.git`;
+    const path = `${process.env['REPO_LOCATION']}/${endpointID}.git`;
     git.Repository.openBare(path)
       .then(function(repo) {
         repo.getReferenceCommit('refs/heads/master').then(function(commit) {

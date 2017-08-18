@@ -84,7 +84,7 @@ module.exports = {
         console.log(members);
         if (members[0].endpoints.length > 0) {
           const eid = members[0].endpoints[0].id;
-          const path = `${store}/repos/${eid}.git`;
+          const path = `${process.env['REPO_LOCATION']}/repos/${eid}.git`;
           console.log(path);
           git.Clone.clone(path, `${store}/browse`).then(function(repository) {
             console.log('repo',repository)

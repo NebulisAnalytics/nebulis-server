@@ -95,7 +95,7 @@ describe('Endpoint Git Subsystem', function() {
   });
   it('should create a new repo when a new endpoint is created.', (done) => {
     let found = false;
-    fs.readdirSync('/tmp/repos').forEach(file => {
+    fs.readdirSync(process.env['REPO_LOCATION']).forEach(file => {
       if (file === endpoint.id + '.git') found = true;
     });
     expect(found).to.be.equal(true);
@@ -109,7 +109,7 @@ describe('Endpoint Git Subsystem', function() {
   it('should delete a repo when destroying an endpoint', (done) => {
     Endpoint.destroy(endpoint.id).exec((err, res) => {
       let found = false;
-      fs.readdirSync('/tmp/repos').forEach(file => {
+      fs.readdirSync(process.env['REPO_LOCATION']).forEach(file => {
         if (file === endpoint.id + '.git') found = true;
       });
       expect(found).to.be.equal(false);

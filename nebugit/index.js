@@ -16,7 +16,7 @@ let server;
 
 const listen = (
 // default configuration
-  repoLocation = '/tmp/repos',
+  repoLocation = process.env['REPO_LOCATION'],
   port = '7000',
   serverPort = '1337',
   listenPort = '7010',
