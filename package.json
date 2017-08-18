@@ -98,7 +98,7 @@
 		"gitnet:prod": "node gitnetLifter.js",
 		"dev": "NODE_ENV=dev npm run build:dev & npm run server:dev & npm run gitnet:dev",
 		"prod": "npm run build:prod; npm run server:prod & npm run gitnet:prod",
-		"server:dev": "NODE_ENV=dev nodemon --ignore 'src/*.*' --ignore 'public/build/*.*' --ignore ./nebugit --ignore ./test ./node_modules/sails/bin/sails.js lift",
+		"server:dev": "NODE_ENV=dev nodemon --ignore 'src/*.*' --ignore 'public/build/*.*' --ignore ./nebugit --ignore ./test ./app.js",
 		"server:prod": "node app.js",
 		"build:dev": "NODE_ENV=dev node node_modules/webpack/bin/webpack.js --progress",
 		"build:prod": "node node_modules/webpack/bin/webpack.js -p --optimize-minimize",
