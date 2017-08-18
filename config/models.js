@@ -22,6 +22,8 @@ module.exports.models = {
   connection: (() => {
       if(process.env['NODE_ENV'] === 'test') {
         return 'localDiskTestingDb';
+      } else if (process.env['NODE_ENV'] === 'production') {
+        return 'productionPostgresqlServer';
       } else return 'localDiskDb';
     })(),
 
