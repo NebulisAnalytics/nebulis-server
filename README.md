@@ -12,7 +12,7 @@ nenv install 6.9.1
 nenv local v6.9.1
 ```
 
-Clone boilerplate:
+Clone project:
 
 ```
 git clone https://github.com/NebulisAnalytics/nebulis-server.git
@@ -35,6 +35,12 @@ Build and run production server:
 
 ```
 npm run prod
+```
+
+### Environmental Variables
+```
+GIT_HOST=<your ip>:7000
+NODE_ENV=production
 ```
 
 ### Client-side tests

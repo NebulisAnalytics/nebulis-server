@@ -42,7 +42,7 @@ module.exports = {
 //TODO: make this work for multiple records
   afterDestroy: function(destroyedRecords, cb) {
     try {
-      rimraf('/tmp/repos/' + destroyedRecords[0].id + '.git', () => {
+      rimraf(process.env['REPO_LOCATION'] + '/' + destroyedRecords[0].id + '.git', () => {
         cb();
       });
     }

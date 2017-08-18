@@ -3,8 +3,6 @@ import http from 'http';
 import wrap from 'express-async-wrap';
 import messages from './messages';
 
-require('dotenv').config();
-
 const GitServer = require('git-server');
 const Router = new Express.Router();
 const request = require('request-promise');
@@ -18,7 +16,7 @@ let server;
 
 const listen = (
 // default configuration
-  repoLocation = '/tmp/repos',
+  repoLocation = process.env['REPO_LOCATION'],
   port = '7000',
   serverPort = '1337',
   listenPort = '7010',
@@ -39,7 +37,7 @@ const listen = (
   
   const getEndpoints = async () => {
     try {
-      const res = await request(`http://localhost:${serverPort}/api/endpoints`);
+      const res = await request(`http://127.0.0.1:${serverPort}/api/endpoints`);
       //clear repo list before populating it
       repos = [];
 

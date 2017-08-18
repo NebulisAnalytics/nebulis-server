@@ -18,10 +18,18 @@
  * `node app.js --silent --port=80 --prod`
  */
 
-require('dotenv').config()
-
 if (!process.env['NODE_ENV']) {
 	console.error('$NODE_ENV not set, try `export NODE_ENV=dev`');
+	process.exit();
+}
+
+if (!process.env['GIT_HOST']) {
+	console.error('$GIT_HOST not set, try `export GIT_HOST=<your ip>:7000`');
+	process.exit();
+}
+
+if (!process.env['REPO_LOCATION']) {
+	console.error('$REPO_LOCATION not set, try `export REPO_LOCATION=/var/repos`');
 	process.exit();
 }
 
