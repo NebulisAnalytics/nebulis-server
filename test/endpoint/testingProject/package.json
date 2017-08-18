@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "colors": "^1.1.2",
-    "nebulis-endpoint": "^0.3.8"
+    "nebulis-endpoint": "^0.4.1"
   }
 }

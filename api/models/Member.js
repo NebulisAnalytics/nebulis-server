@@ -24,6 +24,9 @@ module.exports = {
       type: 'string',
       unique: true,
     },
+    fullname: {
+      type: 'string',
+    },
     teams: {
       collection: 'team',
       via: 'members',
