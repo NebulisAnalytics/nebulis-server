@@ -19,7 +19,7 @@ module.exports = {
   establish: async (req, res) => {
     if (!req.body.project) {
       sails.log.info('Request missing project name');
-      return res.send({error: 'ENDPOINT ERROR'}); }
+      return res.send({error: 'ENDPOINT ERROR: Missing project name'}); }
     if (!req.body.owner) {
       sails.log.info('Request missing project owner');
       return res.send({error: 'INPUT ERROR'}); }
@@ -77,6 +77,7 @@ module.exports = {
   },
 
   //TODO: pick the latest file in the repo, not the first occurence in the db.
+  //TODO: add error handling to rimraf
   download: (req, res) => {
     const store = '/tmp';
     Team.find(req.param('id')).populate('members').exec((err, team) => {
