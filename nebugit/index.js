@@ -58,6 +58,7 @@ const listen = (
       });
 
     } catch (err) {
+      process.stdout.write('nebugit error: ' + err);
       setTimeout(() => { 
         process.stdout.write('.');
         getEndpoints(); 
