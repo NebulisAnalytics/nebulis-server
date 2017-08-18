@@ -10,6 +10,6 @@
   "author": "The Project Author",
   "license": "ISC",
   "dependencies": {
-    "nebulis-endpoint": "^0.2.8"
+    "nebulis-endpoint": "^0.4.1"
   }
 }
