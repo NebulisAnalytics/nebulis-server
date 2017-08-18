@@ -4,7 +4,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const fs = require('fs');
 const request = require('request');
-const {spawn, spawnSync} = require( 'child_process' );
+const {spawn, spawnSync, fork} = require( 'child_process' );
 const should = chai.should();
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -23,12 +23,16 @@ before(function(done) {
     console.log('npmListener: ', message.toString());
     if (message.toString().indexOf('package') !== -1 || message.toString().indexOf('up to date') !== -1) {
       connector.stdout.removeListener('data', npmListener);
+      connector.stdout.removeListener('data', npmErrorListener);
       done();
     }
   };
+  const npmErrorListener = (message) => {
+    console.log('npmErrorListener: ', message.toString());
+  };
 
   connector.stdout.on('data', npmListener);
-  // connector.stderr.on('data', npmListener);
+  connector.stderr.on('data', npmErrorListener);
 });
 
 describe('Endpoint Application Integration', function() {
@@ -45,17 +49,20 @@ describe('Endpoint Application Integration', function() {
     });
     Project.create({name: 'coding-challenge-1', gitLink: 'github.com/user/testProj', slug: 'coding-challenge-1'}).exec((err, res) => {
       project = res;
-      connector = spawn( 'node', [ 'index.js' ], {
-        cwd: './test/endpoint/testingProject/',
+      connector = fork( 'index.js', {
+        cwd: './test/endpoint/testingProject/'
+
       });
-      connector.stdout.on('data', beforeListener);
-      connector.stderr.on('data', beforeErrorListener);
+      connector.on('message', beforeListener);
     });
     const beforeErrorListener = (message) => {
       console.log('beforeErrorListener: ', message.toString());
     }
     const beforeListener = (message) => {
       console.log('beforeListener: ', message.toString());
+      if (message.toString().indexOf('Please enter your full name') !== -1) {
+        connector.send('Joe Villager');
+      }
       if (message.toString().indexOf('Endpoint ID:') !== -1) {
         const m = message.toString();
         const i = m.indexOf('ID:');
@@ -75,7 +82,7 @@ describe('Endpoint Application Integration', function() {
 
   });
   it('on file change change, it should make a successful commit for a repo', function(done) {
-    this.timeout(15000);
+    // this.timeout(15000);
     let madeCommit = false;
     const pushListener = (message) => {
       if (message.toString().indexOf('1 file changed, 0 insertions(+)') !== -1) {
@@ -85,7 +92,7 @@ describe('Endpoint Application Integration', function() {
         expect(madeCommit).to.be.equal(true);
         setTimeout(() => {
           //store repo information before testing
-          const path = process.env['REPO_LOCATION']/${endpointID}.git`;
+          const path = `${process.env['REPO_LOCATION']}/${endpointID}.git`;
           git.Repository.openBare(path)
             .then(function(repo) {
               repo.getReferenceCommit('refs/heads/master').then(function(commit) {
