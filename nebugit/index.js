@@ -37,7 +37,7 @@ const listen = (
   
   const getEndpoints = async () => {
     try {
-      const res = await request(`http://localhost:${serverPort}/api/endpoints`);
+      const res = await request(`http://127.0.0.1:${serverPort}/api/endpoints`);
       //clear repo list before populating it
       repos = [];
 
