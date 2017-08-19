@@ -208,7 +208,7 @@ describe('GET /api/endpoints', function() {
   });
   xit('should not allow external ip addresses to get the list', () => {});
 
-  xit('should see multiple repos when creating multiple endpoints', () => {
+  it('should see multiple repos when creating multiple endpoints', () => {
     let foundE1 = false;
     let foundE2 = false;
     let foundE3 = false;
