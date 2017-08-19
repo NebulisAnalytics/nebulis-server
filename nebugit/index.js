@@ -20,9 +20,11 @@ const listen = (
   port = '7000',
   serverPort = '1337',
   listenPort = '7010',
-  standardUser = {
+  standardUser = () => {
+    return {
     username: 'nebu',
     password: 'lis',
+    }
   }
 ) => {
 
@@ -30,7 +32,7 @@ const listen = (
     return {
       anonRead: false,
       users: [
-        { user: standardUser, permissions: ['R', 'W'] },
+        { user: standardUser(), permissions: ['R', 'W'] },
       ],
     };
   };
@@ -42,7 +44,7 @@ const listen = (
       repos = [];
 
       JSON.parse(res).forEach((info) => {
-        const repo = repoProto();
+        const repo = new repoProto();
         repo.name = info.id;
 
         repo.event = (response) => {
@@ -74,6 +76,13 @@ const listen = (
       });
       messages.connectionInfo(process.env['GIT_HOST'],'');
     }
+    gitServer.on('commit', function(update, repo) {
+      console.log('commit from:', repo);
+      update.accept() //accept the update.
+    });
+    gitServer.on('post-update', function(update, repo) {
+      //do some deploy stuff
+    });
   }
 
   const startListener = () => {
