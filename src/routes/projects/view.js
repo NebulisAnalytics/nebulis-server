@@ -64,11 +64,11 @@ export default class ProjectsContainer extends Component {
 	// 	this.getMembers();
 	// }
 
-	shouldComponentUpdate(nextProps, nextState) {
-		if ((this.state.openAddTeams && nextState.openAddTeams)) {
-			return false;
-		} else return true;
-	}
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	if ((this.state.openAddTeams && nextState.openAddTeams)) {
+	// 		return false;
+	// 	} else return true;
+	// }
 
 	getProject(id) {
 		ghoulie.log('getting project...');
@@ -161,7 +161,7 @@ export default class ProjectsContainer extends Component {
 						onTouchTap={::this.addTeam}
 					/> */}
 
-				{this.renderAddTeams()}
+				{/*this.renderAddTeams()*/}
 				{this.renderTeams()}
 				</div>
 			</Layout>
