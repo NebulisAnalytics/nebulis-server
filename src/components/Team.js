@@ -9,12 +9,18 @@ export default function Team ({team, onTeamOpen, onDownload}) {
   //     <DownloadIcon />
   //   </FloatingActionButton>
   // )
+
+  //format timestamp
+  let dateArr = team.updatedAt.split('T')
+  let date = dateArr[0]
+  let time = dateArr[1].split('.')[0]
+
   return (
     <div style={styles.container}>
       <ListItem
         style={styles.listItem}
-        primaryText= { "Name: " + team.name }
-        secondaryText= { "Updated At: " + team.updatedAt }
+        primaryText= { team.name }
+        secondaryText= { "Updated At: " + date + " " + time }
         hoverColor= { '#FF8442' }
         onTouchTap={onTeamOpen}>
         <a href={'/api/teams/' + team.id + '/download'}>
