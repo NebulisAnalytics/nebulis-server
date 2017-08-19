@@ -171,16 +171,29 @@ describe('Endpoint connection cases for POST /api/endpoints/establish', () => {
   });
 });
 
-describe('GET /api/endpoints', () => {
+describe('GET /api/endpoints', function() {
+  this.timeout(10000);
   let e1;
   let e2;
-  before(async () => {
-    e1 = await Endpoint.create();
-    e2 = await Endpoint.create();
+  let e3;
+  before((done) => {
+    Endpoint.create().exec((err, e) => {
+      e1 = e;
+      Endpoint.create().exec((err, e) => {
+        e2 = e;
+        setTimeout(() => {
+          Endpoint.create().exec((err, e) => {
+            e3 = e;
+            done();
+          });
+        }, 1000);
+      });
+    });
   });
   after(async() => {
     await Endpoint.destroy(e1);
     await Endpoint.destroy(e2);
+    await Endpoint.destroy(e3);
   });
   it('should return array of endpoints', function(done) {
     chai.request(server)
@@ -189,9 +202,23 @@ describe('GET /api/endpoints', () => {
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.an('array');
-        expect(res.body.length).to.be.equal(2);
+        expect(res.body.length).to.be.equal(3);
         done();
       });
   });
   xit('should not allow external ip addresses to get the list', () => {});
+
+  xit('should see multiple repos when creating multiple endpoints', () => {
+    let foundE1 = false;
+    let foundE2 = false;
+    let foundE3 = false;
+    fs.readdirSync(process.env['REPO_LOCATION']).forEach(file => {
+      if (file === e1.id + '.git') foundE1 = true;
+      if (file === e2.id + '.git') foundE2 = true;
+      if (file === e3.id + '.git') foundE3 = true;
+    });
+    expect(foundE1).to.be.equal(true);
+    expect(foundE2).to.be.equal(true);
+    expect(foundE3).to.be.equal(true);
+  });
 });
