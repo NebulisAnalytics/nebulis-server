@@ -5,5 +5,30 @@ $tron-orange: #FF8442;
 $blood-orange: #CC4621;
 
 div.projects{
-
+  text-align: left
 }
+
+div.projList{
+  text-indent: 15%;
+  margin-left: 2%;
+}
+
+div.leftListAvatar{
+  
+}
+
+div.memberNames{
+  text-align: right;
+  padding-right: 5%;
+}
+
+
+@media (min-width: 500px)
+{div.mainNavDrawer{
+  // docked: true;
+}}
+
+//
+//  {
+//   transform: translate(0px, 0px); //set to persist at 0 for desktop, -266 is closing it
+// }
