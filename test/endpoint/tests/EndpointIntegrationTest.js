@@ -50,10 +50,14 @@ describe('Endpoint Application Integration', function() {
     Project.create({name: 'coding-challenge-1', gitLink: 'github.com/user/testProj', slug: 'coding-challenge-1'}).exec((err, res) => {
       project = res;
       connector = fork( 'index.js', {
-        cwd: './test/endpoint/testingProject/'
-
+        cwd: './test/endpoint/testingProject/',
+        silent: true
       });
-      connector.on('message', beforeListener);
+
+      // connector.stdout.pipe(process.stdout);
+      // connector.stderr.pipe(process.stderr);
+      connector.stdout.on('data', beforeListener);
+      connector.stderr.on('data', beforeErrorListener);
     });
     const beforeErrorListener = (message) => {
       console.log('beforeErrorListener: ', message.toString());
@@ -61,7 +65,13 @@ describe('Endpoint Application Integration', function() {
     const beforeListener = (message) => {
       console.log('beforeListener: ', message.toString());
       if (message.toString().indexOf('Please enter your full name') !== -1) {
-        connector.send('Joe Villager');
+        connector.stdin.write('Joe Villager\n');
+      }
+      if (message.toString().indexOf('Press enter to confirm') !== -1) {
+        connector.stdin.write('\n');
+      }
+      if (message.toString().indexOf('Do you have any additional team members?') !== -1) {
+        connector.stdin.write('n\n');
       }
       if (message.toString().indexOf('Endpoint ID:') !== -1) {
         const m = message.toString();
@@ -71,7 +81,7 @@ describe('Endpoint Application Integration', function() {
       if (message.toString().indexOf('Checking for changes...') !== -1) {
         setTimeout(() => {
           connector.stdout.removeListener('data', beforeListener);
-          connector.stdout.removeListener('data', beforeErrorListener);
+          connector.stderr.removeListener('data', beforeErrorListener);
           done();
         }, 1500);
       }
@@ -82,7 +92,7 @@ describe('Endpoint Application Integration', function() {
 
   });
   it('on file change change, it should make a successful commit for a repo', function(done) {
-    // this.timeout(15000);
+    this.timeout(15000);
     let madeCommit = false;
     const pushListener = (message) => {
       if (message.toString().indexOf('1 file changed, 0 insertions(+)') !== -1) {
