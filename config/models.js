@@ -22,9 +22,9 @@ module.exports.models = {
   connection: (() => {
       if(process.env['NODE_ENV'] === 'test') {
         return 'localDiskTestingDb';
-      } else if (process.env['NODE_ENV'] === 'production') {
-        return 'productionPostgresqlServer';
-      } else return 'localDiskDb';
+      } else if (process.env['NODE_ENV'] === 'dev') {
+        return 'localDiskDb';
+      } else return 'productionPostgresqlServer';
     })(),
 
   /***************************************************************************
@@ -35,6 +35,6 @@ module.exports.models = {
   * See http://sailsjs.org/#!/documentation/concepts/ORM/model-settings.html  *
   *                                                                          *
   ***************************************************************************/
-  migrate: 'safe'
+  migrate: 'alter'
 
 };

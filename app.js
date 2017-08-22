@@ -28,6 +28,11 @@ if (!process.env['GIT_HOST']) {
 	process.exit();
 }
 
+if (!process.env['API_HOST']) {
+	console.error('$API_HOST not set, try `export API_HOST=http://localhost:1337`');
+	process.exit();
+}
+
 if (!process.env['REPO_LOCATION']) {
 	console.error('$REPO_LOCATION not set, try `export REPO_LOCATION=/var/repos`');
 	process.exit();

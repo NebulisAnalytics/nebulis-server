@@ -9,7 +9,6 @@ const request = require('request-promise');
 const git = require('nodegit');
 var zipFolder = require('zip-folder');
 var rimraf = require('rimraf');
-require('dotenv').config;
 
 module.exports = {
 
@@ -103,6 +102,7 @@ module.exports = {
   },
 
   //TODO: pick the latest file in the repo, not the first occurence in the db.
+  //TODO: add error handling to rimraf
   download: (req, res) => {
     const store = '/tmp';
     Team.find(req.param('id')).populate('members').exec((err, team) => {
@@ -110,7 +110,7 @@ module.exports = {
         console.log(members);
         if (members[0].endpoints.length > 0) {
           const eid = members[0].endpoints[0].id;
-          const path = `${process.env['REPO_LOCATION']}/repos/${eid}.git`;
+          const path = `${process.env['REPO_LOCATION']}/${eid}.git`;
           console.log(path);
           git.Clone.clone(path, `${store}/browse`).then(function(repository) {
             console.log('repo',repository)
