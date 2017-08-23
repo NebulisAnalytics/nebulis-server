@@ -9,12 +9,9 @@ import ghoulie from 'ghoulie';
 export default class TeamsContainer extends Component {
 
   render() {
-    const subtitle = this.props.project !== null ? this.props.project.name : '';
-
+    const subtitle = this.props.project ? this.props.project.name: '';
     return (
         <Layout title={`Project: ${subtitle}`}>
-
-
         <div id="page-teams" className="page">
           {this.renderTeams()}
 

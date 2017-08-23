@@ -16,7 +16,8 @@ const reducer = createReducer(getInitialState, {
     return {
       ...state,
       loading: false,
-      teams: action.results
+      teams: action.results.teams,
+      project: action.results.project
     }
   },
   TEAMS_ERROR: function(state, action) {

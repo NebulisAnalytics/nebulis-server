@@ -14,15 +14,15 @@ export default class ProjectsContainer extends Component {
 			// map the model to state
 			loading: getStore().getState().projectsModel.loading,
 			downloading: getStore().getState().teamsModel.downloading,
-			project: getStore().getState().projectsModel.project,
+			project: getStore().getState().teamsModel.project,
     }
 
     getStore().subscribe(() => {
 			this.setState({
 				loading: getStore().getState().projectsModel.loading,
 				downloading: getStore().getState().teamsModel.downloading,
-  			project: getStore().getState().projectsModel.project,
-				teams: getStore().getState().teamsModel.project,
+  			project: getStore().getState().teamsModel.project,
+				teams: getStore().getState().teamsModel.teams,
       }, () => {
 
   		});
@@ -39,38 +39,7 @@ export default class ProjectsContainer extends Component {
   }
 
   componentDidMount() {
-    this.getProject(this.props.params.id);
     this.getTeams(this.props.params.id);
-	}
-  // shouldComponentUpdate(nextProps, nextState) {
-	// 	if ((this.state.openAddTeams && nextState.openAddTeams)) {
-	// 		return false;
-	// 	} else return true;
-	// }
-
-  getProject(id) {
-		ghoulie.log('getting project...');
-		actions.getProject(undefined, {id}).then(store => {
-
-			// store returned is same as getStore().getState()
-			ghoulie.log('got project', store);
-
-			// map the project to state
-			this.setState({
-				loading: store.projectsModel.loading,
-				project: store.projectsModel.project
-			}, () => {
-
-				// emit PROJECT_LOADED event for ghoulie test to use
-				const project = store.projectsModel.project;
-				ghoulie.emit('PROJECT_LOADED', project);
-
-			});
-
-		}).catch(function(e, store) {
-			console.log('CAUGHT ERROR', e);
-			debugger;
-		});
 	}
 
   getTeams(id) {
@@ -82,6 +51,7 @@ export default class ProjectsContainer extends Component {
 
 			// map the project to state
 			this.setState({
+        project: store.teamsModel.project,
 				teams: store.teamsModel.teams
 			}, () => {
 
@@ -116,7 +86,11 @@ export default class ProjectsContainer extends Component {
 		return (
       <div>
         {this.renderLoading()}
-        {this.renderTeamContainer()}
+        <TeamsContainer
+          teams={this.state.teams}
+          project={this.state.project}
+          onDownload={::this.onDownload}
+          />
       </div>
 		);
 	}
@@ -126,18 +100,4 @@ export default class ProjectsContainer extends Component {
       return (<div>Loading...</div>);
     }
   }
-
-  renderTeamContainer() {
-    if (this.state.project && this.state.teams) {
-      return (
-        <TeamsContainer
-          teams={this.state.teams}
-          project={this.state.project}
-          onDownload={::this.onDownload}
-          />
-      );
-    }
-
-  }
-
 }
