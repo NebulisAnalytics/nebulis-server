@@ -19,6 +19,11 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import { Link } from 'react-router';
 import { MenuIcon, CloseIcon } from 'mdi-material-ui';
+import {
+  ResponsiveDrawer,
+  BodyContainer,
+  ResponsiveAppBar
+} from 'material-ui-responsive-drawer'
 
 export default class Layout extends Component {
 	constructor(props) {
@@ -38,7 +43,17 @@ export default class Layout extends Component {
 	render() {
 		return (
 			<div id="layout">
-				<AppBar
+				<ResponsiveDrawer>
+					<div>
+						<IconButton style={styles.IconButton}><img src='/images/nebulis-logo.png' width='65%'/></IconButton>
+						<Link to="/" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Home</MenuItem></Link>
+						<Link to="/login" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Login</MenuItem></Link>
+						<Link to="/projects" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Projects</MenuItem></Link>
+						<Link to="/members" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Members</MenuItem></Link>
+					</div>
+				</ResponsiveDrawer>
+				<BodyContainer>
+					<AppBar
 					title={ this.props.title }
 					className="appbar"
 					iconElementLeft={
@@ -46,15 +61,8 @@ export default class Layout extends Component {
 						<MenuIcon />
 						</IconButton>
 					}/>
-				<Drawer open={this.state.open}>
-					<IconButton style={styles.IconButton}><img src='/images/nebulis-logo.png' width='65%'/></IconButton>
-					<IconButton style={styles.IconButton} onTouchTap={this.handleToggle}><CloseIcon /></IconButton>
-					<Link to="/" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Home</MenuItem></Link>
-					<Link to="/login" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Login</MenuItem></Link>
-					<Link to="/projects" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Projects</MenuItem></Link>
-					<Link to="/members" style={styles.LinkItem}><MenuItem style={styles.MenuItem}>Members</MenuItem></Link>
-				</Drawer>
-				{this.props.children}
+					{this.props.children}
+				</BodyContainer>
 			</div>
 		);
 	}

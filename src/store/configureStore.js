@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import rootReducer from '../reducers';
 import es6promise from 'es6-promise';
 es6promise.polyfill();
+import {responsiveStoreEnhancer} from 'redux-responsive';
 
 // import the generated reducer and actions
 
@@ -17,6 +18,7 @@ export {addProject, closeProject, makeAdmin, removeAdmin};
 // create the redux store
 export const store = createStore(
 	rootReducer,
+	responsiveStoreEnhancer,
 	applyMiddleware(thunk)
 );
 
