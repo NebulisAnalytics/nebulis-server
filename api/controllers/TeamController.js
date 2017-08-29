@@ -7,7 +7,7 @@
 
 module.exports = {
 
-//TODO: create test for this 
+//TODO: create test for this
   create: async (req, res) => {
     try {
       team = await Team.create({
@@ -30,7 +30,15 @@ module.exports = {
   projectIndex: (req, res) => {
     sails.log('view teams for project');
 
-    Team.find({project: req.params['id']}).populate('members').exec((err, teams) => { res.send(teams)});
+    Team.find({project: req.params.id}).populate('members').exec((err, teams) => {
+      Project.find({id: req.params.id}).exec((err, project) => {
+        const result = {
+          teams: teams,
+          project: project[0]
+        }
+        res.send(result);
+      });
+    });
   },
   view: (req, res) => {
     sails.log('create team');
@@ -38,4 +46,3 @@ module.exports = {
     res.send('success');
   }
 };
-

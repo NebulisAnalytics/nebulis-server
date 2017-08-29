@@ -1,5 +1,6 @@
 import React from 'react';
 import { ListItem } from 'material-ui/List';
+import { Link } from 'react-router';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import { DownloadIcon } from 'mdi-material-ui';
 
@@ -17,18 +18,20 @@ export default function Team ({team, onTeamOpen, onDownload}) {
 
   return (
     <div style={styles.container}>
-      <ListItem
-        style={styles.listItem}
-        primaryText= { team.name }
-        secondaryText= { "Updated At: " + date + " " + time }
-        hoverColor= { '#FF8442' }
-        onTouchTap={onTeamOpen}>
-        <a href={'/api/teams/' + team.id + '/download'}>
-          <FloatingActionButton secondary={true} mini={true} style={styles.download}>
-            <DownloadIcon/>
-          </FloatingActionButton>
-        </a>
-      </ListItem>
+      <Link to={"/teams/" + team.id}>
+        <ListItem
+          style={styles.listItem}
+          primaryText= { team.name }
+          secondaryText= { "Updated At: " + date + " " + time }
+          hoverColor= { '#FF8442' }
+          onTouchTap={onTeamOpen}>
+          <a href={'/api/teams/' + team.id + '/download'}>
+            <FloatingActionButton secondary={true} mini={true} style={styles.download}>
+              <DownloadIcon/>
+            </FloatingActionButton>
+          </a>
+        </ListItem>
+      </Link>
     </div>
   )
 }

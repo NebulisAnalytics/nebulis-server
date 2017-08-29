@@ -85,7 +85,7 @@ export default class ProjectsPage extends Component {
 			<Layout title="Projects">
 				<div id="page-projects" className="page">
 
-					{ this.renderLoading() }
+					{/* this.renderLoading() */}
 					{/* Projects:<br/> */}
 					<Projects projects={this.state.projectsModel.projects}/>
 
