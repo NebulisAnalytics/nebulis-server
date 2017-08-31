@@ -78,7 +78,9 @@ var indexRoutes = [
   '/login',
   '/projects',
   '/members',
-  '/projects/:id'];
+  '/projects/:id',
+  '/teams/:id'
+];
 indexRoutes.forEach(function (r) {
   routes['GET ' + r] = 'IndexController.index';
 });
