@@ -48,7 +48,7 @@
 		"material-ui-responsive-drawer": "^1.19.0",
 		"mdi-material-ui": "^1.0.0",
 		"minimatch": "^3.0.4",
-		"mocha": "^3.5.0",
+		"mocha": "^6.0.0",
 		"node-sass": "^4.5.3",
 		"nodegit": "^0.18.3",
 		"nyc": "^11.1.0",
