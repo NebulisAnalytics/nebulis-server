@@ -28,7 +28,7 @@
 		"ghoulie": "^0.0.2",
 		"ghoulies": "0.0.2",
 		"git-server": "github:chrisdobler/NodeJS-Git-Server",
-		"grunt": "1.0.1",
+		"grunt": "1.5.3",
 		"grunt-contrib-clean": "1.0.0",
 		"grunt-contrib-coffee": "1.0.0",
 		"grunt-contrib-concat": "1.0.1",
