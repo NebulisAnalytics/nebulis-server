@@ -89,7 +89,7 @@
 		"eslint-plugin-import": "^2.7.0",
 		"eslint-plugin-jsx-a11y": "^5.1.1",
 		"eslint-plugin-react": "^7.1.0",
-		"jsdom": "^9.9.1",
+		"jsdom": "^16.5.0",
 		"mocha-lcov-reporter": "^1.3.0",
 		"nodemon": "^1.11.0",
 		"react-addons-test-utils": "^15.4.0",
