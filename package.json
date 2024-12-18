@@ -22,7 +22,7 @@
 		"ejs": "2.3.4",
 		"enzyme": "^2.9.1",
 		"es6-promise": "^4.0.5",
-		"express": "^4.14.0",
+		"express": "^4.21.2",
 		"express-async-wrap": "^1.0.0",
 		"express-ejs-layouts": "^2.2.0",
 		"ghoulie": "^0.0.2",
